@@ -8,7 +8,10 @@ bind = "127.0.0.1:8000"  # Local only, nginx akan proxy
 backlog = 2048
 
 # Worker Processes
-workers = 4  # (2 x CPU cores) + 1
+# NOTE: Using 1 worker because progress_tracker uses in-memory storage
+# Multiple workers = separate memory spaces = progress tracking doesn't work
+# TODO: Migrate to Redis/Database for multi-worker support
+workers = 1  # Single worker for in-memory progress tracking
 worker_class = "sync"
 worker_connections = 1000
 max_requests = 1000  # Restart worker after 1000 requests
