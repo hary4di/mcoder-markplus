@@ -337,6 +337,12 @@ PENTING: Hanya output JSON, tidak ada text tambahan."""
         responses_text = "\n".join([f"{idx+1}. \"{resp}\"" for idx, resp in enumerate(responses)])
         
         # Build prompt based on multi-label setting
+        # CRITICAL FIX: Generate examples dynamically based on ACTUAL categories
+        # to avoid AI confusion with mismatched category names
+        
+        # Get first 5 categories (excluding "Other") for concrete examples
+        example_cats = [c for c in categories if c.lower() != 'other'][:5]
+        
         # Try to load custom prompts from database, fallback to defaults
         try:
             from app.models import SystemSettings
@@ -345,25 +351,24 @@ PENTING: Hanya output JSON, tidak ada text tambahan."""
                 # Load multi-label prompt template
                 prompt_template = SystemSettings.get_setting('prompt_multi_label', None)
                 if not prompt_template:
-                    # Default multi-label prompt
+                    # Default multi-label prompt WITH DYNAMIC EXAMPLES
                     prompt_template = """Instruksi MULTI-LABEL CLASSIFICATION:
 
 SANGAT PENTING: Jawaban responden BISA mengandung MULTIPLE tema sekaligus!
 
 Analisis SETIAP jawaban dengan cermat:
 1. Identifikasi SEMUA tema/topik yang disebutkan dalam jawaban
-2. Jika jawaban menyebutkan 2+ tema berbeda (misal: "harga mahal DAN pelayanan buruk"), WAJIB assign ke SEMUA kategori yang relevan
+2. Jika jawaban menyebutkan 2+ tema berbeda, WAJIB assign ke SEMUA kategori yang relevan
 3. Berikan confidence score (0.0-1.0) untuk SETIAP kategori yang terdeteksi
 4. Hanya include kategori dengan confidence ≥ {min_category_confidence}
 5. Maksimal {max_categories_per_response} kategori per jawaban
 6. EXCEPTION: Jika ada 1 kategori dengan confidence ≥ {single_category_threshold} (very dominant), gunakan HANYA kategori tersebut
 7. Jika tidak ada yang cocok → "Other"
 
-CONTOH:
-- "Harga mahal dan antrian panjang" → [Pilihan Pembayaran, Jadwal dan Keberangkatan]
-- "Tambah metode pembayaran, penambahan jam" → [Pilihan Pembayaran, Jadwal dan Keberangkatan]  
-- "Aplikasi error dan CS tidak responsif" → [Perbaikan Aplikasi, Layanan Pelanggan]
-- "Harga sangat sangat mahal sekali" → [Pilihan Pembayaran] (single dominant theme)
+IMPORTANT: Match jawaban dengan kategori yang tersedia di atas! Lihat KATA KUNCI dalam jawaban yang cocok dengan nama kategori.
+
+CONTOH MATCHING (gunakan kategori yang tersedia):
+{examples}
 
 Format output (JSON):
 {{
@@ -371,30 +376,35 @@ Format output (JSON):
     {{
       "response_number": 1,
       "categories": [
-        {{"category": "Pilihan Pembayaran", "confidence": 0.85}},
-        {{"category": "Jadwal dan Keberangkatan", "confidence": 0.80}}
-      ]
-    }},
-    {{
-      "response_number": 2,
-      "categories": [
-        {{"category": "Fasilitas dan Kenyamanan", "confidence": 0.90}}
+        {{"category": "KategoriYangSesuai", "confidence": 0.85}}
       ]
     }}
   ]
 }}"""
                 
+                # Generate dynamic examples using actual categories
+                examples_list = []
+                if len(example_cats) >= 1:
+                    examples_list.append(f'- Jika jawaban menyebut "{example_cats[0].lower()}" → {example_cats[0]}')
+                if len(example_cats) >= 2:
+                    examples_list.append(f'- Jika jawaban menyebut "{example_cats[1].lower()}" → {example_cats[1]}')
+                if len(example_cats) >= 3:
+                    examples_list.append(f'- Jika jawaban menyebut "{example_cats[0].lower()}" DAN "{example_cats[2].lower()}" → [{example_cats[0]}, {example_cats[2]}]')
+                examples_list.append('- Jika tidak jelas atau tidak cocok → Other')
+                examples_text = "\n".join(examples_list)
+                
                 # Replace template variables
                 instruction = prompt_template.format(
                     min_category_confidence=self.min_category_confidence,
                     max_categories_per_response=self.max_categories_per_response,
-                    single_category_threshold=self.single_category_threshold
+                    single_category_threshold=self.single_category_threshold,
+                    examples=examples_text
                 )
             else:
                 # Load single-label prompt template
                 prompt_template = SystemSettings.get_setting('prompt_single_label', None)
                 if not prompt_template:
-                    # Default single-label prompt
+                    # Default single-label prompt WITH DYNAMIC EXAMPLES
                     prompt_template = """Instruksi SINGLE-LABEL CLASSIFICATION:
 
 Pilih SATU kategori yang PALING relevan untuk setiap jawaban:
@@ -404,27 +414,50 @@ Pilih SATU kategori yang PALING relevan untuk setiap jawaban:
 4. Hanya assign jika confidence ≥ {min_category_confidence}
 5. Jika tidak ada yang cocok → "Other"
 
-CONTOH:
-- "Harga terlalu mahal" → Pilihan Pembayaran
-- "Jadwal tidak sesuai" → Jadwal dan Keberangkatan
-- "Aplikasi sering error" → Perbaikan Aplikasi
+IMPORTANT: Match jawaban dengan kategori yang tersedia di atas! Lihat KATA KUNCI dalam jawaban yang cocok dengan nama kategori.
+
+CONTOH MATCHING (gunakan kategori yang tersedia):
+{examples}
 
 Format output (JSON):
 {{
   "classifications": [
-    {{"response_number": 1, "category": "Kategori", "confidence": 0.95}},
+    {{"response_number": 1, "category": "KategoriYangSesuai", "confidence": 0.95}},
     {{"response_number": 2, "category": "Other", "confidence": 0.60}}
   ]
 }}"""
                 
+                # Generate dynamic examples using actual categories
+                examples_list = []
+                if len(example_cats) >= 1:
+                    examples_list.append(f'- Jika jawaban tentang "{example_cats[0].lower()}" → {example_cats[0]}')
+                if len(example_cats) >= 2:
+                    examples_list.append(f'- Jika jawaban tentang "{example_cats[1].lower()}" → {example_cats[1]}')
+                if len(example_cats) >= 3:
+                    examples_list.append(f'- Jika jawaban tentang "{example_cats[2].lower()}" → {example_cats[2]}')
+                examples_list.append('- Jika tidak jelas atau tidak cocok → Other')
+                examples_text = "\n".join(examples_list)
+                
                 # Replace template variables
                 instruction = prompt_template.format(
-                    min_category_confidence=self.min_category_confidence
+                    min_category_confidence=self.min_category_confidence,
+                    examples=examples_text
                 )
         except Exception as e:
             # Fallback if database not available (e.g., running standalone scripts)
             print(f"[WARNING] Could not load custom prompts from database: {e}")
             print("[WARNING] Using default hardcoded prompts")
+            
+            # Generate dynamic examples using actual categories
+            examples_list = []
+            if len(example_cats) >= 1:
+                examples_list.append(f'- Jika jawaban menyebut "{example_cats[0].lower()}" → {example_cats[0]}')
+            if len(example_cats) >= 2:
+                examples_list.append(f'- Jika jawaban menyebut "{example_cats[1].lower()}" → {example_cats[1]}')
+            if len(example_cats) >= 3:
+                examples_list.append(f'- Jika jawaban menyebut "{example_cats[0].lower()}" DAN "{example_cats[2].lower()}" → [{example_cats[0]}, {example_cats[2]}]')
+            examples_list.append('- Jika tidak jelas atau tidak cocok → Other')
+            examples_text = "\n".join(examples_list)
             
             if self.enable_multi_label:
                 instruction = f"""Instruksi MULTI-LABEL CLASSIFICATION:
@@ -440,11 +473,10 @@ Analisis SETIAP jawaban dengan cermat:
 6. EXCEPTION: Jika ada 1 kategori dengan confidence ≥ {self.single_category_threshold} (very dominant), gunakan HANYA kategori tersebut
 7. Jika tidak ada yang cocok → "Other"
 
-CONTOH:
-- "Harga mahal dan antrian panjang" → [Pilihan Pembayaran, Jadwal dan Keberangkatan]
-- "Tambah metode pembayaran, penambahan jam" → [Pilihan Pembayaran, Jadwal dan Keberangkatan]  
-- "Aplikasi error dan CS tidak responsif" → [Perbaikan Aplikasi, Layanan Pelanggan]
-- "Harga sangat sangat mahal sekali" → [Pilihan Pembayaran] (single dominant theme)
+IMPORTANT: Match jawaban dengan kategori yang tersedia di atas! Lihat KATA KUNCI dalam jawaban yang cocok dengan nama kategori.
+
+CONTOH MATCHING (gunakan kategori yang tersedia):
+{examples_text}
 
 Format output (JSON):
 {{
@@ -452,37 +484,30 @@ Format output (JSON):
     {{
       "response_number": 1,
       "categories": [
-        {{"category": "Pilihan Pembayaran", "confidence": 0.85}},
-        {{"category": "Jadwal dan Keberangkatan", "confidence": 0.80}}
-      ]
-    }},
-    {{
-      "response_number": 2,
-      "categories": [
-        {{"category": "Fasilitas dan Kenyamanan", "confidence": 0.90}}
+        {{"category": "KategoriYangSesuai", "confidence": 0.85}}
       ]
     }}
   ]
 }}"""
             else:
-                instruction = """Instruksi SINGLE-LABEL CLASSIFICATION:
+                instruction = f"""Instruksi SINGLE-LABEL CLASSIFICATION:
 
 Pilih SATU kategori yang PALING relevan untuk setiap jawaban:
 1. Analisis tema utama dari jawaban responden
 2. Pilih kategori yang paling tepat menggambarkan maksud utama jawaban
 3. Berikan confidence score (0.0-1.0)
-4. Hanya assign jika confidence ≥ {min_category_confidence}
+4. Hanya assign jika confidence ≥ {self.min_confidence}
 5. Jika tidak ada yang cocok → "Other"
 
-CONTOH:
-- "Harga terlalu mahal" → Pilihan Pembayaran
-- "Jadwal tidak sesuai" → Jadwal dan Keberangkatan
-- "Aplikasi sering error" → Perbaikan Aplikasi
+IMPORTANT: Match jawaban dengan kategori yang tersedia di atas! Lihat KATA KUNCI dalam jawaban yang cocok dengan nama kategori.
+
+CONTOH MATCHING (gunakan kategori yang tersedia):
+{examples_text}
 
 Format output (JSON):
 {{
   "classifications": [
-    {{"response_number": 1, "category": "Kategori", "confidence": 0.95}},
+    {{"response_number": 1, "category": "KategoriYangSesuai", "confidence": 0.95}},
     {{"response_number": 2, "category": "Other", "confidence": 0.60}}
   ]
 }}"""
