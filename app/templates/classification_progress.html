@@ -136,6 +136,8 @@ const jobId = "{{ job_id }}";
 let startTime = new Date();
 let elapsedInterval;
 let pollInterval;
+let retryCount = 0;
+const MAX_RETRIES = 5;
 
 // AJAX Polling function
 async function pollProgress() {
@@ -143,8 +145,17 @@ async function pollProgress() {
         const response = await fetch(`/api/progress/${jobId}`);
         
         if (!response.ok) {
+            // If 404 and retry count < max, retry silently (job might be initializing)
+            if (response.status === 404 && retryCount < MAX_RETRIES) {
+                retryCount++;
+                console.log(`Job not found yet, retry ${retryCount}/${MAX_RETRIES}...`);
+                return; // Don't show error yet, wait for next poll
+            }
             throw new Error('Failed to fetch progress');
         }
+        
+        // Reset retry count on successful response
+        retryCount = 0;
         
         const data = await response.json();
         
