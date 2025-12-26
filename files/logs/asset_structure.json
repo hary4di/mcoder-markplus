@@ -1,0 +1,6436 @@
+{
+  "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/",
+  "owner": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+  "owner__username": "survey_spi01",
+  "parent": null,
+  "settings": {
+    "sector": {
+      "label": "Other",
+      "value": "Other"
+    },
+    "country": [
+      {
+        "label": "Indonesia",
+        "value": "IDN"
+      }
+    ],
+    "description": "",
+    "organization": "",
+    "country_codes": [
+      "IDN"
+    ]
+  },
+  "asset_type": "survey",
+  "files": [],
+  "summary": {
+    "geo": false,
+    "labels": [
+      "kode responden",
+      "**Selamat pagi/siang/sore Bapak/Ibu.** Perkenalkan, nama saya ______________. Saya adalah interviewer dari MarkPlus, yaitu sebuah perusahaan riset & konsultan pemasaran. Saat ini kami sedang melakukan penelitian mengenai **kepuasan dan loyalitas pengguna layanan kapal penyeberangan.** Oleh karena itu kami mohon kesediaan Anda untuk memberikan jawaban dan masukan seobyektif mungkin. Kami menjamin semua masukan yang Anda berikan akan dijaga kerahasiannya dan digabung dengan masukan dari responden lain yang juga berpartisipasi dalam riset kali ini. Kami mengucapkan terima kasih atas kesediaan Anda meluangkan waktu untuk membantu penelitian kami.",
+      "Nama Responden",
+      "Alamat Rumah",
+      "No Telepon"
+    ],
+    "columns": [
+      "name",
+      "type",
+      "label",
+      "required",
+      "appearance",
+      "constraint",
+      "constraint_message",
+      "select_from_list_name",
+      "relevant",
+      "choice_filter"
+    ],
+    "lock_all": false,
+    "lock_any": false,
+    "languages": [],
+    "row_count": 184,
+    "name_quality": {
+      "ok": 0,
+      "bad": 0,
+      "good": 184,
+      "total": 184,
+      "firsts": {}
+    },
+    "default_translation": null
+  },
+  "date_created": "2023-09-11T02:24:33.760597Z",
+  "date_modified": "2025-12-23T04:03:42.828186Z",
+  "date_deployed": "2023-09-25T05:20:11.773938Z",
+  "version_id": "vQBCyPtNrnwJKGe34VeRTq",
+  "version__content_hash": "6759f11a023a6f544a92639745c8d514a61e419f",
+  "version_count": 18,
+  "has_deployment": true,
+  "deployed_version_id": "vQBCyPtNrnwJKGe34VeRTq",
+  "deployed_versions": {
+    "count": 11,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "uid": "vQBCyPtNrnwJKGe34VeRTq",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vQBCyPtNrnwJKGe34VeRTq/",
+        "content_hash": "6759f11a023a6f544a92639745c8d514a61e419f",
+        "date_deployed": "2023-09-25T05:20:11.763292Z",
+        "date_modified": "2023-09-25T05:20:11.763292Z"
+      },
+      {
+        "uid": "vBbiqidtcFEHz9bCo3gzBX",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vBbiqidtcFEHz9bCo3gzBX/",
+        "content_hash": "99e52c47220348eedc51f4d9fbf9f4322de2346f",
+        "date_deployed": "2023-09-19T05:08:08.331527Z",
+        "date_modified": "2023-09-19T05:08:08.331527Z"
+      },
+      {
+        "uid": "vCDmQMgPw6bpAR9gsGAsJU",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vCDmQMgPw6bpAR9gsGAsJU/",
+        "content_hash": "262ff14426dade07a06791f620a09d89d16bfaac",
+        "date_deployed": "2023-09-16T05:58:10.062157Z",
+        "date_modified": "2023-09-16T05:58:10.062157Z"
+      },
+      {
+        "uid": "v3bcjqGAygmwBzg5BZ5adz",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/v3bcjqGAygmwBzg5BZ5adz/",
+        "content_hash": "ed493d3a1c7be261cd07c6e6de91470040e9dcdb",
+        "date_deployed": "2023-09-15T10:01:26.287469Z",
+        "date_modified": "2023-09-15T10:01:26.287469Z"
+      },
+      {
+        "uid": "v3NYyaRYYohvEgYk5zUasN",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/v3NYyaRYYohvEgYk5zUasN/",
+        "content_hash": "df66fa1be2d0bf4096fd48750339d57ed066aa30",
+        "date_deployed": "2023-09-15T07:36:06.124219Z",
+        "date_modified": "2023-09-15T07:36:06.124219Z"
+      },
+      {
+        "uid": "vLWcRuKwT7vZ2ddcgNPxjg",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vLWcRuKwT7vZ2ddcgNPxjg/",
+        "content_hash": "aa9e8ae71301ff2d1563ee2cdf4b0044a608a061",
+        "date_deployed": "2023-09-14T14:22:18.646417Z",
+        "date_modified": "2023-09-14T14:22:18.646417Z"
+      },
+      {
+        "uid": "vLAk2yf9gabHHo9T3ku62V",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vLAk2yf9gabHHo9T3ku62V/",
+        "content_hash": "616729cd4024a902ad3431107d6219de7349568a",
+        "date_deployed": "2023-09-14T14:20:17.102675Z",
+        "date_modified": "2023-09-14T14:20:17.102675Z"
+      },
+      {
+        "uid": "vF8woHSnDhfvxaL89rKeYo",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vF8woHSnDhfvxaL89rKeYo/",
+        "content_hash": "b5fe69072a03549f1feae1adbbcb45ef291cbdcb",
+        "date_deployed": "2023-09-14T10:29:08.543456Z",
+        "date_modified": "2023-09-14T10:29:08.543456Z"
+      },
+      {
+        "uid": "vJ3QtC8s9zqauutf8wCHXG",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vJ3QtC8s9zqauutf8wCHXG/",
+        "content_hash": "af121d7128ea02af1820fa90ba88de7f5c456363",
+        "date_deployed": "2023-09-14T03:34:35.996072Z",
+        "date_modified": "2023-09-14T03:34:35.996072Z"
+      },
+      {
+        "uid": "vNsvAZRpDiqBdNz8WLQuzG",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vNsvAZRpDiqBdNz8WLQuzG/",
+        "content_hash": "68ee56f78c041afd9fae5f17b8246ad8b2c4c68e",
+        "date_deployed": "2023-09-13T04:15:49.218227Z",
+        "date_modified": "2023-09-13T04:15:49.218227Z"
+      },
+      {
+        "uid": "vSf3aKuNBFjRsE2TboAMDc",
+        "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/versions/vSf3aKuNBFjRsE2TboAMDc/",
+        "content_hash": "0c32bd5e811b06b9f8ae9a37c3b2e2d56ac66f48",
+        "date_deployed": "2023-09-11T02:27:13.659211Z",
+        "date_modified": "2023-09-11T02:27:13.659211Z"
+      }
+    ]
+  },
+  "deployment__links": {
+    "url": "https://ee.kobotoolbox.org/zgVJEUw2",
+    "single_url": "https://ee.kobotoolbox.org/single/zgVJEUw2",
+    "single_once_url": "https://ee.kobotoolbox.org/single/4f9a13a3cdb868d876fb59930209a1c5",
+    "offline_url": "https://ee.kobotoolbox.org/x/zgVJEUw2",
+    "preview_url": "https://ee.kobotoolbox.org/preview/zgVJEUw2",
+    "iframe_url": "https://ee.kobotoolbox.org/i/zgVJEUw2",
+    "single_iframe_url": "https://ee.kobotoolbox.org/single/i/zgVJEUw2",
+    "single_once_iframe_url": "https://ee.kobotoolbox.org/single/i/4f9a13a3cdb868d876fb59930209a1c5"
+  },
+  "deployment__active": true,
+  "deployment__data_download_links": {
+    "xls_legacy": "https://kc.kobotoolbox.org/survey_spi01/exports/aQJhqngNsednTaWshNJwN6/xls/",
+    "csv_legacy": "https://kc.kobotoolbox.org/survey_spi01/exports/aQJhqngNsednTaWshNJwN6/csv/",
+    "zip_legacy": "https://kc.kobotoolbox.org/survey_spi01/exports/aQJhqngNsednTaWshNJwN6/zip/",
+    "kml_legacy": "https://kc.kobotoolbox.org/survey_spi01/exports/aQJhqngNsednTaWshNJwN6/kml/",
+    "xls": "https://kc.kobotoolbox.org/survey_spi01/reports/aQJhqngNsednTaWshNJwN6/export.xlsx",
+    "csv": "https://kc.kobotoolbox.org/survey_spi01/reports/aQJhqngNsednTaWshNJwN6/export.csv"
+  },
+  "deployment__submission_count": 1328,
+  "deployment__last_submission_time": "2023-12-14T14:07:22.375751Z",
+  "deployment__encrypted": false,
+  "deployment__uuid": "bb6d058c1025445796df3a634c25b864",
+  "deployment_status": "deployed",
+  "report_styles": {
+    "default": {},
+    "specified": {
+      "k": {},
+      "A5": {},
+      "A6": {},
+      "B1": {},
+      "B2": {},
+      "C1": {},
+      "C2": {},
+      "C3": {},
+      "C4": {},
+      "C5": {},
+      "D1": {},
+      "D2": {},
+      "E1": {},
+      "E2": {},
+      "E3": {},
+      "E4": {},
+      "E5": {},
+      "F1": {},
+      "F2": {},
+      "S1": {},
+      "S2": {},
+      "S3": {},
+      "S4": {},
+      "S5": {},
+      "S6": {},
+      "S7": {},
+      "S8": {},
+      "S9": {},
+      "hp": {},
+      "D3A": {},
+      "D3B": {},
+      "D3C": {},
+      "S10": {},
+      "S11": {},
+      "S12": {},
+      "S13": {},
+      "S14": {},
+      "S15": {},
+      "S16": {},
+      "S17": {},
+      "S18": {},
+      "S19": {},
+      "S20": {},
+      "S21": {},
+      "end": {},
+      "jam": {},
+      "ktp": {},
+      "A1_1": {},
+      "A1_2": {},
+      "A1_3": {},
+      "A1_4": {},
+      "A1_5": {},
+      "A1_6": {},
+      "A1_7": {},
+      "A1_8": {},
+      "A1_9": {},
+      "A2_1": {},
+      "A2_2": {},
+      "A2_3": {},
+      "A2_4": {},
+      "A2_5": {},
+      "A2_6": {},
+      "A2_7": {},
+      "A2_8": {},
+      "A2_9": {},
+      "C6_1": {},
+      "C6_2": {},
+      "C6_3": {},
+      "C6_4": {},
+      "C6_5": {},
+      "C6_6": {},
+      "S1_L": {},
+      "S2_L": {},
+      "S9_L": {},
+      "nama": {},
+      "A1_10": {},
+      "A1_11": {},
+      "A1_12": {},
+      "A1_13": {},
+      "A1_14": {},
+      "A1_15": {},
+      "A1_16": {},
+      "A1_17": {},
+      "A1_18": {},
+      "A1_19": {},
+      "A1_20": {},
+      "A1_21": {},
+      "A1_22": {},
+      "A1_23": {},
+      "A1_24": {},
+      "A1_25": {},
+      "A1_26": {},
+      "A1_27": {},
+      "A1_28": {},
+      "A1_29": {},
+      "A2_10": {},
+      "A2_11": {},
+      "A2_12": {},
+      "A2_13": {},
+      "A2_14": {},
+      "A2_15": {},
+      "A2_16": {},
+      "A2_17": {},
+      "A2_18": {},
+      "A2_19": {},
+      "A2_20": {},
+      "A2_21": {},
+      "A2_22": {},
+      "A2_23": {},
+      "A2_24": {},
+      "A2_25": {},
+      "A2_26": {},
+      "A2_27": {},
+      "A2_28": {},
+      "A2_29": {},
+      "A3_30": {},
+      "A3_31": {},
+      "A3_32": {},
+      "A3_33": {},
+      "A3_34": {},
+      "A3_35": {},
+      "A3_36": {},
+      "A3_37": {},
+      "A3_38": {},
+      "A3_39": {},
+      "A3_40": {},
+      "A3_41": {},
+      "A3_42": {},
+      "A3_43": {},
+      "A3_44": {},
+      "A3_45": {},
+      "A3_46": {},
+      "A3_47": {},
+      "A4_30": {},
+      "A4_31": {},
+      "A4_32": {},
+      "A4_33": {},
+      "A4_34": {},
+      "A4_35": {},
+      "A4_36": {},
+      "A4_37": {},
+      "A4_38": {},
+      "A4_39": {},
+      "A4_40": {},
+      "A4_41": {},
+      "A4_42": {},
+      "A4_43": {},
+      "A4_44": {},
+      "A4_45": {},
+      "A4_46": {},
+      "A4_47": {},
+      "S10_L": {},
+      "S14_L": {},
+      "S16_L": {},
+      "S20_L": {},
+      "email": {},
+      "intro": {},
+      "start": {},
+      "Note_B": {},
+      "Note_F": {},
+      "alamat": {},
+      "Group_A": {},
+      "Group_B": {},
+      "Group_C": {},
+      "Group_D": {},
+      "Group_E": {},
+      "Group_F": {},
+      "Group_S": {},
+      "Note_A1": {},
+      "Note_A2": {},
+      "Note_A3": {},
+      "Note_A4": {},
+      "Note_C6": {},
+      "Note_D3": {},
+      "closing": {},
+      "tanggal": {},
+      "telepon": {},
+      "Note_A_1": {},
+      "Note_A_2": {},
+      "deviceid": {},
+      "07Tdqojld": {},
+      "0Vm3RqOHz": {},
+      "0YgF5uT6V": {},
+      "14AKqZOtU": {},
+      "1U93QKCNS": {},
+      "1kkyQQ2Cq": {},
+      "244qOSdkJ": {},
+      "2Z3kDx3Em": {},
+      "2cDaggXnB": {},
+      "2kYe9elty": {},
+      "3R3vugpgD": {},
+      "3TBgkMLx4": {},
+      "4ENGvmtyJ": {},
+      "4XWuThYOj": {},
+      "4XuamSAhj": {},
+      "4lM6uvA8S": {},
+      "5jRga2mdX": {},
+      "5oSkW0JHb": {},
+      "650G2BqVo": {},
+      "6BeHkogwX": {},
+      "6Ylu2Y25k": {},
+      "6jJ1Wmn5T": {},
+      "6rGTWqLex": {},
+      "6vLHvuSfY": {},
+      "6wBOVj8GA": {},
+      "74vME6Tk6": {},
+      "75w0EiK8M": {},
+      "7iJRD5aVu": {},
+      "82YNTYdWO": {},
+      "8JBPX6n0t": {},
+      "8fg0DuLB8": {},
+      "8g9RMyYYW": {},
+      "94cOUt9eR": {},
+      "9StbuIfte": {},
+      "9hFNDcjqd": {},
+      "9hunQ4LtC": {},
+      "9o5Jikw7y": {},
+      "9yFBZzdgi": {},
+      "AP9lgWPuG": {},
+      "BTzpQVlVd": {},
+      "BWNpdNUA6": {},
+      "BXCy2vJfc": {},
+      "BcA8JEQmh": {},
+      "CQLIvga6I": {},
+      "Cb70LVpRE": {},
+      "CxSxzTDG0": {},
+      "DCOSmGz0D": {},
+      "DqwswnfXt": {},
+      "EFRiEO8Kd": {},
+      "EMsoj2xTd": {},
+      "Efr3HxO1A": {},
+      "FR61fHprg": {},
+      "FSm4mVFjg": {},
+      "Fa54nA7Q6": {},
+      "G2veVFBrk": {},
+      "Gbrhslcsn": {},
+      "Gp7l9KJO1": {},
+      "Group_A_1": {},
+      "Group_A_2": {},
+      "Group_A_3": {},
+      "Group_A_4": {},
+      "Group_A_5": {},
+      "GtmzOULSX": {},
+      "HWncPACKk": {},
+      "HjR7NospP": {},
+      "Hrj1tcYF0": {},
+      "I1TxM51Dq": {},
+      "I6IgJkNof": {},
+      "I8H4LQO6A": {},
+      "I8mVUL1e0": {},
+      "ICN1ebVg3": {},
+      "IDpcwVFa9": {},
+      "IjHe9yh8x": {},
+      "JCf2P0Tzw": {},
+      "KTO1LEWwt": {},
+      "Kdnz9evXs": {},
+      "KjhS6kFie": {},
+      "LEKheZPW8": {},
+      "LKc8Q7JSh": {},
+      "Lp3igTbdT": {},
+      "LxABik2PE": {},
+      "MN0t4Xfig": {},
+      "MRdZta5Gl": {},
+      "Mv6x5z9nq": {},
+      "N4wmvwdkY": {},
+      "NS9ZylTLO": {},
+      "NdaaqIyUv": {},
+      "ODoCBlqqU": {},
+      "OTDrwPZ7j": {},
+      "OqJtZgRmT": {},
+      "OxsJfGofe": {},
+      "PbzSEfQy4": {},
+      "PsEuU3LRf": {},
+      "Q0LqCHCjW": {},
+      "QFFZcJtSd": {},
+      "QFJCKyB8p": {},
+      "QGM1WidGS": {},
+      "QVM8IzZH3": {},
+      "QZvKg4oOp": {},
+      "Qkb5ks3lL": {},
+      "QoseexgFu": {},
+      "Qywp2wBS1": {},
+      "RWGqq9OUe": {},
+      "RgZmfQ1SF": {},
+      "SClKGY6kf": {},
+      "SLT5Mm5Lz": {},
+      "SLVBRNpc2": {},
+      "SZKGO3bHV": {},
+      "SaA3tn8PT": {},
+      "Sm4wjjkM7": {},
+      "SuVR0Shlt": {},
+      "Sw7QFGMAH": {},
+      "T5kwnsvPQ": {},
+      "Te4mRu4bE": {},
+      "TghFUaQDv": {},
+      "TkiJPzPPb": {},
+      "TypU9weXB": {},
+      "UNrIzUCoj": {},
+      "UiiPu2Az6": {},
+      "UyGNGwNE8": {},
+      "VIFh8cdGi": {},
+      "VKd4JHu7Y": {},
+      "Vr6AY6DsR": {},
+      "VulCjLEGi": {},
+      "Wi6BSdE6T": {},
+      "WiGxFwlWB": {},
+      "WneuUTXNn": {},
+      "WzFEcHDIH": {},
+      "X0U63aoB1": {},
+      "XFt0CUZr8": {},
+      "XZA64LRUS": {},
+      "XyrbyoGt4": {},
+      "YyVIIHe2H": {},
+      "ZVi7xrd4v": {},
+      "ZXW9XIZEJ": {},
+      "ZxS22g3yf": {},
+      "ZzSLr5fya": {},
+      "aCsa1FSac": {},
+      "bB05KVeN1": {},
+      "bMOOIUmNJ": {},
+      "bT6aXppb6": {},
+      "c49uhlhrL": {},
+      "c4yZwe50S": {},
+      "chAoUHdFC": {},
+      "ctrjOVs2k": {},
+      "dU6q4FyDV": {},
+      "elUhwSTzD": {},
+      "ep05CVNj1": {},
+      "etKbfypeu": {},
+      "exEDUs3lP": {},
+      "fMtDd4G6y": {},
+      "fo4WucM65": {},
+      "g1w4BSQMv": {},
+      "g2axLh5Q6": {},
+      "ggLOzgxWw": {},
+      "ghKhD4QPD": {},
+      "grG4OoLdv": {},
+      "hD8Jb6e2t": {},
+      "hYxFxmUz5": {},
+      "ho8RH4DHB": {},
+      "iKMHCDOgf": {},
+      "iVf4VLDx6": {},
+      "iWDl5fswK": {},
+      "inTn1tN5X": {},
+      "jYijS1J6R": {},
+      "kh1BkrPwz": {},
+      "ki5CxxXhF": {},
+      "lMspZ25wX": {},
+      "lSv375tN9": {},
+      "laQgPFFKm": {},
+      "lp9awNEaM": {},
+      "m7D8byLX7": {},
+      "m8vh0x93k": {},
+      "mGil4BihO": {},
+      "mSfMoeTw8": {},
+      "nAVKC6QNS": {},
+      "ndNpRMIyW": {},
+      "npxPaRGRV": {},
+      "o1zRje1ik": {},
+      "oPiT5ZndN": {},
+      "oR7s9ZDjV": {},
+      "obAqSMv4k": {},
+      "oubuqjxD2": {},
+      "qBnLB3Ub8": {},
+      "qGEnibqRt": {},
+      "qLSzTPTBV": {},
+      "qYIaBPdNm": {},
+      "qgDspPP6R": {},
+      "qoxtz8yKa": {},
+      "r3N99pCoS": {},
+      "rDdDokMRw": {},
+      "rJxr5wCO6": {},
+      "rKW4oHxvA": {},
+      "rMtErbTSV": {},
+      "rZbHo68nU": {},
+      "rrbmCBmWN": {},
+      "rsgwu1y3f": {},
+      "sx1Q5QoTm": {},
+      "tK5ZWKPmE": {},
+      "v9DeJHGX3": {},
+      "vGX8e00Fc": {},
+      "vetDnVnaI": {},
+      "vta2yIaDg": {},
+      "wo7rCMOCi": {},
+      "wpDWNjwar": {},
+      "xUqlrdVDl": {},
+      "xfnc0fS7C": {},
+      "xgc0XlilD": {},
+      "yeV2TYehO": {},
+      "zIWyfEcTz": {},
+      "zRQpAFocd": {},
+      "zTRQhDnEf": {},
+      "zxOAGGYsf": {},
+      "interviewer": {},
+      "Data_Responden": {},
+      "kode_interviewer": {}
+    },
+    "kuid_names": {
+      "k": "TSKSH2ZoL",
+      "A5": "YfHbu2pFq",
+      "A6": "mmhO0KJw4",
+      "B1": "KbRmLmfmB",
+      "B2": "yZgs1pmF0",
+      "C1": "DwjkVsXiL",
+      "C2": "RfKTviHEL",
+      "C3": "K6ODZWYbt",
+      "C4": "wcbWHKntr",
+      "C5": "J9yZc2nVS",
+      "D1": "TsaLYlVvR",
+      "D2": "SUTSANY1j",
+      "E1": "67uNZjHvY",
+      "E2": "CYTlU0HhQ",
+      "E3": "Sk1YUlxSR",
+      "E4": "sAOnMq2v9",
+      "E5": "FFFwqGRiI",
+      "F1": "YoESsokAe",
+      "F2": "YYM25KjmO",
+      "S1": "yPwMcnHbJ",
+      "S2": "jdEwB1gUV",
+      "S3": "URe4wE1kL",
+      "S4": "EV8gH7bxC",
+      "S5": "eNGxPvhMR",
+      "S6": "fnhKw5DFZ",
+      "S7": "Ah6pMkREb",
+      "S8": "xHkVOiq8U",
+      "S9": "0FBjJfU1D",
+      "hp": "B7hRcKiAy",
+      "D3A": "DnHV5LTJO",
+      "D3B": "NXJeht8nz",
+      "D3C": "tlgNW9va2",
+      "S10": "X5JGJwscN",
+      "S11": "FaDzIlkZL",
+      "S12": "Gpcb9huhy",
+      "S13": "W3ik9MO8f",
+      "S14": "6EY10YvUe",
+      "S15": "TFXIRudil",
+      "S16": "vLoQ8Tq3i",
+      "S17": "XXlO8U8fj",
+      "S18": "5uAf3E63a",
+      "S19": "9JqdWDmv6",
+      "S20": "h6HElRVck",
+      "S21": "WPWSBd2VU",
+      "end": "UvChAJF8D",
+      "jam": "X494Mi9ys",
+      "ktp": "cy2Dx4C66",
+      "A1_1": "GwXllasGm",
+      "A1_2": "CMIgPmBLv",
+      "A1_3": "R3sdFx5nU",
+      "A1_4": "7Rzh1tA0c",
+      "A1_5": "GDfp9U2xQ",
+      "A1_6": "lW3kl9lzs",
+      "A1_7": "QbgPsq6Mw",
+      "A1_8": "Pzun3ZcJ4",
+      "A1_9": "h6PLMGMzI",
+      "A2_1": "uIG3l8QxC",
+      "A2_2": "XVIT6AGp8",
+      "A2_3": "A4roDf8xU",
+      "A2_4": "SfOekpT7N",
+      "A2_5": "S7q7NfAmB",
+      "A2_6": "axoCKj1Bo",
+      "A2_7": "YVQv05hnf",
+      "A2_8": "w407eea7H",
+      "A2_9": "BFCGZMMFL",
+      "C6_1": "3B5niGsNz",
+      "C6_2": "Xd1OF9aqS",
+      "C6_3": "pCD9PWtZi",
+      "C6_4": "U9vw03RBz",
+      "C6_5": "fXn4ERIBI",
+      "C6_6": "Si6cLsbE9",
+      "S1_L": "l73M961I9",
+      "S2_L": "blW2xkrUi",
+      "S9_L": "yPxNbFWm5",
+      "nama": "rMCwnj3vh",
+      "A1_10": "GEpt14IqD",
+      "A1_11": "hntClDBVZ",
+      "A1_12": "R4VLaT9rs",
+      "A1_13": "c1JLxtDbG",
+      "A1_14": "g7NQgioqQ",
+      "A1_15": "yLvToHRtH",
+      "A1_16": "Jap2Id7qS",
+      "A1_17": "JkmAA1tn4",
+      "A1_18": "iE3govtZ2",
+      "A1_19": "EDkdty5uS",
+      "A1_20": "NtXjlhSOi",
+      "A1_21": "WZOggHSr9",
+      "A1_22": "NpvnchZ3Y",
+      "A1_23": "vTWCycZUF",
+      "A1_24": "9E4t6jhHH",
+      "A1_25": "ZCWnTNJZI",
+      "A1_26": "H7YmpT0dM",
+      "A1_27": "NVfM2vyzJ",
+      "A1_28": "plyXneXPq",
+      "A1_29": "BufoIZUk8",
+      "A2_10": "Z7wQJVflT",
+      "A2_11": "RgSrmqB6u",
+      "A2_12": "h9kbXR0Re",
+      "A2_13": "PZK8a8eWh",
+      "A2_14": "u5WnTEDcn",
+      "A2_15": "T419nIrMp",
+      "A2_16": "uICfxxBVQ",
+      "A2_17": "kGSmYuTFy",
+      "A2_18": "eBQWus9bl",
+      "A2_19": "OkooD8aVY",
+      "A2_20": "knoVqIiO7",
+      "A2_21": "ms8XBcFNS",
+      "A2_22": "O6bWZCudf",
+      "A2_23": "biEmpmT2a",
+      "A2_24": "0ykFMxaQF",
+      "A2_25": "thOqbXFw0",
+      "A2_26": "VSeQV9gEI",
+      "A2_27": "CUUzj29Ca",
+      "A2_28": "OyoB7cSiu",
+      "A2_29": "PbFV2LYK0",
+      "A3_30": "9lbbvGslU",
+      "A3_31": "YMbEFwzjU",
+      "A3_32": "WyZpLmzuj",
+      "A3_33": "vBoPJ9n9e",
+      "A3_34": "Qh1yeT7FF",
+      "A3_35": "Fhyv4cjt1",
+      "A3_36": "l9elcB8Lf",
+      "A3_37": "bGDhgEuqe",
+      "A3_38": "HxPHuLJkg",
+      "A3_39": "pc5V8p3A6",
+      "A3_40": "WgsgPfDpl",
+      "A3_41": "FFR7S23OG",
+      "A3_42": "AmrF64C5P",
+      "A3_43": "uBNj8fGFc",
+      "A3_44": "ihGGNuNKZ",
+      "A3_45": "dBzDWAWzZ",
+      "A3_46": "BqsH0bMME",
+      "A3_47": "XYai2ZgOA",
+      "A4_30": "y6RCYz6AA",
+      "A4_31": "ehtFa44AC",
+      "A4_32": "DLquApyhF",
+      "A4_33": "0CXiganA4",
+      "A4_34": "5j9uwlzBs",
+      "A4_35": "QxWscQ7n7",
+      "A4_36": "09G4zicFR",
+      "A4_37": "FUKoo0kKI",
+      "A4_38": "nRyThhxqA",
+      "A4_39": "PMRZBg6Bc",
+      "A4_40": "B7fR2gDL9",
+      "A4_41": "FduLLFf54",
+      "A4_42": "hJMyOCl4q",
+      "A4_43": "f5IccEBl9",
+      "A4_44": "rpJy2w1t7",
+      "A4_45": "kYedsKrip",
+      "A4_46": "ArW6IHebB",
+      "A4_47": "noGzMMkzG",
+      "S10_L": "EcPBSmjHT",
+      "S14_L": "SBFevCtwu",
+      "S16_L": "X7pFb7Gh8",
+      "S20_L": "gAvmnUJ1t",
+      "email": "8rj2oEDiI",
+      "intro": "OkayMj72G",
+      "start": "Ngfm7Fped",
+      "Note_B": "fyulIqy7n",
+      "Note_F": "b4cwvikF2",
+      "alamat": "GDgsdO0k6",
+      "Group_A": "9tbKm4yEg",
+      "Group_B": "0iRlnvehl",
+      "Group_C": "4uExw01zn",
+      "Group_D": "YUinfQJni",
+      "Group_E": "8lJtgt5nM",
+      "Group_F": "Firpjmt3F",
+      "Group_S": "f9OQYUhKO",
+      "Note_A1": "ziFWx5Tj2",
+      "Note_A2": "ikoKsECuq",
+      "Note_A3": "ubBrxqh7p",
+      "Note_A4": "djMHpZXV4",
+      "Note_C6": "sEHpUjSfp",
+      "Note_D3": "RtS1uOG5X",
+      "closing": "dmtPMAdPb",
+      "tanggal": "Vpuk53o7K",
+      "telepon": "NAybbOHhl",
+      "Note_A_1": "ukFHXZd7m",
+      "Note_A_2": "WQJLm5Hw5",
+      "deviceid": "IR4HpjM36",
+      "07Tdqojld": "07Tdqojld",
+      "0Vm3RqOHz": "0Vm3RqOHz",
+      "0YgF5uT6V": "0YgF5uT6V",
+      "14AKqZOtU": "14AKqZOtU",
+      "1U93QKCNS": "1U93QKCNS",
+      "1kkyQQ2Cq": "1kkyQQ2Cq",
+      "244qOSdkJ": "244qOSdkJ",
+      "2Z3kDx3Em": "2Z3kDx3Em",
+      "2cDaggXnB": "2cDaggXnB",
+      "2kYe9elty": "2kYe9elty",
+      "3R3vugpgD": "3R3vugpgD",
+      "3TBgkMLx4": "3TBgkMLx4",
+      "4ENGvmtyJ": "4ENGvmtyJ",
+      "4XWuThYOj": "4XWuThYOj",
+      "4XuamSAhj": "4XuamSAhj",
+      "4lM6uvA8S": "4lM6uvA8S",
+      "5jRga2mdX": "5jRga2mdX",
+      "5oSkW0JHb": "5oSkW0JHb",
+      "650G2BqVo": "650G2BqVo",
+      "6BeHkogwX": "6BeHkogwX",
+      "6Ylu2Y25k": "6Ylu2Y25k",
+      "6jJ1Wmn5T": "6jJ1Wmn5T",
+      "6rGTWqLex": "6rGTWqLex",
+      "6vLHvuSfY": "6vLHvuSfY",
+      "6wBOVj8GA": "6wBOVj8GA",
+      "74vME6Tk6": "74vME6Tk6",
+      "75w0EiK8M": "75w0EiK8M",
+      "7iJRD5aVu": "7iJRD5aVu",
+      "82YNTYdWO": "82YNTYdWO",
+      "8JBPX6n0t": "8JBPX6n0t",
+      "8fg0DuLB8": "8fg0DuLB8",
+      "8g9RMyYYW": "8g9RMyYYW",
+      "94cOUt9eR": "94cOUt9eR",
+      "9StbuIfte": "9StbuIfte",
+      "9hFNDcjqd": "9hFNDcjqd",
+      "9hunQ4LtC": "9hunQ4LtC",
+      "9o5Jikw7y": "9o5Jikw7y",
+      "9yFBZzdgi": "9yFBZzdgi",
+      "AP9lgWPuG": "AP9lgWPuG",
+      "BTzpQVlVd": "BTzpQVlVd",
+      "BWNpdNUA6": "BWNpdNUA6",
+      "BXCy2vJfc": "BXCy2vJfc",
+      "BcA8JEQmh": "BcA8JEQmh",
+      "CQLIvga6I": "CQLIvga6I",
+      "Cb70LVpRE": "Cb70LVpRE",
+      "CxSxzTDG0": "CxSxzTDG0",
+      "DCOSmGz0D": "DCOSmGz0D",
+      "DqwswnfXt": "DqwswnfXt",
+      "EFRiEO8Kd": "EFRiEO8Kd",
+      "EMsoj2xTd": "EMsoj2xTd",
+      "Efr3HxO1A": "Efr3HxO1A",
+      "FR61fHprg": "FR61fHprg",
+      "FSm4mVFjg": "FSm4mVFjg",
+      "Fa54nA7Q6": "Fa54nA7Q6",
+      "G2veVFBrk": "G2veVFBrk",
+      "Gbrhslcsn": "Gbrhslcsn",
+      "Gp7l9KJO1": "Gp7l9KJO1",
+      "Group_A_1": "8HKSvHY9p",
+      "Group_A_2": "zCgDbGj9j",
+      "Group_A_3": "9KvbxdFzr",
+      "Group_A_4": "OxXidUhrA",
+      "Group_A_5": "LAAJCiABC",
+      "GtmzOULSX": "GtmzOULSX",
+      "HWncPACKk": "HWncPACKk",
+      "HjR7NospP": "HjR7NospP",
+      "Hrj1tcYF0": "Hrj1tcYF0",
+      "I1TxM51Dq": "I1TxM51Dq",
+      "I6IgJkNof": "I6IgJkNof",
+      "I8H4LQO6A": "I8H4LQO6A",
+      "I8mVUL1e0": "I8mVUL1e0",
+      "ICN1ebVg3": "ICN1ebVg3",
+      "IDpcwVFa9": "IDpcwVFa9",
+      "IjHe9yh8x": "IjHe9yh8x",
+      "JCf2P0Tzw": "JCf2P0Tzw",
+      "KTO1LEWwt": "KTO1LEWwt",
+      "Kdnz9evXs": "Kdnz9evXs",
+      "KjhS6kFie": "KjhS6kFie",
+      "LEKheZPW8": "LEKheZPW8",
+      "LKc8Q7JSh": "LKc8Q7JSh",
+      "Lp3igTbdT": "Lp3igTbdT",
+      "LxABik2PE": "LxABik2PE",
+      "MN0t4Xfig": "MN0t4Xfig",
+      "MRdZta5Gl": "MRdZta5Gl",
+      "Mv6x5z9nq": "Mv6x5z9nq",
+      "N4wmvwdkY": "N4wmvwdkY",
+      "NS9ZylTLO": "NS9ZylTLO",
+      "NdaaqIyUv": "NdaaqIyUv",
+      "ODoCBlqqU": "ODoCBlqqU",
+      "OTDrwPZ7j": "OTDrwPZ7j",
+      "OqJtZgRmT": "OqJtZgRmT",
+      "OxsJfGofe": "OxsJfGofe",
+      "PbzSEfQy4": "PbzSEfQy4",
+      "PsEuU3LRf": "PsEuU3LRf",
+      "Q0LqCHCjW": "Q0LqCHCjW",
+      "QFFZcJtSd": "QFFZcJtSd",
+      "QFJCKyB8p": "QFJCKyB8p",
+      "QGM1WidGS": "QGM1WidGS",
+      "QVM8IzZH3": "QVM8IzZH3",
+      "QZvKg4oOp": "QZvKg4oOp",
+      "Qkb5ks3lL": "Qkb5ks3lL",
+      "QoseexgFu": "QoseexgFu",
+      "Qywp2wBS1": "Qywp2wBS1",
+      "RWGqq9OUe": "RWGqq9OUe",
+      "RgZmfQ1SF": "RgZmfQ1SF",
+      "SClKGY6kf": "SClKGY6kf",
+      "SLT5Mm5Lz": "SLT5Mm5Lz",
+      "SLVBRNpc2": "SLVBRNpc2",
+      "SZKGO3bHV": "SZKGO3bHV",
+      "SaA3tn8PT": "SaA3tn8PT",
+      "Sm4wjjkM7": "Sm4wjjkM7",
+      "SuVR0Shlt": "SuVR0Shlt",
+      "Sw7QFGMAH": "Sw7QFGMAH",
+      "T5kwnsvPQ": "T5kwnsvPQ",
+      "Te4mRu4bE": "Te4mRu4bE",
+      "TghFUaQDv": "TghFUaQDv",
+      "TkiJPzPPb": "TkiJPzPPb",
+      "TypU9weXB": "TypU9weXB",
+      "UNrIzUCoj": "UNrIzUCoj",
+      "UiiPu2Az6": "UiiPu2Az6",
+      "UyGNGwNE8": "UyGNGwNE8",
+      "VIFh8cdGi": "VIFh8cdGi",
+      "VKd4JHu7Y": "VKd4JHu7Y",
+      "Vr6AY6DsR": "Vr6AY6DsR",
+      "VulCjLEGi": "VulCjLEGi",
+      "Wi6BSdE6T": "Wi6BSdE6T",
+      "WiGxFwlWB": "WiGxFwlWB",
+      "WneuUTXNn": "WneuUTXNn",
+      "WzFEcHDIH": "WzFEcHDIH",
+      "X0U63aoB1": "X0U63aoB1",
+      "XFt0CUZr8": "XFt0CUZr8",
+      "XZA64LRUS": "XZA64LRUS",
+      "XyrbyoGt4": "XyrbyoGt4",
+      "YyVIIHe2H": "YyVIIHe2H",
+      "ZVi7xrd4v": "ZVi7xrd4v",
+      "ZXW9XIZEJ": "ZXW9XIZEJ",
+      "ZxS22g3yf": "ZxS22g3yf",
+      "ZzSLr5fya": "ZzSLr5fya",
+      "aCsa1FSac": "aCsa1FSac",
+      "bB05KVeN1": "bB05KVeN1",
+      "bMOOIUmNJ": "bMOOIUmNJ",
+      "bT6aXppb6": "bT6aXppb6",
+      "c49uhlhrL": "c49uhlhrL",
+      "c4yZwe50S": "c4yZwe50S",
+      "chAoUHdFC": "chAoUHdFC",
+      "ctrjOVs2k": "ctrjOVs2k",
+      "dU6q4FyDV": "dU6q4FyDV",
+      "elUhwSTzD": "elUhwSTzD",
+      "ep05CVNj1": "ep05CVNj1",
+      "etKbfypeu": "etKbfypeu",
+      "exEDUs3lP": "exEDUs3lP",
+      "fMtDd4G6y": "fMtDd4G6y",
+      "fo4WucM65": "fo4WucM65",
+      "g1w4BSQMv": "g1w4BSQMv",
+      "g2axLh5Q6": "g2axLh5Q6",
+      "ggLOzgxWw": "ggLOzgxWw",
+      "ghKhD4QPD": "ghKhD4QPD",
+      "grG4OoLdv": "grG4OoLdv",
+      "hD8Jb6e2t": "hD8Jb6e2t",
+      "hYxFxmUz5": "hYxFxmUz5",
+      "ho8RH4DHB": "ho8RH4DHB",
+      "iKMHCDOgf": "iKMHCDOgf",
+      "iVf4VLDx6": "iVf4VLDx6",
+      "iWDl5fswK": "iWDl5fswK",
+      "inTn1tN5X": "inTn1tN5X",
+      "jYijS1J6R": "jYijS1J6R",
+      "kh1BkrPwz": "kh1BkrPwz",
+      "ki5CxxXhF": "ki5CxxXhF",
+      "lMspZ25wX": "lMspZ25wX",
+      "lSv375tN9": "lSv375tN9",
+      "laQgPFFKm": "laQgPFFKm",
+      "lp9awNEaM": "lp9awNEaM",
+      "m7D8byLX7": "m7D8byLX7",
+      "m8vh0x93k": "m8vh0x93k",
+      "mGil4BihO": "mGil4BihO",
+      "mSfMoeTw8": "mSfMoeTw8",
+      "nAVKC6QNS": "nAVKC6QNS",
+      "ndNpRMIyW": "ndNpRMIyW",
+      "npxPaRGRV": "npxPaRGRV",
+      "o1zRje1ik": "o1zRje1ik",
+      "oPiT5ZndN": "oPiT5ZndN",
+      "oR7s9ZDjV": "oR7s9ZDjV",
+      "obAqSMv4k": "obAqSMv4k",
+      "oubuqjxD2": "oubuqjxD2",
+      "qBnLB3Ub8": "qBnLB3Ub8",
+      "qGEnibqRt": "qGEnibqRt",
+      "qLSzTPTBV": "qLSzTPTBV",
+      "qYIaBPdNm": "qYIaBPdNm",
+      "qgDspPP6R": "qgDspPP6R",
+      "qoxtz8yKa": "qoxtz8yKa",
+      "r3N99pCoS": "r3N99pCoS",
+      "rDdDokMRw": "rDdDokMRw",
+      "rJxr5wCO6": "rJxr5wCO6",
+      "rKW4oHxvA": "rKW4oHxvA",
+      "rMtErbTSV": "rMtErbTSV",
+      "rZbHo68nU": "rZbHo68nU",
+      "rrbmCBmWN": "rrbmCBmWN",
+      "rsgwu1y3f": "rsgwu1y3f",
+      "sx1Q5QoTm": "sx1Q5QoTm",
+      "tK5ZWKPmE": "tK5ZWKPmE",
+      "v9DeJHGX3": "v9DeJHGX3",
+      "vGX8e00Fc": "vGX8e00Fc",
+      "vetDnVnaI": "vetDnVnaI",
+      "vta2yIaDg": "vta2yIaDg",
+      "wo7rCMOCi": "wo7rCMOCi",
+      "wpDWNjwar": "wpDWNjwar",
+      "xUqlrdVDl": "xUqlrdVDl",
+      "xfnc0fS7C": "xfnc0fS7C",
+      "xgc0XlilD": "xgc0XlilD",
+      "yeV2TYehO": "yeV2TYehO",
+      "zIWyfEcTz": "zIWyfEcTz",
+      "zRQpAFocd": "zRQpAFocd",
+      "zTRQhDnEf": "zTRQhDnEf",
+      "zxOAGGYsf": "zxOAGGYsf",
+      "interviewer": "BHbcUqzce",
+      "Data_Responden": "qb9qtnOiu",
+      "kode_interviewer": "ET5umauWp"
+    }
+  },
+  "report_custom": {},
+  "advanced_features": {},
+  "advanced_submission_schema": {
+    "type": "object",
+    "$description": "no advanced features activated for this form"
+  },
+  "analysis_form_json": {
+    "engines": {},
+    "additional_fields": []
+  },
+  "map_styles": {},
+  "map_custom": {},
+  "content": {
+    "Sheet1": [],
+    "schema": "1",
+    "survey": [
+      {
+        "name": "start",
+        "type": "start",
+        "$kuid": "Ngfm7Fped",
+        "$qpath": "start",
+        "$xpath": "start",
+        "$autoname": "start"
+      },
+      {
+        "name": "end",
+        "type": "end",
+        "$kuid": "UvChAJF8D",
+        "$qpath": "end",
+        "$xpath": "end",
+        "$autoname": "end"
+      },
+      {
+        "name": "deviceid",
+        "type": "deviceid",
+        "$kuid": "IR4HpjM36",
+        "$qpath": "deviceid",
+        "$xpath": "deviceid",
+        "$autoname": "deviceid"
+      },
+      {
+        "name": "k",
+        "type": "hidden",
+        "$kuid": "TSKSH2ZoL",
+        "label": [
+          "kode responden"
+        ],
+        "$qpath": "k",
+        "$xpath": "k",
+        "required": false,
+        "$autoname": "k"
+      },
+      {
+        "name": "intro",
+        "type": "note",
+        "$kuid": "OkayMj72G",
+        "label": [
+          "**Selamat pagi/siang/sore Bapak/Ibu.** Perkenalkan, nama saya ______________. Saya adalah interviewer dari MarkPlus, yaitu sebuah perusahaan riset & konsultan pemasaran. Saat ini kami sedang melakukan penelitian mengenai **kepuasan dan loyalitas pengguna layanan kapal penyeberangan.** Oleh karena itu kami mohon kesediaan Anda untuk memberikan jawaban dan masukan seobyektif mungkin. Kami menjamin semua masukan yang Anda berikan akan dijaga kerahasiannya dan digabung dengan masukan dari responden lain yang juga berpartisipasi dalam riset kali ini. Kami mengucapkan terima kasih atas kesediaan Anda meluangkan waktu untuk membantu penelitian kami."
+        ],
+        "$qpath": "intro",
+        "$xpath": "intro",
+        "$autoname": "intro"
+      },
+      {
+        "name": "Data_Responden",
+        "type": "begin_group",
+        "$kuid": "qb9qtnOiu",
+        "$qpath": "Data_Responden",
+        "$xpath": "Data_Responden",
+        "$autoname": "Data_Responden",
+        "appearance": "field-list"
+      },
+      {
+        "name": "nama",
+        "type": "text",
+        "$kuid": "rMCwnj3vh",
+        "label": [
+          "Nama Responden"
+        ],
+        "$qpath": "Data_Responden-nama",
+        "$xpath": "Data_Responden/nama",
+        "required": true,
+        "$autoname": "nama"
+      },
+      {
+        "name": "alamat",
+        "type": "text",
+        "$kuid": "GDgsdO0k6",
+        "label": [
+          "Alamat Rumah"
+        ],
+        "$qpath": "Data_Responden-alamat",
+        "$xpath": "Data_Responden/alamat",
+        "required": true,
+        "$autoname": "alamat"
+      },
+      {
+        "name": "telepon",
+        "type": "text",
+        "$kuid": "NAybbOHhl",
+        "label": [
+          "No Telepon"
+        ],
+        "$qpath": "Data_Responden-telepon",
+        "$xpath": "Data_Responden/telepon",
+        "required": true,
+        "$autoname": "telepon",
+        "appearance": "w2",
+        "constraint": "regex(.,'^[0-9]{5,13}$')",
+        "constraint_message": "Nomor Telfon tidak Valid"
+      },
+      {
+        "name": "hp",
+        "type": "text",
+        "$kuid": "B7hRcKiAy",
+        "label": [
+          "Nomor HP Responden"
+        ],
+        "$qpath": "Data_Responden-hp",
+        "$xpath": "Data_Responden/hp",
+        "required": true,
+        "$autoname": "hp",
+        "appearance": "w2",
+        "constraint": "regex(.,'^[0-9]{5,13}$')",
+        "constraint_message": "Nomor HP tidak Valid"
+      },
+      {
+        "name": "email",
+        "type": "text",
+        "$kuid": "8rj2oEDiI",
+        "label": [
+          "Email (jika ada)"
+        ],
+        "$qpath": "Data_Responden-email",
+        "$xpath": "Data_Responden/email",
+        "$autoname": "email",
+        "appearance": "w2",
+        "constraint": "regex(., ‘^[A-Za-z0-9._%+-]+@+[A-Za-z.]+[.][A-Za-z]{2,}$’)",
+        "constraint_message": "Email tidak valid"
+      },
+      {
+        "name": "ktp",
+        "type": "text",
+        "$kuid": "cy2Dx4C66",
+        "label": [
+          "No. KTP (6 angka pertama)"
+        ],
+        "$qpath": "Data_Responden-ktp",
+        "$xpath": "Data_Responden/ktp",
+        "required": true,
+        "$autoname": "ktp",
+        "appearance": "w2",
+        "constraint": "regex(.,'^[0-9]{6}$')"
+      },
+      {
+        "name": "interviewer",
+        "type": "text",
+        "$kuid": "BHbcUqzce",
+        "label": [
+          "Nama Interviewer"
+        ],
+        "$qpath": "Data_Responden-interviewer",
+        "$xpath": "Data_Responden/interviewer",
+        "required": true,
+        "$autoname": "interviewer"
+      },
+      {
+        "name": "tanggal",
+        "type": "date",
+        "$kuid": "Vpuk53o7K",
+        "label": [
+          "Tanggal Interview"
+        ],
+        "$qpath": "Data_Responden-tanggal",
+        "$xpath": "Data_Responden/tanggal",
+        "required": true,
+        "$autoname": "tanggal",
+        "appearance": "w2"
+      },
+      {
+        "name": "jam",
+        "type": "time",
+        "$kuid": "X494Mi9ys",
+        "label": [
+          "Jam Interview (Mulai)"
+        ],
+        "$qpath": "Data_Responden-jam",
+        "$xpath": "Data_Responden/jam",
+        "required": true,
+        "$autoname": "jam",
+        "appearance": "w2"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "MN0t4Xfig"
+      },
+      {
+        "name": "Group_S",
+        "type": "begin_group",
+        "$kuid": "f9OQYUhKO",
+        "label": [
+          "S. Screening Questions"
+        ],
+        "$qpath": "Group_S",
+        "$xpath": "Group_S",
+        "$autoname": "Group_S",
+        "appearance": "field-list"
+      },
+      {
+        "name": "S1",
+        "type": "select_one",
+        "$kuid": "yPwMcnHbJ",
+        "label": [
+          "Nama cabang keberangkatan?"
+        ],
+        "$qpath": "Group_S-S1",
+        "$xpath": "Group_S/S1",
+        "required": true,
+        "$autoname": "S1",
+        "select_from_list_name": "S1"
+      },
+      {
+        "name": "S1_L",
+        "type": "text",
+        "$kuid": "l73M961I9",
+        "label": [
+          "Lainnya, sebutkan_"
+        ],
+        "$qpath": "Group_S-S1_L",
+        "$xpath": "Group_S/S1_L",
+        "relevant": "selected(${S1},'96')",
+        "required": true,
+        "$autoname": "S1_L"
+      },
+      {
+        "name": "S2",
+        "type": "select_one",
+        "$kuid": "jdEwB1gUV",
+        "label": [
+          "Nama lintasan yang responden gunakan dalam penyebrangan"
+        ],
+        "$qpath": "Group_S-S2",
+        "$xpath": "Group_S/S2",
+        "required": true,
+        "$autoname": "S2",
+        "choice_filter": "S1=${S1} or (name='999')",
+        "select_from_list_name": "S2"
+      },
+      {
+        "name": "S2_L",
+        "type": "text",
+        "$kuid": "blW2xkrUi",
+        "label": [
+          "Lainnya, sebutkan_"
+        ],
+        "$qpath": "Group_S-S2_L",
+        "$xpath": "Group_S/S2_L",
+        "relevant": "selected(${S2},'999')",
+        "required": true,
+        "$autoname": "S2_L"
+      },
+      {
+        "name": "S3",
+        "type": "text",
+        "$kuid": "URe4wE1kL",
+        "label": [
+          "Nama kapal yang digunakan responden?"
+        ],
+        "$qpath": "Group_S-S3",
+        "$xpath": "Group_S/S3",
+        "required": true,
+        "$autoname": "S3"
+      },
+      {
+        "name": "S4",
+        "type": "select_one",
+        "$kuid": "EV8gH7bxC",
+        "label": [
+          "Tuliskan jenis responden apakah merupakan pengguna kapal milik ASDP atau kompetitor"
+        ],
+        "$qpath": "Group_S-S4",
+        "$xpath": "Group_S/S4",
+        "relevant": "selected(${S1},'3') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'14') or selected(${S1},'15') or selected(${S1},'19') or selected(${S1},'22')",
+        "required": true,
+        "$autoname": "S4",
+        "select_from_list_name": "S4"
+      },
+      {
+        "name": "S5",
+        "type": "time",
+        "$kuid": "eNGxPvhMR",
+        "label": [
+          "Jam keberangkatan kapal responden?"
+        ],
+        "$qpath": "Group_S-S5",
+        "$xpath": "Group_S/S5",
+        "required": true,
+        "$autoname": "S5"
+      },
+      {
+        "name": "S6",
+        "type": "select_one",
+        "$kuid": "fnhKw5DFZ",
+        "label": [
+          "Tuliskan Jenis Kelamin Responden pada tabel yang telah disediakan"
+        ],
+        "$qpath": "Group_S-S6",
+        "$xpath": "Group_S/S6",
+        "required": true,
+        "$autoname": "S6",
+        "select_from_list_name": "S6"
+      },
+      {
+        "name": "S7",
+        "type": "select_one",
+        "$kuid": "Ah6pMkREb",
+        "label": [
+          "Apakah Anda menggunakan layanan kapal penyebrangan secara rutin (lebih dari 1 kali) dalam 3 bulan terakhir?"
+        ],
+        "$qpath": "Group_S-S7",
+        "$xpath": "Group_S/S7",
+        "required": true,
+        "$autoname": "S7",
+        "select_from_list_name": "ya"
+      },
+      {
+        "name": "S8",
+        "type": "select_one",
+        "$kuid": "xHkVOiq8U",
+        "label": [
+          "Berapa kali dalam sebulan Anda menggunakan layanan kapal penyebrangan?"
+        ],
+        "$qpath": "Group_S-S8",
+        "$xpath": "Group_S/S8",
+        "relevant": "selected(${S7},'1')",
+        "required": true,
+        "$autoname": "S8",
+        "select_from_list_name": "S8"
+      },
+      {
+        "name": "S9",
+        "type": "select_multiple",
+        "$kuid": "0FBjJfU1D",
+        "label": [
+          "Apa alasan Anda menggunakan angkutan kapal penyeberangan?"
+        ],
+        "$qpath": "Group_S-S9",
+        "$xpath": "Group_S/S9",
+        "relevant": "selected(${S8},'2') or selected(${S8},'3') or selected(${S8},'4') or selected(${S8},'5')",
+        "required": true,
+        "$autoname": "S9",
+        "select_from_list_name": "S9"
+      },
+      {
+        "name": "S9_L",
+        "type": "text",
+        "$kuid": "yPxNbFWm5",
+        "label": [
+          "Lainnya, sebutkan_"
+        ],
+        "$qpath": "Group_S-S9_L",
+        "$xpath": "Group_S/S9_L",
+        "relevant": "selected(${S9},'96')",
+        "required": true,
+        "$autoname": "S9_L"
+      },
+      {
+        "name": "S10",
+        "type": "select_multiple",
+        "$kuid": "X5JGJwscN",
+        "label": [
+          "Dengan siapa Anda paling sering bepergian menggunakan layanan kapal penyebrangan?"
+        ],
+        "$qpath": "Group_S-S10",
+        "$xpath": "Group_S/S10",
+        "relevant": "selected(${S8},'2') or selected(${S8},'3') or selected(${S8},'4') or selected(${S8},'5')",
+        "required": true,
+        "$autoname": "S10",
+        "select_from_list_name": "S10"
+      },
+      {
+        "name": "S10_L",
+        "type": "text",
+        "$kuid": "EcPBSmjHT",
+        "label": [
+          "Lainnya, sebutkan_"
+        ],
+        "$qpath": "Group_S-S10_L",
+        "$xpath": "Group_S/S10_L",
+        "relevant": "selected(${S10},'96')",
+        "required": true,
+        "$autoname": "S10_L"
+      },
+      {
+        "name": "S11",
+        "type": "select_one",
+        "$kuid": "FaDzIlkZL",
+        "label": [
+          "Apakah anda mengendarai kendaraan ketika menggunakan layanan kapal penyeberangan?"
+        ],
+        "$qpath": "Group_S-S11",
+        "$xpath": "Group_S/S11",
+        "relevant": "selected(${S8},'2') or selected(${S8},'3') or selected(${S8},'4') or selected(${S8},'5')",
+        "required": true,
+        "$autoname": "S11",
+        "select_from_list_name": "ya"
+      },
+      {
+        "name": "S12",
+        "type": "select_multiple",
+        "$kuid": "Gpcb9huhy",
+        "label": [
+          "Apakah tipe kendaraan Anda?"
+        ],
+        "$qpath": "Group_S-S12",
+        "$xpath": "Group_S/S12",
+        "relevant": "selected(${S11},'1')",
+        "required": true,
+        "$autoname": "S12",
+        "select_from_list_name": "S12"
+      },
+      {
+        "name": "S13",
+        "type": "select_one",
+        "$kuid": "W3ik9MO8f",
+        "label": [
+          "Apakah Anda pemilik kendaraan yang saat ini Anda kendarai?"
+        ],
+        "$qpath": "Group_S-S13",
+        "$xpath": "Group_S/S13",
+        "relevant": "selected(${S12},'1') or selected(${S12},'2') or selected(${S12},'3') or selected(${S12},'4') or selected(${S12},'5') or selected(${S12},'6') or selected(${S12},'7') or selected(${S12},'8') or selected(${S12},'9') or selected(${S12},'10') or selected(${S12},'11')",
+        "required": true,
+        "$autoname": "S13",
+        "select_from_list_name": "ya"
+      },
+      {
+        "name": "S14",
+        "type": "select_one",
+        "$kuid": "6EY10YvUe",
+        "label": [
+          "Dimanakah Anda melakukan pembelian tiket kapal penyeberangan?"
+        ],
+        "$qpath": "Group_S-S14",
+        "$xpath": "Group_S/S14",
+        "relevant": "selected(${S12},'1') or selected(${S12},'2') or selected(${S12},'3') or selected(${S12},'4') or selected(${S12},'5') or selected(${S12},'6') or selected(${S12},'7') or selected(${S12},'8') or selected(${S12},'9') or selected(${S12},'10') or selected(${S12},'11')",
+        "required": true,
+        "$autoname": "S14",
+        "select_from_list_name": "S14"
+      },
+      {
+        "name": "S14_L",
+        "type": "text",
+        "$kuid": "SBFevCtwu",
+        "label": [
+          "Lainnya, sebutkan_"
+        ],
+        "$qpath": "Group_S-S14_L",
+        "$xpath": "Group_S/S14_L",
+        "relevant": "selected(${S14},'96')",
+        "required": true,
+        "$autoname": "S14_L"
+      },
+      {
+        "name": "S15",
+        "type": "select_one",
+        "$kuid": "TFXIRudil",
+        "label": [
+          "Berapa usia Anda saat ini?"
+        ],
+        "$qpath": "Group_S-S15",
+        "$xpath": "Group_S/S15",
+        "relevant": "selected(${S12},'1') or selected(${S12},'2') or selected(${S12},'3') or selected(${S12},'4') or selected(${S12},'5') or selected(${S12},'6') or selected(${S12},'7') or selected(${S12},'8') or selected(${S12},'9') or selected(${S12},'10') or selected(${S12},'11')",
+        "required": true,
+        "$autoname": "S15",
+        "select_from_list_name": "S15"
+      },
+      {
+        "name": "S16",
+        "type": "select_one",
+        "$kuid": "vLoQ8Tq3i",
+        "label": [
+          "Apa pekerjaan Anda saat ini?"
+        ],
+        "$qpath": "Group_S-S16",
+        "$xpath": "Group_S/S16",
+        "relevant": "selected(${S15},'2') or selected(${S15},'3') or selected(${S15},'4') or selected(${S15},'5') or selected(${S15},'6') or selected(${S15},'7') or selected(${S15},'8') or selected(${S15},'9')",
+        "required": true,
+        "$autoname": "S16",
+        "select_from_list_name": "S16"
+      },
+      {
+        "name": "S16_L",
+        "type": "text",
+        "$kuid": "X7pFb7Gh8",
+        "label": [
+          "Lainnya, sebutkan_"
+        ],
+        "$qpath": "Group_S-S16_L",
+        "$xpath": "Group_S/S16_L",
+        "relevant": "selected(${S16},'96')",
+        "required": true,
+        "$autoname": "S16_L"
+      },
+      {
+        "name": "S17",
+        "type": "select_one",
+        "$kuid": "XXlO8U8fj",
+        "label": [
+          "Apakah Anda atau salah satu anggota keluarga yang tinggal satu rumah dengan Anda bekerja pada salah satu perusahaan/instansi berikut ini?"
+        ],
+        "$qpath": "Group_S-S17",
+        "$xpath": "Group_S/S17",
+        "relevant": "selected(${S15},'2') or selected(${S15},'3') or selected(${S15},'4') or selected(${S15},'5') or selected(${S15},'6') or selected(${S15},'7') or selected(${S15},'8') or selected(${S15},'9')",
+        "required": true,
+        "$autoname": "S17",
+        "select_from_list_name": "S17"
+      },
+      {
+        "name": "S18",
+        "type": "select_one",
+        "$kuid": "5uAf3E63a",
+        "label": [
+          "Apakah dalam 6 bulan terakhir Anda pernah berpartisipasi dalam sebuah riset yang berkaitan dengan layanan kapal penyeberangan?"
+        ],
+        "$qpath": "Group_S-S18",
+        "$xpath": "Group_S/S18",
+        "relevant": "selected(${S17},'6')",
+        "required": true,
+        "$autoname": "S18",
+        "select_from_list_name": "ya"
+      },
+      {
+        "name": "S19",
+        "type": "select_one",
+        "$kuid": "9JqdWDmv6",
+        "label": [
+          "Berbicara mengenai pengeluaran keluarga Anda, berapa rata – rata perbulannya untuk keperluan rutin sehari-hari, tetapi tidak termasuk pengeluaran untuk: rekreasi, pakaian, sepatu, dan pengeluaran non-rutin lain serta juga kredit-kredit seperti: mobil, rumah, barang elektronik, dll?"
+        ],
+        "$qpath": "Group_S-S19",
+        "$xpath": "Group_S/S19",
+        "relevant": "selected(${S18},'2')",
+        "required": true,
+        "$autoname": "S19",
+        "select_from_list_name": "S19"
+      },
+      {
+        "name": "S20",
+        "type": "select_one",
+        "$kuid": "h6HElRVck",
+        "label": [
+          "Apa pendidikan terakhir Anda?"
+        ],
+        "$qpath": "Group_S-S20",
+        "$xpath": "Group_S/S20",
+        "relevant": "selected(${S19},'2') or selected(${S19},'3') or selected(${S19},'4') or selected(${S19},'5') or selected(${S19},'6') or selected(${S19},'7')",
+        "required": true,
+        "$autoname": "S20",
+        "select_from_list_name": "S20"
+      },
+      {
+        "name": "S20_L",
+        "type": "text",
+        "$kuid": "gAvmnUJ1t",
+        "label": [
+          "Lainnya, sebutkan_"
+        ],
+        "$qpath": "Group_S-S20_L",
+        "$xpath": "Group_S/S20_L",
+        "relevant": "selected(${S20},'96')",
+        "required": true,
+        "$autoname": "S20_L"
+      },
+      {
+        "name": "S21",
+        "type": "text",
+        "$kuid": "WPWSBd2VU",
+        "label": [
+          "Tarif yang Anda bayarkan ketika menggunakan layanan kapal **${S3}**"
+        ],
+        "$qpath": "Group_S-S21",
+        "$xpath": "Group_S/S21",
+        "relevant": "selected(${S20},'2') or selected(${S20},'3') or selected(${S20},'4') or selected(${S20},'5') or selected(${S20},'6') or selected(${S20},'96')",
+        "required": true,
+        "$autoname": "S21",
+        "constraint": "regex(.,'^[0-9]{5,}$')",
+        "constraint_message": "Minimal 5 Digit"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "I1TxM51Dq"
+      },
+      {
+        "name": "Group_A",
+        "type": "begin_group",
+        "$kuid": "9tbKm4yEg",
+        "label": [
+          "A. Kepuasan dan Ekspektasi"
+        ],
+        "$qpath": "Group_A",
+        "$xpath": "Group_A",
+        "relevant": "selected(${S20},'2') or selected(${S20},'3') or selected(${S20},'4') or selected(${S20},'5') or selected(${S20},'6') or selected(${S20},'96')",
+        "$autoname": "Group_A"
+      },
+      {
+        "name": "Note_A_1",
+        "type": "note",
+        "$kuid": "ukFHXZd7m",
+        "label": [
+          "Saat ini kita akan membahas mengenai kepentingan dan kepuasan penumpang terhadal layanan kapal penyeberangan yang dibagi ke dalam dua bagian yaitu pelabuhan dan kapal. Anda akan diminta untuk memberikan nilai dari 1 hingga 6 untuk menggambarkan tingkat kepentingan dan tingkat kepuasan. \n\nPelabuhan akan mencakup seluruh proses dan kegiatan sebelum penumpang menaiki kapal."
+        ],
+        "$qpath": "Group_A-Note_A_1",
+        "$xpath": "Group_A/Note_A_1",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'14') or selected(${S1},'15') or selected(${S1},'16') or selected(${S1},'17') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25') or selected(${S1},'28') or selected(${S1},'29')",
+        "$autoname": "Note_A_1"
+      },
+      {
+        "name": "Group_A_1",
+        "type": "begin_group",
+        "$kuid": "8HKSvHY9p",
+        "$qpath": "Group_A-Group_A_1",
+        "$xpath": "Group_A/Group_A_1",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'14') or selected(${S1},'15') or selected(${S1},'16') or selected(${S1},'17') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25') or selected(${S1},'28') or selected(${S1},'29')",
+        "$autoname": "Group_A_1",
+        "appearance": "field-list"
+      },
+      {
+        "name": "Note_A1",
+        "type": "note",
+        "$kuid": "ziFWx5Tj2",
+        "label": [
+          "Dengan menggunakan skala 1 – 6, dimana 1 menunjukan sangat tidak penting dan 6 menunjukan sangat penting, seberapa **penting** menurut Anda atribut-atribut berikut yang berkaitan dengan pelayanan kapal penyebrangan?"
+        ],
+        "$qpath": "Group_A-Group_A_1-Note_A1",
+        "$xpath": "Group_A/Group_A_1/Note_A1",
+        "$autoname": "Note_A1"
+      },
+      {
+        "name": "A1_1",
+        "type": "select_one",
+        "$kuid": "GwXllasGm",
+        "label": [
+          "Kejelasan informasi yang diberikan oleh petugas di pelabuhan"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_1",
+        "$xpath": "Group_A/Group_A_1/A1_1",
+        "required": true,
+        "$autoname": "A1_1",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_2",
+        "type": "select_one",
+        "$kuid": "CMIgPmBLv",
+        "label": [
+          "Tingkat kepuasan terhadap layanan dari petugas untuk pembelian & top up e-money/tap cash/brizzi (keramahan, kecepatan pelayanan, komunikasi)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_2",
+        "$xpath": "Group_A/Group_A_1/A1_2",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'15') or selected(${S1},'17') or selected(${S1},'28') or selected(${S1},'29')",
+        "required": true,
+        "$autoname": "A1_2",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_3",
+        "type": "select_one",
+        "$kuid": "R3sdFx5nU",
+        "label": [
+          "Kerapihan dan kebersihan pakaian petugas"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_3",
+        "$xpath": "Group_A/Group_A_1/A1_3",
+        "required": true,
+        "$autoname": "A1_3",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_4",
+        "type": "select_one",
+        "$kuid": "7Rzh1tA0c",
+        "label": [
+          "Pelayanan petugas dalam mengarahkan kendaraan dari lapangan tunggu dermaga ke dalam ferry (keramahan, kecepatan,dll)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_4",
+        "$xpath": "Group_A/Group_A_1/A1_4",
+        "required": true,
+        "$autoname": "A1_4",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_5",
+        "type": "select_one",
+        "$kuid": "GDfp9U2xQ",
+        "label": [
+          "Kompetensi Petugas dalam pemberian layanan"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_5",
+        "$xpath": "Group_A/Group_A_1/A1_5",
+        "required": true,
+        "$autoname": "A1_5",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_6",
+        "type": "select_one",
+        "$kuid": "lW3kl9lzs",
+        "label": [
+          "Perilaku petugas dalam memberikan pelayanan"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_6",
+        "$xpath": "Group_A/Group_A_1/A1_6",
+        "required": true,
+        "$autoname": "A1_6",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_7",
+        "type": "select_one",
+        "$kuid": "QbgPsq6Mw",
+        "label": [
+          "Kemudahan Persyaratan untuk memperoleh pelayanan pembelian tiket"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_7",
+        "$xpath": "Group_A/Group_A_1/A1_7",
+        "required": true,
+        "$autoname": "A1_7",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_8",
+        "type": "select_one",
+        "$kuid": "Pzun3ZcJ4",
+        "label": [
+          "Kemudahan proses dan prosedur pembelian tiket di vending machine/loket / Tollgate"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_8",
+        "$xpath": "Group_A/Group_A_1/A1_8",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'15') or selected(${S1},'17') or selected(${S1},'28') or selected(${S1},'29')",
+        "required": true,
+        "$autoname": "A1_8",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_9",
+        "type": "select_one",
+        "$kuid": "h6PLMGMzI",
+        "label": [
+          "Kemudahan proses dan prosedur pembelian tiket online di website/ferizy"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_9",
+        "$xpath": "Group_A/Group_A_1/A1_9",
+        "relevant": "selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'14') or selected(${S1},'16') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25')",
+        "required": true,
+        "$autoname": "A1_9",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_10",
+        "type": "select_one",
+        "$kuid": "GEpt14IqD",
+        "label": [
+          "Kecepatan/waktu yang di butuhkan untuk pembelian tiket di vending machine/loket / Tollgate"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_10",
+        "$xpath": "Group_A/Group_A_1/A1_10",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'15') or selected(${S1},'17') or selected(${S1},'28') or selected(${S1},'29')",
+        "required": true,
+        "$autoname": "A1_10",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_11",
+        "type": "select_one",
+        "$kuid": "hntClDBVZ",
+        "label": [
+          "Kecepatan/waktu yang di butuhkan untuk pembelian tiket online di website/ferizy (Untuk Merak,Bakauheni, Ketapang, Danau Toba, Sape, Lembar)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_11",
+        "$xpath": "Group_A/Group_A_1/A1_11",
+        "relevant": "selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'14') or selected(${S1},'16') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25')",
+        "required": true,
+        "$autoname": "A1_11",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_12",
+        "type": "select_one",
+        "$kuid": "R4VLaT9rs",
+        "label": [
+          "Kemudahan mendapatkan informasi jam keberangkatan kapal sebelum tiba di pelabuhan (call center, social media, website, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_12",
+        "$xpath": "Group_A/Group_A_1/A1_12",
+        "required": true,
+        "$autoname": "A1_12",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_13",
+        "type": "select_one",
+        "$kuid": "c1JLxtDbG",
+        "label": [
+          "Kemudahan mendapatkan informasi pemesanan/pembelian tiket sebelum tiba di pelabuhan"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_13",
+        "$xpath": "Group_A/Group_A_1/A1_13",
+        "required": true,
+        "$autoname": "A1_13",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_14",
+        "type": "select_one",
+        "$kuid": "g7NQgioqQ",
+        "label": [
+          "Kemudahan mendapatkan informasi yang dibutuhkan di lokasi pembelian tiket (prosedur pembelian tiket)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_14",
+        "$xpath": "Group_A/Group_A_1/A1_14",
+        "required": true,
+        "$autoname": "A1_14",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_15",
+        "type": "select_one",
+        "$kuid": "yLvToHRtH",
+        "label": [
+          "Kesesuaian tarif sesuai informasi dari pihak Perusahaan"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_15",
+        "$xpath": "Group_A/Group_A_1/A1_15",
+        "required": true,
+        "$autoname": "A1_15",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_16",
+        "type": "select_one",
+        "$kuid": "Jap2Id7qS",
+        "label": [
+          "Tingkat keamanan & keselamatan saat tiba di pelabuhan (copet, preman, calo, lalu lintas kendaraan)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_16",
+        "$xpath": "Group_A/Group_A_1/A1_16",
+        "required": true,
+        "$autoname": "A1_16",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_17",
+        "type": "select_one",
+        "$kuid": "JkmAA1tn4",
+        "label": [
+          "Antrian toll gate untuk proses pembelian tiket"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_17",
+        "$xpath": "Group_A/Group_A_1/A1_17",
+        "required": true,
+        "$autoname": "A1_17",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_18",
+        "type": "select_one",
+        "$kuid": "iE3govtZ2",
+        "label": [
+          "Kemudahan mendapatkan informasi yang dibutuhkan saat boarding menuju kapal"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_18",
+        "$xpath": "Group_A/Group_A_1/A1_18",
+        "required": true,
+        "$autoname": "A1_18",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_19",
+        "type": "select_one",
+        "$kuid": "EDkdty5uS",
+        "label": [
+          "Petugas mengarahkan menuju kapal (keramahan, kejelasan informasi, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_19",
+        "$xpath": "Group_A/Group_A_1/A1_19",
+        "required": true,
+        "$autoname": "A1_19",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_20",
+        "type": "select_one",
+        "$kuid": "NtXjlhSOi",
+        "label": [
+          "Lama waktu tunggu untuk masuk ke dalam kapal ferry"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_20",
+        "$xpath": "Group_A/Group_A_1/A1_20",
+        "required": true,
+        "$autoname": "A1_20",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_21",
+        "type": "select_one",
+        "$kuid": "WZOggHSr9",
+        "label": [
+          "Tingkat ketepatan waktu jadwal keberangkatan kapal"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_21",
+        "$xpath": "Group_A/Group_A_1/A1_21",
+        "required": true,
+        "$autoname": "A1_21",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_22",
+        "type": "select_one",
+        "$kuid": "NpvnchZ3Y",
+        "label": [
+          "Kelengkapan media penanganan pengaduan atau saran/masukan"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_22",
+        "$xpath": "Group_A/Group_A_1/A1_22",
+        "required": true,
+        "$autoname": "A1_22",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_23",
+        "type": "select_one",
+        "$kuid": "vTWCycZUF",
+        "label": [
+          "Kejelasan papan penunjuk arah di Pelabuhan serta kemudahan mendapatkan informasi yang dibutuhkan saat boarding menuju kapal (petunjuk arah, operator)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_23",
+        "$xpath": "Group_A/Group_A_1/A1_23",
+        "required": true,
+        "$autoname": "A1_23",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_24",
+        "type": "select_one",
+        "$kuid": "9E4t6jhHH",
+        "label": [
+          "Tingkat ketersediaan layanan channel pembayaran ferizy"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_24",
+        "$xpath": "Group_A/Group_A_1/A1_24",
+        "relevant": "selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'14') or selected(${S1},'16') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25')",
+        "required": true,
+        "$autoname": "A1_24",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_25",
+        "type": "select_one",
+        "$kuid": "ZCWnTNJZI",
+        "label": [
+          "Tingkat ketersediaan pelayanan top up e-money/tap cash/flazz/brizzi"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_25",
+        "$xpath": "Group_A/Group_A_1/A1_25",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'15') or selected(${S1},'17') or selected(${S1},'28') or selected(${S1},'29')",
+        "required": true,
+        "$autoname": "A1_25",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_26",
+        "type": "select_one",
+        "$kuid": "H7YmpT0dM",
+        "label": [
+          "Kualitas Sarana Prasarana Pelayanan Pelabuhan"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_26",
+        "$xpath": "Group_A/Group_A_1/A1_26",
+        "required": true,
+        "$autoname": "A1_26",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_27",
+        "type": "select_one",
+        "$kuid": "NVfM2vyzJ",
+        "label": [
+          "Ketersediaan layanan channel pembayaran"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_27",
+        "$xpath": "Group_A/Group_A_1/A1_27",
+        "required": true,
+        "$autoname": "A1_27",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_28",
+        "type": "select_one",
+        "$kuid": "plyXneXPq",
+        "label": [
+          "Kualitas Layanan yang di berikan oleh Penyedia Jasa (Semuanya)"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_28",
+        "$xpath": "Group_A/Group_A_1/A1_28",
+        "required": true,
+        "$autoname": "A1_28",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A1_29",
+        "type": "select_one",
+        "$kuid": "BufoIZUk8",
+        "label": [
+          "Kondisi dan kualitas jembatan masuk ke dalam ferry"
+        ],
+        "$qpath": "Group_A-Group_A_1-A1_29",
+        "$xpath": "Group_A/Group_A_1/A1_29",
+        "required": true,
+        "$autoname": "A1_29",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "FSm4mVFjg"
+      },
+      {
+        "name": "Group_A_2",
+        "type": "begin_group",
+        "$kuid": "zCgDbGj9j",
+        "$qpath": "Group_A-Group_A_2",
+        "$xpath": "Group_A/Group_A_2",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'14') or selected(${S1},'15') or selected(${S1},'16') or selected(${S1},'17') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25') or selected(${S1},'28') or selected(${S1},'29')",
+        "$autoname": "Group_A_2",
+        "appearance": "field-list"
+      },
+      {
+        "name": "Note_A2",
+        "type": "note",
+        "$kuid": "ikoKsECuq",
+        "label": [
+          "Dengan menggunakan skala 1 – 6, dimana 1 menunjukan sangat tidak puas dan 6 menunjukan sangat puas, seberapa **puas** menurut Anda atribut-atribut berikut yang berkaitan dengan pelayanan kapal penyebrangan?"
+        ],
+        "$qpath": "Group_A-Group_A_2-Note_A2",
+        "$xpath": "Group_A/Group_A_2/Note_A2",
+        "$autoname": "Note_A2"
+      },
+      {
+        "name": "A2_1",
+        "type": "select_one",
+        "$kuid": "uIG3l8QxC",
+        "label": [
+          "Kejelasan informasi yang diberikan oleh petugas di pelabuhan"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_1",
+        "$xpath": "Group_A/Group_A_2/A2_1",
+        "required": true,
+        "$autoname": "A2_1",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_2",
+        "type": "select_one",
+        "$kuid": "XVIT6AGp8",
+        "label": [
+          "Tingkat kepuasan terhadap layanan dari petugas untuk pembelian & top up e-money/tap cash/brizzi (keramahan, kecepatan pelayanan, komunikasi)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_2",
+        "$xpath": "Group_A/Group_A_2/A2_2",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'15') or selected(${S1},'17') or selected(${S1},'28') or selected(${S1},'29')",
+        "required": true,
+        "$autoname": "A2_2",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_3",
+        "type": "select_one",
+        "$kuid": "A4roDf8xU",
+        "label": [
+          "Kerapihan dan kebersihan pakaian petugas"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_3",
+        "$xpath": "Group_A/Group_A_2/A2_3",
+        "required": true,
+        "$autoname": "A2_3",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_4",
+        "type": "select_one",
+        "$kuid": "SfOekpT7N",
+        "label": [
+          "Pelayanan petugas dalam mengarahkan kendaraan dari lapangan tunggu dermaga ke dalam ferry (keramahan, kecepatan,dll)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_4",
+        "$xpath": "Group_A/Group_A_2/A2_4",
+        "required": true,
+        "$autoname": "A2_4",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_5",
+        "type": "select_one",
+        "$kuid": "S7q7NfAmB",
+        "label": [
+          "Kompetensi Petugas dalam pemberian layanan"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_5",
+        "$xpath": "Group_A/Group_A_2/A2_5",
+        "required": true,
+        "$autoname": "A2_5",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_6",
+        "type": "select_one",
+        "$kuid": "axoCKj1Bo",
+        "label": [
+          "Perilaku petugas dalam memberikan pelayanan"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_6",
+        "$xpath": "Group_A/Group_A_2/A2_6",
+        "required": true,
+        "$autoname": "A2_6",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_7",
+        "type": "select_one",
+        "$kuid": "YVQv05hnf",
+        "label": [
+          "Kemudahan Persyaratan untuk memperoleh pelayanan pembelian tiket"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_7",
+        "$xpath": "Group_A/Group_A_2/A2_7",
+        "required": true,
+        "$autoname": "A2_7",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_8",
+        "type": "select_one",
+        "$kuid": "w407eea7H",
+        "label": [
+          "Kemudahan proses dan prosedur pembelian tiket di vending machine/loket / Tollgate"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_8",
+        "$xpath": "Group_A/Group_A_2/A2_8",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'15') or selected(${S1},'17') or selected(${S1},'28') or selected(${S1},'29')",
+        "required": true,
+        "$autoname": "A2_8",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_9",
+        "type": "select_one",
+        "$kuid": "BFCGZMMFL",
+        "label": [
+          "Kemudahan proses dan prosedur pembelian tiket online di website/ferizy"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_9",
+        "$xpath": "Group_A/Group_A_2/A2_9",
+        "relevant": "selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'14') or selected(${S1},'16') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25')",
+        "required": true,
+        "$autoname": "A2_9",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_10",
+        "type": "select_one",
+        "$kuid": "Z7wQJVflT",
+        "label": [
+          "Kecepatan/waktu yang di butuhkan untuk pembelian tiket di vending machine/loket / Tollgate"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_10",
+        "$xpath": "Group_A/Group_A_2/A2_10",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'15') or selected(${S1},'17') or selected(${S1},'28') or selected(${S1},'29')",
+        "required": true,
+        "$autoname": "A2_10",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_11",
+        "type": "select_one",
+        "$kuid": "RgSrmqB6u",
+        "label": [
+          "Kecepatan/waktu yang di butuhkan untuk pembelian tiket online di website/ferizy (Untuk Merak,Bakauheni, Ketapang, Danau Toba, Sape, Lembar)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_11",
+        "$xpath": "Group_A/Group_A_2/A2_11",
+        "relevant": "selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'14') or selected(${S1},'16') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25')",
+        "required": true,
+        "$autoname": "A2_11",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_12",
+        "type": "select_one",
+        "$kuid": "h9kbXR0Re",
+        "label": [
+          "Kemudahan mendapatkan informasi jam keberangkatan kapal sebelum tiba di pelabuhan (call center, social media, website, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_12",
+        "$xpath": "Group_A/Group_A_2/A2_12",
+        "required": true,
+        "$autoname": "A2_12",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_13",
+        "type": "select_one",
+        "$kuid": "PZK8a8eWh",
+        "label": [
+          "Kemudahan mendapatkan informasi pemesanan/pembelian tiket sebelum tiba di pelabuhan"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_13",
+        "$xpath": "Group_A/Group_A_2/A2_13",
+        "required": true,
+        "$autoname": "A2_13",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_14",
+        "type": "select_one",
+        "$kuid": "u5WnTEDcn",
+        "label": [
+          "Kemudahan mendapatkan informasi yang dibutuhkan di lokasi pembelian tiket (prosedur pembelian tiket)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_14",
+        "$xpath": "Group_A/Group_A_2/A2_14",
+        "required": true,
+        "$autoname": "A2_14",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_15",
+        "type": "select_one",
+        "$kuid": "T419nIrMp",
+        "label": [
+          "Kesesuaian tarif sesuai informasi dari pihak Perusahaan"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_15",
+        "$xpath": "Group_A/Group_A_2/A2_15",
+        "required": true,
+        "$autoname": "A2_15",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_16",
+        "type": "select_one",
+        "$kuid": "uICfxxBVQ",
+        "label": [
+          "Tingkat keamanan & keselamatan saat tiba di pelabuhan (copet, preman, calo, lalu lintas kendaraan)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_16",
+        "$xpath": "Group_A/Group_A_2/A2_16",
+        "required": true,
+        "$autoname": "A2_16",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_17",
+        "type": "select_one",
+        "$kuid": "kGSmYuTFy",
+        "label": [
+          "Antrian toll gate untuk proses pembelian tiket"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_17",
+        "$xpath": "Group_A/Group_A_2/A2_17",
+        "required": true,
+        "$autoname": "A2_17",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_18",
+        "type": "select_one",
+        "$kuid": "eBQWus9bl",
+        "label": [
+          "Kemudahan mendapatkan informasi yang dibutuhkan saat boarding menuju kapal"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_18",
+        "$xpath": "Group_A/Group_A_2/A2_18",
+        "required": true,
+        "$autoname": "A2_18",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_19",
+        "type": "select_one",
+        "$kuid": "OkooD8aVY",
+        "label": [
+          "Petugas mengarahkan menuju kapal (keramahan, kejelasan informasi, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_19",
+        "$xpath": "Group_A/Group_A_2/A2_19",
+        "required": true,
+        "$autoname": "A2_19",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_20",
+        "type": "select_one",
+        "$kuid": "knoVqIiO7",
+        "label": [
+          "Lama waktu tunggu untuk masuk ke dalam kapal ferry"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_20",
+        "$xpath": "Group_A/Group_A_2/A2_20",
+        "required": true,
+        "$autoname": "A2_20",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_21",
+        "type": "select_one",
+        "$kuid": "ms8XBcFNS",
+        "label": [
+          "Tingkat ketepatan waktu jadwal keberangkatan kapal"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_21",
+        "$xpath": "Group_A/Group_A_2/A2_21",
+        "required": true,
+        "$autoname": "A2_21",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_22",
+        "type": "select_one",
+        "$kuid": "O6bWZCudf",
+        "label": [
+          "Kelengkapan media penanganan pengaduan atau saran/masukan"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_22",
+        "$xpath": "Group_A/Group_A_2/A2_22",
+        "required": true,
+        "$autoname": "A2_22",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_23",
+        "type": "select_one",
+        "$kuid": "biEmpmT2a",
+        "label": [
+          "Kejelasan papan penunjuk arah di Pelabuhan serta kemudahan mendapatkan informasi yang dibutuhkan saat boarding menuju kapal (petunjuk arah, operator)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_23",
+        "$xpath": "Group_A/Group_A_2/A2_23",
+        "required": true,
+        "$autoname": "A2_23",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_24",
+        "type": "select_one",
+        "$kuid": "0ykFMxaQF",
+        "label": [
+          "Tingkat ketersediaan layanan channel pembayaran ferizy"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_24",
+        "$xpath": "Group_A/Group_A_2/A2_24",
+        "relevant": "selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'14') or selected(${S1},'16') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'23') or selected(${S1},'25')",
+        "required": true,
+        "$autoname": "A2_24",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_25",
+        "type": "select_one",
+        "$kuid": "thOqbXFw0",
+        "label": [
+          "Tingkat ketersediaan pelayanan top up e-money/tap cash/flazz/brizzi"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_25",
+        "$xpath": "Group_A/Group_A_2/A2_25",
+        "relevant": "selected(${S1},'1') or selected(${S1},'2') or selected(${S1},'5') or selected(${S1},'7') or selected(${S1},'8') or selected(${S1},'9') or selected(${S1},'12') or selected(${S1},'13') or selected(${S1},'15') or selected(${S1},'17') or selected(${S1},'28') or selected(${S1},'29')",
+        "required": true,
+        "$autoname": "A2_25",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_26",
+        "type": "select_one",
+        "$kuid": "VSeQV9gEI",
+        "label": [
+          "Kualitas Sarana Prasarana Pelayanan Pelabuhan"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_26",
+        "$xpath": "Group_A/Group_A_2/A2_26",
+        "required": true,
+        "$autoname": "A2_26",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_27",
+        "type": "select_one",
+        "$kuid": "CUUzj29Ca",
+        "label": [
+          "Ketersediaan layanan channel pembayaran"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_27",
+        "$xpath": "Group_A/Group_A_2/A2_27",
+        "required": true,
+        "$autoname": "A2_27",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_28",
+        "type": "select_one",
+        "$kuid": "OyoB7cSiu",
+        "label": [
+          "Kualitas Layanan yang di berikan oleh Penyedia Jasa (Semuanya)"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_28",
+        "$xpath": "Group_A/Group_A_2/A2_28",
+        "required": true,
+        "$autoname": "A2_28",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A2_29",
+        "type": "select_one",
+        "$kuid": "PbFV2LYK0",
+        "label": [
+          "Kondisi dan kualitas jembatan masuk ke dalam ferry"
+        ],
+        "$qpath": "Group_A-Group_A_2-A2_29",
+        "$xpath": "Group_A/Group_A_2/A2_29",
+        "required": true,
+        "$autoname": "A2_29",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "iKMHCDOgf"
+      },
+      {
+        "name": "Note_A_2",
+        "type": "note",
+        "$kuid": "WQJLm5Hw5",
+        "label": [
+          "Saat ini kita akan membahas mengenai kepentingan dan kepuasan penumpang terhadal layanan kapal penyeberangan yang dibagi ke dalam dua bagian yaitu Pelabuhan dan kapal. Anda akan diminta untuk memberikan nilai dari 1 hingga 6 untuk menggambarkan tingkat kepentingan dan tingkat kepuasan. \n\nKapal akan mencakup seluruh proses dan kegiatan penumpang ketika berada di atas kapal."
+        ],
+        "$qpath": "Group_A-Note_A_2",
+        "$xpath": "Group_A/Note_A_2",
+        "$autoname": "Note_A_2"
+      },
+      {
+        "name": "Group_A_3",
+        "type": "begin_group",
+        "$kuid": "9KvbxdFzr",
+        "$qpath": "Group_A-Group_A_3",
+        "$xpath": "Group_A/Group_A_3",
+        "$autoname": "Group_A_3",
+        "appearance": "field-list"
+      },
+      {
+        "name": "Note_A3",
+        "type": "note",
+        "$kuid": "ubBrxqh7p",
+        "label": [
+          "Dengan menggunakan skala 1 – 6, dimana 1 menunjukan sangat tidak penting dan 6 menunjukan sangat penting, seberapa **penting** menurut Anda atribut-atribut berikut yang berkaitan dengan pelayanan kapal penyebrangan?"
+        ],
+        "$qpath": "Group_A-Group_A_3-Note_A3",
+        "$xpath": "Group_A/Group_A_3/Note_A3",
+        "$autoname": "Note_A3"
+      },
+      {
+        "name": "A3_30",
+        "type": "select_one",
+        "$kuid": "9lbbvGslU",
+        "label": [
+          "Kerapihan dan kebersihan pakaian petugas"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_30",
+        "$xpath": "Group_A/Group_A_3/A3_30",
+        "required": true,
+        "$autoname": "A3_30",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_31",
+        "type": "select_one",
+        "$kuid": "YMbEFwzjU",
+        "label": [
+          "Tingkat keramahan terhadap layanan pramugari saat memasuki kapal ferry (kejelasan informasi, arahan menuju deck, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_31",
+        "$xpath": "Group_A/Group_A_3/A3_31",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "A3_31",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_32",
+        "type": "select_one",
+        "$kuid": "WyZpLmzuj",
+        "label": [
+          "Tingkat keamanan & keselamatan saat masuk ke kapal ferry"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_32",
+        "$xpath": "Group_A/Group_A_3/A3_32",
+        "required": true,
+        "$autoname": "A3_32",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_33",
+        "type": "select_one",
+        "$kuid": "vBoPJ9n9e",
+        "label": [
+          "Tingkat ketepatan waktu jadwal keberangkatan kapal"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_33",
+        "$xpath": "Group_A/Group_A_3/A3_33",
+        "required": true,
+        "$autoname": "A3_33",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_34",
+        "type": "select_one",
+        "$kuid": "Qh1yeT7FF",
+        "label": [
+          "Tingkat kejelasan pengumuman selama pelayaran"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_34",
+        "$xpath": "Group_A/Group_A_3/A3_34",
+        "required": true,
+        "$autoname": "A3_34",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_35",
+        "type": "select_one",
+        "$kuid": "Fhyv4cjt1",
+        "label": [
+          "Tingkat keamanan & keselamatan selama di kapal"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_35",
+        "$xpath": "Group_A/Group_A_3/A3_35",
+        "required": true,
+        "$autoname": "A3_35",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_36",
+        "type": "select_one",
+        "$kuid": "l9elcB8Lf",
+        "label": [
+          "Harga yang dibayarkan sudah sesuai dengan fasilitas yang diberikan"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_36",
+        "$xpath": "Group_A/Group_A_3/A3_36",
+        "required": true,
+        "$autoname": "A3_36",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_37",
+        "type": "select_one",
+        "$kuid": "bGDhgEuqe",
+        "label": [
+          "Tingkat kenyamanan dan kebersihan akses penyebrangan saat boarding menuju kapal (Sejuk, Hening, Wangi, Bersih, Cukup Pencahayaan,dll)"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_37",
+        "$xpath": "Group_A/Group_A_3/A3_37",
+        "required": true,
+        "$autoname": "A3_37",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_38",
+        "type": "select_one",
+        "$kuid": "HxPHuLJkg",
+        "label": [
+          "Kenyamanan akses masuk ke kapal ferry (terjal, licin, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_38",
+        "$xpath": "Group_A/Group_A_3/A3_38",
+        "required": true,
+        "$autoname": "A3_38",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_39",
+        "type": "select_one",
+        "$kuid": "pc5V8p3A6",
+        "label": [
+          "Tingkat kenyamanan jalan masuk dari pintu masuk awal kapal menuju lokasi fasilitas penumpang"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_39",
+        "$xpath": "Group_A/Group_A_3/A3_39",
+        "required": true,
+        "$autoname": "A3_39",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_40",
+        "type": "select_one",
+        "$kuid": "WgsgPfDpl",
+        "label": [
+          "Kenyamanan ruang tunggu dan ruang lesehan di dalam kapal - eksekutif, ekonomi dan balkon (Sejuk, Hening, Wangi, Bersih, Cukup Pencahayaan,dll)"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_40",
+        "$xpath": "Group_A/Group_A_3/A3_40",
+        "required": true,
+        "$autoname": "A3_40",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_41",
+        "type": "select_one",
+        "$kuid": "FFR7S23OG",
+        "label": [
+          "Kebersihan ruang tunggu dan ruang lesehan di dalam kapal - eksekutif, ekonomi dan balkon"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_41",
+        "$xpath": "Group_A/Group_A_3/A3_41",
+        "required": true,
+        "$autoname": "A3_41",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_42",
+        "type": "select_one",
+        "$kuid": "AmrF64C5P",
+        "label": [
+          "Ketersediaan jumlah tempat duduk di kapal (jumlah kursi)"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_42",
+        "$xpath": "Group_A/Group_A_3/A3_42",
+        "required": true,
+        "$autoname": "A3_42",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_43",
+        "type": "select_one",
+        "$kuid": "uBNj8fGFc",
+        "label": [
+          "Kebersihan tempat duduk sebagai fasilitas utama di kapal"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_43",
+        "$xpath": "Group_A/Group_A_3/A3_43",
+        "required": true,
+        "$autoname": "A3_43",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_44",
+        "type": "select_one",
+        "$kuid": "ihGGNuNKZ",
+        "label": [
+          "Kenyamanan tempat duduk sebagai fasilitas utama di kapal (Empuk, ruang kaki, kondisi kelayakan)"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_44",
+        "$xpath": "Group_A/Group_A_3/A3_44",
+        "required": true,
+        "$autoname": "A3_44",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_45",
+        "type": "select_one",
+        "$kuid": "dBzDWAWzZ",
+        "label": [
+          "Jumlah toilet sebagai fasilitas pendukung di dalam kapal"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_45",
+        "$xpath": "Group_A/Group_A_3/A3_45",
+        "required": true,
+        "$autoname": "A3_45",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_46",
+        "type": "select_one",
+        "$kuid": "BqsH0bMME",
+        "label": [
+          "Kebersihan toilet sebagai fasilitas pendukung di dalam kapal"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_46",
+        "$xpath": "Group_A/Group_A_3/A3_46",
+        "required": true,
+        "$autoname": "A3_46",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "name": "A3_47",
+        "type": "select_one",
+        "$kuid": "XYai2ZgOA",
+        "label": [
+          "Ketersediaan layanan hiburan di kapal (tv, live music, karaoke, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_3-A3_47",
+        "$xpath": "Group_A/Group_A_3/A3_47",
+        "required": true,
+        "$autoname": "A3_47",
+        "appearance": "likert",
+        "select_from_list_name": "penting"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "82YNTYdWO"
+      },
+      {
+        "name": "Group_A_4",
+        "type": "begin_group",
+        "$kuid": "OxXidUhrA",
+        "$qpath": "Group_A-Group_A_4",
+        "$xpath": "Group_A/Group_A_4",
+        "$autoname": "Group_A_4",
+        "appearance": "field-list"
+      },
+      {
+        "name": "Note_A4",
+        "type": "note",
+        "$kuid": "djMHpZXV4",
+        "label": [
+          "Dengan menggunakan skala 1 – 6, dimana 1 menunjukan sangat tidak puas dan 6 menunjukan sangat puas, seberapa **puas** menurut Anda atribut-atribut berikut yang berkaitan dengan pelayanan kapal penyebrangan?"
+        ],
+        "$qpath": "Group_A-Group_A_4-Note_A4",
+        "$xpath": "Group_A/Group_A_4/Note_A4",
+        "$autoname": "Note_A4"
+      },
+      {
+        "name": "A4_30",
+        "type": "select_one",
+        "$kuid": "y6RCYz6AA",
+        "label": [
+          "Kerapihan dan kebersihan pakaian petugas"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_30",
+        "$xpath": "Group_A/Group_A_4/A4_30",
+        "required": true,
+        "$autoname": "A4_30",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_31",
+        "type": "select_one",
+        "$kuid": "ehtFa44AC",
+        "label": [
+          "Tingkat keramahan terhadap layanan pramugari saat memasuki kapal ferry (kejelasan informasi, arahan menuju deck, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_31",
+        "$xpath": "Group_A/Group_A_4/A4_31",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "A4_31",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_32",
+        "type": "select_one",
+        "$kuid": "DLquApyhF",
+        "label": [
+          "Tingkat keamanan & keselamatan saat masuk ke kapal ferry"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_32",
+        "$xpath": "Group_A/Group_A_4/A4_32",
+        "required": true,
+        "$autoname": "A4_32",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_33",
+        "type": "select_one",
+        "$kuid": "0CXiganA4",
+        "label": [
+          "Tingkat ketepatan waktu jadwal keberangkatan kapal"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_33",
+        "$xpath": "Group_A/Group_A_4/A4_33",
+        "required": true,
+        "$autoname": "A4_33",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_34",
+        "type": "select_one",
+        "$kuid": "5j9uwlzBs",
+        "label": [
+          "Tingkat kejelasan pengumuman selama pelayaran"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_34",
+        "$xpath": "Group_A/Group_A_4/A4_34",
+        "required": true,
+        "$autoname": "A4_34",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_35",
+        "type": "select_one",
+        "$kuid": "QxWscQ7n7",
+        "label": [
+          "Tingkat keamanan & keselamatan selama di kapal"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_35",
+        "$xpath": "Group_A/Group_A_4/A4_35",
+        "required": true,
+        "$autoname": "A4_35",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_36",
+        "type": "select_one",
+        "$kuid": "09G4zicFR",
+        "label": [
+          "Harga yang dibayarkan sudah sesuai dengan fasilitas yang diberikan"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_36",
+        "$xpath": "Group_A/Group_A_4/A4_36",
+        "required": true,
+        "$autoname": "A4_36",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_37",
+        "type": "select_one",
+        "$kuid": "FUKoo0kKI",
+        "label": [
+          "Tingkat kenyamanan dan kebersihan akses penyebrangan saat boarding menuju kapal (Sejuk, Hening, Wangi, Bersih, Cukup Pencahayaan,dll)"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_37",
+        "$xpath": "Group_A/Group_A_4/A4_37",
+        "required": true,
+        "$autoname": "A4_37",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_38",
+        "type": "select_one",
+        "$kuid": "nRyThhxqA",
+        "label": [
+          "Kenyamanan akses masuk ke kapal ferry (terjal, licin, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_38",
+        "$xpath": "Group_A/Group_A_4/A4_38",
+        "required": true,
+        "$autoname": "A4_38",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_39",
+        "type": "select_one",
+        "$kuid": "PMRZBg6Bc",
+        "label": [
+          "Tingkat kenyamanan jalan masuk dari pintu masuk awal kapal menuju lokasi fasilitas penumpang"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_39",
+        "$xpath": "Group_A/Group_A_4/A4_39",
+        "required": true,
+        "$autoname": "A4_39",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_40",
+        "type": "select_one",
+        "$kuid": "B7fR2gDL9",
+        "label": [
+          "Kenyamanan ruang tunggu dan ruang lesehan di dalam kapal - eksekutif, ekonomi dan balkon (Sejuk, Hening, Wangi, Bersih, Cukup Pencahayaan,dll)"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_40",
+        "$xpath": "Group_A/Group_A_4/A4_40",
+        "required": true,
+        "$autoname": "A4_40",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_41",
+        "type": "select_one",
+        "$kuid": "FduLLFf54",
+        "label": [
+          "Kebersihan ruang tunggu dan ruang lesehan di dalam kapal - eksekutif, ekonomi dan balkon"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_41",
+        "$xpath": "Group_A/Group_A_4/A4_41",
+        "required": true,
+        "$autoname": "A4_41",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_42",
+        "type": "select_one",
+        "$kuid": "hJMyOCl4q",
+        "label": [
+          "Ketersediaan jumlah tempat duduk di kapal (jumlah kursi)"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_42",
+        "$xpath": "Group_A/Group_A_4/A4_42",
+        "required": true,
+        "$autoname": "A4_42",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_43",
+        "type": "select_one",
+        "$kuid": "f5IccEBl9",
+        "label": [
+          "Kebersihan tempat duduk sebagai fasilitas utama di kapal"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_43",
+        "$xpath": "Group_A/Group_A_4/A4_43",
+        "required": true,
+        "$autoname": "A4_43",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_44",
+        "type": "select_one",
+        "$kuid": "rpJy2w1t7",
+        "label": [
+          "Kenyamanan tempat duduk sebagai fasilitas utama di kapal (Empuk, ruang kaki, kondisi kelayakan)"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_44",
+        "$xpath": "Group_A/Group_A_4/A4_44",
+        "required": true,
+        "$autoname": "A4_44",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_45",
+        "type": "select_one",
+        "$kuid": "kYedsKrip",
+        "label": [
+          "Jumlah toilet sebagai fasilitas pendukung di dalam kapal"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_45",
+        "$xpath": "Group_A/Group_A_4/A4_45",
+        "required": true,
+        "$autoname": "A4_45",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_46",
+        "type": "select_one",
+        "$kuid": "ArW6IHebB",
+        "label": [
+          "Kebersihan toilet sebagai fasilitas pendukung di dalam kapal"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_46",
+        "$xpath": "Group_A/Group_A_4/A4_46",
+        "required": true,
+        "$autoname": "A4_46",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A4_47",
+        "type": "select_one",
+        "$kuid": "noGzMMkzG",
+        "label": [
+          "Ketersediaan layanan hiburan di kapal (tv, live music, karaoke, dll)"
+        ],
+        "$qpath": "Group_A-Group_A_4-A4_47",
+        "$xpath": "Group_A/Group_A_4/A4_47",
+        "required": true,
+        "$autoname": "A4_47",
+        "appearance": "likert",
+        "select_from_list_name": "puas"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "ndNpRMIyW"
+      },
+      {
+        "name": "Group_A_5",
+        "type": "begin_group",
+        "$kuid": "LAAJCiABC",
+        "$qpath": "Group_A-Group_A_5",
+        "$xpath": "Group_A/Group_A_5",
+        "$autoname": "Group_A_5",
+        "appearance": "field-list"
+      },
+      {
+        "name": "A5",
+        "type": "select_one",
+        "$kuid": "YfHbu2pFq",
+        "label": [
+          "Dari skala 1 hingga 6, seberapa puaskah Anda dengan **keseluruhan pengalaman** pelayanan kapal penyeberangan?"
+        ],
+        "$qpath": "Group_A-Group_A_5-A5",
+        "$xpath": "Group_A/Group_A_5/A5",
+        "required": true,
+        "$autoname": "A5",
+        "select_from_list_name": "puas"
+      },
+      {
+        "name": "A6",
+        "type": "text",
+        "$kuid": "mmhO0KJw4",
+        "label": [
+          "Hal apakah yang perlu ditingkatkan dari pelayanan kapal penyeberangan?"
+        ],
+        "$qpath": "Group_A-Group_A_5-A6",
+        "$xpath": "Group_A/Group_A_5/A6",
+        "relevant": "selected(${A5},'1') or selected(${A5},'2') or selected(${A5},'3') or selected(${A5},'4')",
+        "required": true,
+        "$autoname": "A6"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "obAqSMv4k"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "XyrbyoGt4"
+      },
+      {
+        "name": "Group_B",
+        "type": "begin_group",
+        "$kuid": "0iRlnvehl",
+        "label": [
+          "B. NPS"
+        ],
+        "$qpath": "Group_B",
+        "$xpath": "Group_B",
+        "relevant": "selected(${S20},'2') or selected(${S20},'3') or selected(${S20},'4') or selected(${S20},'5') or selected(${S20},'6') or selected(${S20},'96')",
+        "$autoname": "Group_B",
+        "appearance": "field-list"
+      },
+      {
+        "name": "Note_B",
+        "type": "note",
+        "$kuid": "fyulIqy7n",
+        "label": [
+          "Saat ini kita akan membahas mengenai keinginan Anda untuk merekomendasikan layanan kapal penyeberangan kepada teman/saudara berdasarkan pengalaman Anda. Anda akan diminta untuk memberikan nilai dari 0 hingga 10 untuk menggambarkan tingkat keinginan Anda untuk merekomendasikan."
+        ],
+        "$qpath": "Group_B-Note_B",
+        "$xpath": "Group_B/Note_B",
+        "$autoname": "Note_B"
+      },
+      {
+        "name": "B1",
+        "type": "select_one",
+        "$kuid": "KbRmLmfmB",
+        "label": [
+          "Bagaimana keinginan Anda untuk “merekomendasikan” layanan pelabuhan kepada orang lain (rekan/kerabat/saudara)?"
+        ],
+        "$qpath": "Group_B-B1",
+        "$xpath": "Group_B/B1",
+        "required": true,
+        "$autoname": "B1",
+        "appearance": "likert",
+        "select_from_list_name": "rekomendasi"
+      },
+      {
+        "name": "B2",
+        "type": "select_one",
+        "$kuid": "yZgs1pmF0",
+        "label": [
+          "Bagaimana keinginan Anda untuk “merekomendasikan” layanan kapal penyebrangan kepada orang lain (rekan/kerabat/saudara)?"
+        ],
+        "$qpath": "Group_B-B2",
+        "$xpath": "Group_B/B2",
+        "required": true,
+        "$autoname": "B2",
+        "appearance": "likert",
+        "select_from_list_name": "rekomendasi"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "HWncPACKk"
+      },
+      {
+        "name": "Group_C",
+        "type": "begin_group",
+        "$kuid": "4uExw01zn",
+        "label": [
+          "C. Keterikatan dan Loyalitas Penumpang Pejalan Kaki"
+        ],
+        "$qpath": "Group_C",
+        "$xpath": "Group_C",
+        "relevant": "selected(${S20},'2') or selected(${S20},'3') or selected(${S20},'4') or selected(${S20},'5') or selected(${S20},'6') or selected(${S20},'96')",
+        "$autoname": "Group_C",
+        "appearance": "field-list"
+      },
+      {
+        "name": "C1",
+        "type": "select_one",
+        "$kuid": "DwjkVsXiL",
+        "label": [
+          "Apakah untuk perjalanan selanjutnya, Anda akan menggunakan layanan kapal ASDP kembali?"
+        ],
+        "$qpath": "Group_C-C1",
+        "$xpath": "Group_C/C1",
+        "required": true,
+        "$autoname": "C1",
+        "select_from_list_name": "ya"
+      },
+      {
+        "name": "C2",
+        "type": "select_one",
+        "$kuid": "RfKTviHEL",
+        "label": [
+          "Dari skala 1-10 seberapa besar kecenderungan Anda untuk Kembali menggunakan layanan kapal ASDP?"
+        ],
+        "$qpath": "Group_C-C2",
+        "$xpath": "Group_C/C2",
+        "required": true,
+        "$autoname": "C2",
+        "appearance": "likert",
+        "select_from_list_name": "mungkin"
+      },
+      {
+        "name": "C3",
+        "type": "text",
+        "$kuid": "K6ODZWYbt",
+        "label": [
+          "Layanan kapal apakah yang akan Anda gunakan?"
+        ],
+        "$qpath": "Group_C-C3",
+        "$xpath": "Group_C/C3",
+        "relevant": "selected(${C1},'2')",
+        "required": true,
+        "$autoname": "C3"
+      },
+      {
+        "name": "C4",
+        "type": "select_one",
+        "$kuid": "wcbWHKntr",
+        "label": [
+          "Seberapa besar kecenderungan Anda untuk meningkatkan penggunaan layanan penyebrangan ini di masa yang akan datang?"
+        ],
+        "$qpath": "Group_C-C4",
+        "$xpath": "Group_C/C4",
+        "required": true,
+        "$autoname": "C4",
+        "appearance": "likert",
+        "select_from_list_name": "mungkin"
+      },
+      {
+        "name": "C5",
+        "type": "select_one",
+        "$kuid": "J9yZc2nVS",
+        "label": [
+          "Jika tidak ada jadwal penyebrangan ASDP yang Anda inginkan apakah Anda akan tetap menunggu untuk menggunakan kapal ASDP atau menggunakan kapal lainnya yang tersedia?"
+        ],
+        "$qpath": "Group_C-C5",
+        "$xpath": "Group_C/C5",
+        "required": true,
+        "$autoname": "C5",
+        "select_from_list_name": "ya"
+      },
+      {
+        "name": "Note_C6",
+        "type": "note",
+        "$kuid": "sEHpUjSfp",
+        "label": [
+          "**Mohon beri penilaian terhadap kesesuaian pernyataan di bawah ini terhadap ekspektasi atau harapan Anda dengan kondisi yang ideal!** Dengan menggunakan skala 1 – 10, dimana 1 menunjukan sangat tidak sesuai dan 10 menunjukan sangat sesuai, semakin tinggi nilai yang Anda berikan, menandakan semakin sesuai kondisi nyata dengan kondisi idean yang Anda harapkan!"
+        ],
+        "$qpath": "Group_C-Note_C6",
+        "$xpath": "Group_C/Note_C6",
+        "$autoname": "Note_C6"
+      },
+      {
+        "name": "C6_1",
+        "type": "select_one",
+        "$kuid": "3B5niGsNz",
+        "label": [
+          "Pelayanan petugas di pelabuhan sesuai dengan ekspektasi anda"
+        ],
+        "$qpath": "Group_C-C6_1",
+        "$xpath": "Group_C/C6_1",
+        "required": true,
+        "$autoname": "C6_1",
+        "appearance": "likert",
+        "select_from_list_name": "sesuai"
+      },
+      {
+        "name": "C6_2",
+        "type": "select_one",
+        "$kuid": "Xd1OF9aqS",
+        "label": [
+          "Fasilitas yang terdapat yang di pelabuhan sesuai dengan ekspektasi anda"
+        ],
+        "$qpath": "Group_C-C6_2",
+        "$xpath": "Group_C/C6_2",
+        "required": true,
+        "$autoname": "C6_2",
+        "appearance": "likert",
+        "select_from_list_name": "sesuai"
+      },
+      {
+        "name": "C6_3",
+        "type": "select_one",
+        "$kuid": "pCD9PWtZi",
+        "label": [
+          "Prosedur selama di pelabuhan sesuai dengan ekspektasi anda (pembelian tiket sampai dengan menaiki kapal)"
+        ],
+        "$qpath": "Group_C-C6_3",
+        "$xpath": "Group_C/C6_3",
+        "required": true,
+        "$autoname": "C6_3",
+        "appearance": "likert",
+        "select_from_list_name": "sesuai"
+      },
+      {
+        "name": "C6_4",
+        "type": "select_one",
+        "$kuid": "U9vw03RBz",
+        "label": [
+          "Pelayanan petugas di kapal sesuai dengan ekspektasi anda"
+        ],
+        "$qpath": "Group_C-C6_4",
+        "$xpath": "Group_C/C6_4",
+        "required": true,
+        "$autoname": "C6_4",
+        "appearance": "likert",
+        "select_from_list_name": "sesuai"
+      },
+      {
+        "name": "C6_5",
+        "type": "select_one",
+        "$kuid": "fXn4ERIBI",
+        "label": [
+          "Fasilitas yang terdapat yang di kapal sesuai dengan ekspektasi anda"
+        ],
+        "$qpath": "Group_C-C6_5",
+        "$xpath": "Group_C/C6_5",
+        "required": true,
+        "$autoname": "C6_5",
+        "appearance": "likert",
+        "select_from_list_name": "sesuai"
+      },
+      {
+        "name": "C6_6",
+        "type": "select_one",
+        "$kuid": "Si6cLsbE9",
+        "label": [
+          "Prosedur selama di kapal sesuai dengan ekspektasi anda (menaiki kapal sampai tiba di pelabuhan)"
+        ],
+        "$qpath": "Group_C-C6_6",
+        "$xpath": "Group_C/C6_6",
+        "required": true,
+        "$autoname": "C6_6",
+        "appearance": "likert",
+        "select_from_list_name": "sesuai"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "ghKhD4QPD"
+      },
+      {
+        "name": "Group_D",
+        "type": "begin_group",
+        "$kuid": "YUinfQJni",
+        "label": [
+          "D. Tarif"
+        ],
+        "$qpath": "Group_D",
+        "$xpath": "Group_D",
+        "relevant": "selected(${S20},'2') or selected(${S20},'3') or selected(${S20},'4') or selected(${S20},'5') or selected(${S20},'6') or selected(${S20},'96')",
+        "$autoname": "Group_D",
+        "appearance": "field-list"
+      },
+      {
+        "name": "D1",
+        "type": "select_one",
+        "$kuid": "TsaLYlVvR",
+        "label": [
+          "Dalam skala 1-10, seberapa sesuai menurut Anda tarif yang dikenakan pada pelabuhan eksekutif ini dengan kualitas layanan yang didapat?"
+        ],
+        "$qpath": "Group_D-D1",
+        "$xpath": "Group_D/D1",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "D1",
+        "appearance": "likert",
+        "select_from_list_name": "sesuai"
+      },
+      {
+        "name": "D2",
+        "type": "text",
+        "$kuid": "SUTSANY1j",
+        "label": [
+          "Jika terjadi kenaikan harga, mohon sebutkan nilai selisih maksimal yang masih bisa Anda terima"
+        ],
+        "$qpath": "Group_D-D2",
+        "$xpath": "Group_D/D2",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "D2",
+        "constraint": "regex(.,'^[0-9]{1,}$')"
+      },
+      {
+        "name": "Note_D3",
+        "type": "note",
+        "$kuid": "RtS1uOG5X",
+        "label": [
+          "Dengan selisih harga sebesar **${D2}** peningkatan apa yang Anda harapkan?"
+        ],
+        "$qpath": "Group_D-Note_D3",
+        "$xpath": "Group_D/Note_D3",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "$autoname": "Note_D3"
+      },
+      {
+        "name": "D3A",
+        "type": "text",
+        "$kuid": "DnHV5LTJO",
+        "label": [
+          "Kualitas layanan Petugas"
+        ],
+        "$qpath": "Group_D-D3A",
+        "$xpath": "Group_D/D3A",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "D3A"
+      },
+      {
+        "name": "D3B",
+        "type": "text",
+        "$kuid": "NXJeht8nz",
+        "label": [
+          "Proses (Pengalaman Perjalanan)"
+        ],
+        "$qpath": "Group_D-D3B",
+        "$xpath": "Group_D/D3B",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "D3B"
+      },
+      {
+        "name": "D3C",
+        "type": "text",
+        "$kuid": "tlgNW9va2",
+        "label": [
+          "Fasilitas"
+        ],
+        "$qpath": "Group_D-D3C",
+        "$xpath": "Group_D/D3C",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "D3C"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "5oSkW0JHb"
+      },
+      {
+        "name": "Group_E",
+        "type": "begin_group",
+        "$kuid": "8lJtgt5nM",
+        "label": [
+          "E.  Jawaban Terbuka"
+        ],
+        "$qpath": "Group_E",
+        "$xpath": "Group_E",
+        "relevant": "selected(${S20},'2') or selected(${S20},'3') or selected(${S20},'4') or selected(${S20},'5') or selected(${S20},'6') or selected(${S20},'96')",
+        "$autoname": "Group_E",
+        "appearance": "field-list"
+      },
+      {
+        "name": "E1",
+        "type": "text",
+        "$kuid": "67uNZjHvY",
+        "label": [
+          "Pengembangan apa yang diharapkan di Ferizy (Untuk Merak,Bakauheni, Ketapang, Danau Toba)"
+        ],
+        "$qpath": "Group_E-E1",
+        "$xpath": "Group_E/E1",
+        "relevant": "selected(${S1},'3') or selected(${S1},'4') or selected(${S1},'19') or selected(${S1},'20') or selected(${S1},'14') or selected(${S1},'25')",
+        "required": true,
+        "$autoname": "E1"
+      },
+      {
+        "name": "E2",
+        "type": "text",
+        "$kuid": "CYTlU0HhQ",
+        "label": [
+          "Bagaimana tingkat kemudahan akses dan kepuasan pelayanan dari contact center"
+        ],
+        "$qpath": "Group_E-E2",
+        "$xpath": "Group_E/E2",
+        "required": true,
+        "$autoname": "E2"
+      },
+      {
+        "name": "E3",
+        "type": "text",
+        "$kuid": "Sk1YUlxSR",
+        "label": [
+          "Pengembangan yang di harapkan dari contact centre (Jawaban Singkat)"
+        ],
+        "$qpath": "Group_E-E3",
+        "$xpath": "Group_E/E3",
+        "required": true,
+        "$autoname": "E3"
+      },
+      {
+        "name": "E4",
+        "type": "text",
+        "$kuid": "sAOnMq2v9",
+        "label": [
+          "Layanan apa yang diharapkan di Terminal Eksekutif (Untuk Merak Bakaueni) (Jawaban Singkat)"
+        ],
+        "$qpath": "Group_E-E4",
+        "$xpath": "Group_E/E4",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "E4"
+      },
+      {
+        "name": "E5",
+        "type": "text",
+        "$kuid": "FFFwqGRiI",
+        "label": [
+          "Layanan apa yang diharapkan di Kapal Express (Untuk Merak Bakaueni) (Jawaban Singkat)"
+        ],
+        "$qpath": "Group_E-E5",
+        "$xpath": "Group_E/E5",
+        "relevant": "selected(${S1},'4') or selected(${S1},'20')",
+        "required": true,
+        "$autoname": "E5"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "TghFUaQDv"
+      },
+      {
+        "name": "Group_F",
+        "type": "begin_group",
+        "$kuid": "Firpjmt3F",
+        "label": [
+          "F. Kritik dan Saran"
+        ],
+        "$qpath": "Group_F",
+        "$xpath": "Group_F",
+        "relevant": "selected(${S20},'2') or selected(${S20},'3') or selected(${S20},'4') or selected(${S20},'5') or selected(${S20},'6') or selected(${S20},'96')",
+        "$autoname": "Group_F",
+        "appearance": "field-list"
+      },
+      {
+        "name": "Note_F",
+        "type": "note",
+        "$kuid": "b4cwvikF2",
+        "label": [
+          "Silahkan Bapak/Ibu menuliskan saran dan kritik pada kolom yang tersedia bagi pelayanan transportasi kapal"
+        ],
+        "$qpath": "Group_F-Note_F",
+        "$xpath": "Group_F/Note_F",
+        "$autoname": "Note_F"
+      },
+      {
+        "name": "F1",
+        "type": "text",
+        "$kuid": "YoESsokAe",
+        "label": [
+          "Kritik"
+        ],
+        "$qpath": "Group_F-F1",
+        "$xpath": "Group_F/F1",
+        "required": true,
+        "$autoname": "F1"
+      },
+      {
+        "name": "F2",
+        "type": "text",
+        "$kuid": "YYM25KjmO",
+        "label": [
+          "Saran"
+        ],
+        "$qpath": "Group_F-F2",
+        "$xpath": "Group_F/F2",
+        "required": true,
+        "$autoname": "F2"
+      },
+      {
+        "type": "end_group",
+        "$kuid": "6rGTWqLex"
+      },
+      {
+        "name": "closing",
+        "type": "note",
+        "$kuid": "dmtPMAdPb",
+        "label": [
+          "Survei selesai. Terima Kasih"
+        ],
+        "$qpath": "closing",
+        "$xpath": "closing",
+        "$autoname": "closing"
+      }
+    ],
+    "choices": [
+      {
+        "name": "1",
+        "$kuid": "pT3i9Pdwk",
+        "label": [
+          "Ambon"
+        ],
+        "list_name": "S1",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "Xb5cQN9RK",
+        "label": [
+          "Bajoe"
+        ],
+        "list_name": "S1",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "Y5blhYdiW",
+        "label": [
+          "Bakauheni"
+        ],
+        "list_name": "S1",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "BHXRqoti7",
+        "label": [
+          "Bakauheni Eksekutif"
+        ],
+        "list_name": "S1",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "0GXEQT1dj",
+        "label": [
+          "Balikpapan"
+        ],
+        "list_name": "S1",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "afZGt88q4",
+        "label": [
+          "Banda Aceh"
+        ],
+        "list_name": "S1",
+        "$autovalue": "6"
+      },
+      {
+        "name": "7",
+        "$kuid": "X0EjGm26x",
+        "label": [
+          "Bangka"
+        ],
+        "list_name": "S1",
+        "$autovalue": "7"
+      },
+      {
+        "name": "8",
+        "$kuid": "jZJbLflxS",
+        "label": [
+          "Batam"
+        ],
+        "list_name": "S1",
+        "$autovalue": "8"
+      },
+      {
+        "name": "9",
+        "$kuid": "W9Zwp8Weh",
+        "label": [
+          "Batulicin"
+        ],
+        "list_name": "S1",
+        "$autovalue": "9"
+      },
+      {
+        "name": "10",
+        "$kuid": "bWgIbGZO4",
+        "label": [
+          "Bau-Bau"
+        ],
+        "list_name": "S1",
+        "$autovalue": "10"
+      },
+      {
+        "name": "11",
+        "$kuid": "KihNExgmi",
+        "label": [
+          "Biak"
+        ],
+        "list_name": "S1",
+        "$autovalue": "11"
+      },
+      {
+        "name": "12",
+        "$kuid": "XiVbDia1u",
+        "label": [
+          "Bitung"
+        ],
+        "list_name": "S1",
+        "$autovalue": "12"
+      },
+      {
+        "name": "13",
+        "$kuid": "ow62dEQdW",
+        "label": [
+          "Kayangan"
+        ],
+        "list_name": "S1",
+        "$autovalue": "13"
+      },
+      {
+        "name": "14",
+        "$kuid": "FHEgU0DsD",
+        "label": [
+          "Ketapang"
+        ],
+        "list_name": "S1",
+        "$autovalue": "14"
+      },
+      {
+        "name": "15",
+        "$kuid": "FU5aj9Nex",
+        "label": [
+          "Kupang"
+        ],
+        "list_name": "S1",
+        "$autovalue": "15"
+      },
+      {
+        "name": "16",
+        "$kuid": "E6mHnEeae",
+        "label": [
+          "Lembar"
+        ],
+        "list_name": "S1",
+        "$autovalue": "16"
+      },
+      {
+        "name": "17",
+        "$kuid": "8ZXCHWrJC",
+        "label": [
+          "Luwuk"
+        ],
+        "list_name": "S1",
+        "$autovalue": "17"
+      },
+      {
+        "name": "18",
+        "$kuid": "dXXHV62KL",
+        "label": [
+          "Marauke"
+        ],
+        "list_name": "S1",
+        "$autovalue": "18"
+      },
+      {
+        "name": "19",
+        "$kuid": "GZpXfVgkH",
+        "label": [
+          "Merak"
+        ],
+        "list_name": "S1",
+        "$autovalue": "19"
+      },
+      {
+        "name": "20",
+        "$kuid": "G2qfHq0Jh",
+        "label": [
+          "Merak Eksekutif"
+        ],
+        "list_name": "S1",
+        "$autovalue": "20"
+      },
+      {
+        "name": "21",
+        "$kuid": "BwWvTCAVI",
+        "label": [
+          "Padang"
+        ],
+        "list_name": "S1",
+        "$autovalue": "21"
+      },
+      {
+        "name": "22",
+        "$kuid": "qFj0yte8U",
+        "label": [
+          "Pontianak"
+        ],
+        "list_name": "S1",
+        "$autovalue": "22"
+      },
+      {
+        "name": "23",
+        "$kuid": "bDazThLl2",
+        "label": [
+          "Sape"
+        ],
+        "list_name": "S1",
+        "$autovalue": "23"
+      },
+      {
+        "name": "24",
+        "$kuid": "1S2xh1qgu",
+        "label": [
+          "Selayar"
+        ],
+        "list_name": "S1",
+        "$autovalue": "24"
+      },
+      {
+        "name": "25",
+        "$kuid": "4RMSu3qYI",
+        "label": [
+          "Danau Toba"
+        ],
+        "list_name": "S1",
+        "$autovalue": "25"
+      },
+      {
+        "name": "26",
+        "$kuid": "FHuSfIivw",
+        "label": [
+          "Singkil"
+        ],
+        "list_name": "S1",
+        "$autovalue": "26"
+      },
+      {
+        "name": "27",
+        "$kuid": "dBCl4Wgjp",
+        "label": [
+          "Sorong"
+        ],
+        "list_name": "S1",
+        "$autovalue": "27"
+      },
+      {
+        "name": "28",
+        "$kuid": "dI9nzyIMz",
+        "label": [
+          "Surabaya"
+        ],
+        "list_name": "S1",
+        "$autovalue": "28"
+      },
+      {
+        "name": "29",
+        "$kuid": "InxdbhY0x",
+        "label": [
+          "Ternate"
+        ],
+        "list_name": "S1",
+        "$autovalue": "29"
+      },
+      {
+        "name": "96",
+        "$kuid": "oxhiYTJx4",
+        "label": [
+          "Lainnya"
+        ],
+        "list_name": "S1",
+        "$autovalue": "96"
+      },
+      {
+        "S1": "1",
+        "name": "1",
+        "$kuid": "igdmsmsGM",
+        "label": [
+          "HUNIMUA - WAIPIRIT"
+        ],
+        "list_name": "S2",
+        "$autovalue": "1"
+      },
+      {
+        "S1": "1",
+        "name": "2",
+        "$kuid": "YmdNBYK2J",
+        "label": [
+          "WAIPIRIT - HUNIMUA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "2"
+      },
+      {
+        "S1": "1",
+        "name": "3",
+        "$kuid": "jjcAKSgs1",
+        "label": [
+          "GALALA - NAMLEA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "3"
+      },
+      {
+        "S1": "1",
+        "name": "4",
+        "$kuid": "uFMklw9Jj",
+        "label": [
+          "NAMLEA - GALALA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "4"
+      },
+      {
+        "S1": "2",
+        "name": "5",
+        "$kuid": "dui4l39GZ",
+        "label": [
+          "BAJOE - KOLAKA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "5"
+      },
+      {
+        "S1": "2",
+        "name": "6",
+        "$kuid": "2dlVqOtYo",
+        "label": [
+          "SIWA - LASUSUA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "6"
+      },
+      {
+        "S1": "2",
+        "name": "7",
+        "$kuid": "PRqa4BWjZ",
+        "label": [
+          "KOLAKA - BAJOE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "7"
+      },
+      {
+        "S1": "2",
+        "name": "8",
+        "$kuid": "Kazknr6AH",
+        "label": [
+          "LASUSUA - SIWA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "8"
+      },
+      {
+        "S1": "3",
+        "name": "9",
+        "$kuid": "JLdayFIe8",
+        "label": [
+          "BAKAUHENI - MERAK"
+        ],
+        "list_name": "S2",
+        "$autovalue": "9"
+      },
+      {
+        "S1": "4",
+        "name": "10",
+        "$kuid": "NjYr95x8c",
+        "label": [
+          "BAKAUHENI EKSEKUTIF - MERAK EKSEKUTIF"
+        ],
+        "list_name": "S2",
+        "$autovalue": "10"
+      },
+      {
+        "S1": "5",
+        "name": "11",
+        "$kuid": "jNxWl4kNK",
+        "label": [
+          "KARIANGAU - PENAJAM"
+        ],
+        "list_name": "S2",
+        "$autovalue": "11"
+      },
+      {
+        "S1": "5",
+        "name": "12",
+        "$kuid": "QhQ6h0xZz",
+        "label": [
+          "PENAJAM - KARIANGAU"
+        ],
+        "list_name": "S2",
+        "$autovalue": "12"
+      },
+      {
+        "S1": "6",
+        "name": "13",
+        "$kuid": "LlExLYWDH",
+        "label": [
+          "ULEE LHEUE - BALOHAN"
+        ],
+        "list_name": "S2",
+        "$autovalue": "13"
+      },
+      {
+        "S1": "6",
+        "name": "14",
+        "$kuid": "Oa6HVdjEn",
+        "label": [
+          "BALOHAN - ULEE LHEUE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "14"
+      },
+      {
+        "S1": "7",
+        "name": "15",
+        "$kuid": "6xULPc5c9",
+        "label": [
+          "TANJUNG KALIAN/MUNTOK - TANJUNG API-API"
+        ],
+        "list_name": "S2",
+        "$autovalue": "15"
+      },
+      {
+        "S1": "7",
+        "name": "16",
+        "$kuid": "frsVuFJ1h",
+        "label": [
+          "TANJUNG API-API - TANJUNG KALIAN/MUNTOK"
+        ],
+        "list_name": "S2",
+        "$autovalue": "16"
+      },
+      {
+        "S1": "8",
+        "name": "17",
+        "$kuid": "zvkmWDHZw",
+        "label": [
+          "TELAGA PUNGGUR - TANJUNG UBAN"
+        ],
+        "list_name": "S2",
+        "$autovalue": "17"
+      },
+      {
+        "S1": "8",
+        "name": "18",
+        "$kuid": "pGKsEtP3F",
+        "label": [
+          "TANJUNG UBAN - TELAGA PUNGGUR"
+        ],
+        "list_name": "S2",
+        "$autovalue": "18"
+      },
+      {
+        "S1": "9",
+        "name": "19",
+        "$kuid": "ovKjcEKFo",
+        "label": [
+          "BATULICIN - TANJUNG SERDANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "19"
+      },
+      {
+        "S1": "9",
+        "name": "20",
+        "$kuid": "x75Kueyv8",
+        "label": [
+          "TANJUNG SERDANG - BATULICIN"
+        ],
+        "list_name": "S2",
+        "$autovalue": "20"
+      },
+      {
+        "S1": "10",
+        "name": "21",
+        "$kuid": "GTqTljnhE",
+        "label": [
+          "BAUBAU - WAARA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "21"
+      },
+      {
+        "S1": "10",
+        "name": "22",
+        "$kuid": "1ogoTRgKd",
+        "label": [
+          "WAARA - BAUBAU"
+        ],
+        "list_name": "S2",
+        "$autovalue": "22"
+      },
+      {
+        "S1": "10",
+        "name": "23",
+        "$kuid": "ESepE4cCw",
+        "label": [
+          "BAUBAU - TOLANDONA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "23"
+      },
+      {
+        "S1": "10",
+        "name": "24",
+        "$kuid": "uM0NA0fPd",
+        "label": [
+          "TOLANDONA - BAUBAU"
+        ],
+        "list_name": "S2",
+        "$autovalue": "24"
+      },
+      {
+        "S1": "11",
+        "name": "25",
+        "$kuid": "GnC1Uv1Wv",
+        "label": [
+          "BIAK - MANOKWARI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "25"
+      },
+      {
+        "S1": "11",
+        "name": "26",
+        "$kuid": "jb7PmzU1n",
+        "label": [
+          "BIAK - NUMFOR"
+        ],
+        "list_name": "S2",
+        "$autovalue": "26"
+      },
+      {
+        "S1": "11",
+        "name": "27",
+        "$kuid": "b5KaTSJ4E",
+        "label": [
+          "NUMFOR - BIAK"
+        ],
+        "list_name": "S2",
+        "$autovalue": "27"
+      },
+      {
+        "S1": "12",
+        "name": "28",
+        "$kuid": "JAWiphBAi",
+        "label": [
+          "BITUNG - TERNATE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "28"
+      },
+      {
+        "S1": "12",
+        "name": "29",
+        "$kuid": "xGcOX8CYn",
+        "label": [
+          "BITUNG - TOBELO"
+        ],
+        "list_name": "S2",
+        "$autovalue": "29"
+      },
+      {
+        "S1": "12",
+        "name": "30",
+        "$kuid": "x9MpMZ8k0",
+        "label": [
+          "BITUNG - MELONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "30"
+      },
+      {
+        "S1": "12",
+        "name": "31",
+        "$kuid": "g4eDa0osC",
+        "label": [
+          "BITUNG - MANGRAN"
+        ],
+        "list_name": "S2",
+        "$autovalue": "31"
+      },
+      {
+        "S1": "13",
+        "name": "32",
+        "$kuid": "7OxfIlJp2",
+        "label": [
+          "KAYANGAN - POTOTANO"
+        ],
+        "list_name": "S2",
+        "$autovalue": "32"
+      },
+      {
+        "S1": "13",
+        "name": "33",
+        "$kuid": "WvQk4lemu",
+        "label": [
+          "POTOTANO - KAYANGAN"
+        ],
+        "list_name": "S2",
+        "$autovalue": "33"
+      },
+      {
+        "S1": "14",
+        "name": "34",
+        "$kuid": "kC7GVnWhL",
+        "label": [
+          "GILIMANUK - KETAPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "34"
+      },
+      {
+        "S1": "14",
+        "name": "35",
+        "$kuid": "BVEzAl88J",
+        "label": [
+          "KETAPANG - GILIMANUK"
+        ],
+        "list_name": "S2",
+        "$autovalue": "35"
+      },
+      {
+        "S1": "15",
+        "name": "36",
+        "$kuid": "mSyXfk2WO",
+        "label": [
+          "KUPANG - ROTE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "36"
+      },
+      {
+        "S1": "15",
+        "name": "37",
+        "$kuid": "RAnmPTho6",
+        "label": [
+          "ROTE - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "37"
+      },
+      {
+        "S1": "15",
+        "name": "38",
+        "$kuid": "g6RNXF7x8",
+        "label": [
+          "KUPANG - KALABAHI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "38"
+      },
+      {
+        "S1": "15",
+        "name": "39",
+        "$kuid": "KMxON9BIh",
+        "label": [
+          "KALABAHI - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "39"
+      },
+      {
+        "S1": "15",
+        "name": "40",
+        "$kuid": "3LoLjYw4c",
+        "label": [
+          "KUPANG - LARANTUKA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "40"
+      },
+      {
+        "S1": "15",
+        "name": "41",
+        "$kuid": "BnvPtOQAg",
+        "label": [
+          "LARANTUKA - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "41"
+      },
+      {
+        "S1": "15",
+        "name": "42",
+        "$kuid": "lAYrxXLlo",
+        "label": [
+          "KUPANG - HANSISI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "42"
+      },
+      {
+        "S1": "15",
+        "name": "43",
+        "$kuid": "HKX2zdoqs",
+        "label": [
+          "HANSISI - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "43"
+      },
+      {
+        "S1": "15",
+        "name": "44",
+        "$kuid": "EVvpWEVOf",
+        "label": [
+          "KUPANG - SABU"
+        ],
+        "list_name": "S2",
+        "$autovalue": "44"
+      },
+      {
+        "S1": "15",
+        "name": "45",
+        "$kuid": "70BxULxT7",
+        "label": [
+          "SABU - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "45"
+      },
+      {
+        "S1": "15",
+        "name": "46",
+        "$kuid": "oPR8oLjfX",
+        "label": [
+          "KUPANG - WAINGAPU"
+        ],
+        "list_name": "S2",
+        "$autovalue": "46"
+      },
+      {
+        "S1": "15",
+        "name": "47",
+        "$kuid": "1sUWIHvjV",
+        "label": [
+          "WAINGAPU - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "47"
+      },
+      {
+        "S1": "15",
+        "name": "48",
+        "$kuid": "knsiR1WnP",
+        "label": [
+          "SABU - WAINGAPU"
+        ],
+        "list_name": "S2",
+        "$autovalue": "48"
+      },
+      {
+        "S1": "15",
+        "name": "49",
+        "$kuid": "qwaLaqXXH",
+        "label": [
+          "KUPANG - ADONARA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "49"
+      },
+      {
+        "S1": "15",
+        "name": "50",
+        "$kuid": "dJeKxTLy1",
+        "label": [
+          "ADONARA - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "50"
+      },
+      {
+        "S1": "15",
+        "name": "51",
+        "$kuid": "uidsBfswT",
+        "label": [
+          "KUPANG - MAUMERE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "51"
+      },
+      {
+        "S1": "15",
+        "name": "52",
+        "$kuid": "4opvVJJu4",
+        "label": [
+          "MAUMERE - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "52"
+      },
+      {
+        "S1": "15",
+        "name": "53",
+        "$kuid": "IdX8Z9OeU",
+        "label": [
+          "KUPANG - AIMERE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "53"
+      },
+      {
+        "S1": "15",
+        "name": "54",
+        "$kuid": "369ZHeyEZ",
+        "label": [
+          "AIMERE - KUPANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "54"
+      },
+      {
+        "S1": "16",
+        "name": "55",
+        "$kuid": "QCzfYe0GI",
+        "label": [
+          "PADANGBAI - LEMBAR"
+        ],
+        "list_name": "S2",
+        "$autovalue": "55"
+      },
+      {
+        "S1": "16",
+        "name": "56",
+        "$kuid": "6Zm6gNRR5",
+        "label": [
+          "LEMBAR - PADANGBAI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "56"
+      },
+      {
+        "S1": "17",
+        "name": "57",
+        "$kuid": "PM9TmsuVv",
+        "label": [
+          "GORONTALO - PAGIMANA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "57"
+      },
+      {
+        "S1": "17",
+        "name": "58",
+        "$kuid": "6KQx60ipU",
+        "label": [
+          "PAGIMANA - GORONTALO"
+        ],
+        "list_name": "S2",
+        "$autovalue": "58"
+      },
+      {
+        "S1": "18",
+        "name": "59",
+        "$kuid": "YJUYpNFsU",
+        "label": [
+          "MERAUKE - MOOR"
+        ],
+        "list_name": "S2",
+        "$autovalue": "59"
+      },
+      {
+        "S1": "18",
+        "name": "60",
+        "$kuid": "T9whmyrJg",
+        "label": [
+          "MOOR - MERAUKE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "60"
+      },
+      {
+        "S1": "18",
+        "name": "61",
+        "$kuid": "1e4qD4miM",
+        "label": [
+          "MERAUKE - BADE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "61"
+      },
+      {
+        "S1": "18",
+        "name": "62",
+        "$kuid": "IeNenYQju",
+        "label": [
+          "BADE - MERAUKE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "62"
+      },
+      {
+        "S1": "18",
+        "name": "63",
+        "$kuid": "0IjtUM1Tb",
+        "label": [
+          "MERAUKE - GETENTIRI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "63"
+      },
+      {
+        "S1": "18",
+        "name": "64",
+        "$kuid": "z7v3w2su8",
+        "label": [
+          "GETENTIRI - MERAUKE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "64"
+      },
+      {
+        "S1": "18",
+        "name": "65",
+        "$kuid": "OgaITgf5F",
+        "label": [
+          "KIMAAM - MOOR"
+        ],
+        "list_name": "S2",
+        "$autovalue": "65"
+      },
+      {
+        "S1": "18",
+        "name": "66",
+        "$kuid": "izREtBE0s",
+        "label": [
+          "MOOR - KIMAAM"
+        ],
+        "list_name": "S2",
+        "$autovalue": "66"
+      },
+      {
+        "S1": "18",
+        "name": "67",
+        "$kuid": "KkgQrjUwl",
+        "label": [
+          "KIMAAM - BADE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "67"
+      },
+      {
+        "S1": "18",
+        "name": "68",
+        "$kuid": "0zXi3AZhL",
+        "label": [
+          "BADE - KIMAAM"
+        ],
+        "list_name": "S2",
+        "$autovalue": "68"
+      },
+      {
+        "S1": "18",
+        "name": "69",
+        "$kuid": "AVItsMVmm",
+        "label": [
+          "KIMAAM - GETENTIRI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "69"
+      },
+      {
+        "S1": "18",
+        "name": "70",
+        "$kuid": "iql1bXkZC",
+        "label": [
+          "GETENTIRI - KIMAAM"
+        ],
+        "list_name": "S2",
+        "$autovalue": "70"
+      },
+      {
+        "S1": "19",
+        "name": "71",
+        "$kuid": "5H2wKcW2P",
+        "label": [
+          "MERAK - BAKAUHENI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "71"
+      },
+      {
+        "S1": "20",
+        "name": "72",
+        "$kuid": "EMSD05uJZ",
+        "label": [
+          "MERAK EKSEKUTIF - BAKAUHENI EKSEKUTIF"
+        ],
+        "list_name": "S2",
+        "$autovalue": "72"
+      },
+      {
+        "S1": "21",
+        "name": "73",
+        "$kuid": "cncEBdceY",
+        "label": [
+          "PADANG - TUAPEJAT"
+        ],
+        "list_name": "S2",
+        "$autovalue": "73"
+      },
+      {
+        "S1": "21",
+        "name": "74",
+        "$kuid": "50qqsv95k",
+        "label": [
+          "TUAPEJAT - PADANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "74"
+      },
+      {
+        "S1": "21",
+        "name": "75",
+        "$kuid": "rENwNBuk9",
+        "label": [
+          "PADANG - SIKABALUAN"
+        ],
+        "list_name": "S2",
+        "$autovalue": "75"
+      },
+      {
+        "S1": "21",
+        "name": "76",
+        "$kuid": "5YpRZivuP",
+        "label": [
+          "SIKABALUAN - PADANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "76"
+      },
+      {
+        "S1": "21",
+        "name": "77",
+        "$kuid": "0naM9emGv",
+        "label": [
+          "SIKABALUAN - SIBERUT"
+        ],
+        "list_name": "S2",
+        "$autovalue": "77"
+      },
+      {
+        "S1": "21",
+        "name": "78",
+        "$kuid": "jLNrYgx7B",
+        "label": [
+          "SIBERUT - SIKABALUAN"
+        ],
+        "list_name": "S2",
+        "$autovalue": "78"
+      },
+      {
+        "S1": "22",
+        "name": "79",
+        "$kuid": "b6sYQb4Vv",
+        "label": [
+          "RASAU JAYA - TELUK BATANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "79"
+      },
+      {
+        "S1": "22",
+        "name": "80",
+        "$kuid": "vJi4fNhHQ",
+        "label": [
+          "TELUK BATANG - RASAU JAYA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "80"
+      },
+      {
+        "S1": "22",
+        "name": "81",
+        "$kuid": "SkoUE1QPC",
+        "label": [
+          "TEBAS KUALA - TEBAS SEBERANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "81"
+      },
+      {
+        "S1": "22",
+        "name": "82",
+        "$kuid": "sspno94Vf",
+        "label": [
+          "TEBAS SEBERANG - TEBAS KUALA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "82"
+      },
+      {
+        "S1": "23",
+        "name": "83",
+        "$kuid": "Q46dSMmOz",
+        "label": [
+          "SAPE - LABUAN BAJO"
+        ],
+        "list_name": "S2",
+        "$autovalue": "83"
+      },
+      {
+        "S1": "23",
+        "name": "84",
+        "$kuid": "fho9QXeiL",
+        "label": [
+          "SAPE - WAIKELO"
+        ],
+        "list_name": "S2",
+        "$autovalue": "84"
+      },
+      {
+        "S1": "23",
+        "name": "85",
+        "$kuid": "scQKFPWAW",
+        "label": [
+          "LABUAN BAJO - SAPE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "85"
+      },
+      {
+        "S1": "23",
+        "name": "86",
+        "$kuid": "82EThyfep",
+        "label": [
+          "WAIKELO - SAPE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "86"
+      },
+      {
+        "S1": "24",
+        "name": "87",
+        "$kuid": "rMC3L97CM",
+        "label": [
+          "LABUAN BAJO - BIRA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "87"
+      },
+      {
+        "S1": "24",
+        "name": "88",
+        "$kuid": "P30FDutuW",
+        "label": [
+          "BIRA - PAMATATA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "88"
+      },
+      {
+        "S1": "24",
+        "name": "89",
+        "$kuid": "CHBwQ2SFH",
+        "label": [
+          "PAMATATA - BIRA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "89"
+      },
+      {
+        "S1": "24",
+        "name": "90",
+        "$kuid": "7oE3nencb",
+        "label": [
+          "BIRA - LABUAN BAJO"
+        ],
+        "list_name": "S2",
+        "$autovalue": "90"
+      },
+      {
+        "S1": "24",
+        "name": "91",
+        "$kuid": "KOjCwP5nr",
+        "label": [
+          "BIRA - JAMPEA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "91"
+      },
+      {
+        "S1": "24",
+        "name": "92",
+        "$kuid": "PhGUWop77",
+        "label": [
+          "JAMPEA - BIRA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "92"
+      },
+      {
+        "S1": "25",
+        "name": "93",
+        "$kuid": "z4QIdjUz9",
+        "label": [
+          "AJIBATA - AMBARITA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "93"
+      },
+      {
+        "S1": "25",
+        "name": "94",
+        "$kuid": "rXSQtMvgO",
+        "label": [
+          "AMBARITA - AJJIBATA"
+        ],
+        "list_name": "S2",
+        "$autovalue": "94"
+      },
+      {
+        "S1": "26",
+        "name": "95",
+        "$kuid": "18wNxB37G",
+        "label": [
+          "SINABANG - LABUHAN HAJI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "95"
+      },
+      {
+        "S1": "26",
+        "name": "96",
+        "$kuid": "gt4XHI9GH",
+        "label": [
+          "LABUHAN HAJI - SINABANG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "96"
+      },
+      {
+        "S1": "27",
+        "name": "97",
+        "$kuid": "CWuIs5AwE",
+        "label": [
+          "SORONG - GAG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "97"
+      },
+      {
+        "S1": "27",
+        "name": "98",
+        "$kuid": "aDu4hTEnW",
+        "label": [
+          "GAG - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "98"
+      },
+      {
+        "S1": "27",
+        "name": "99",
+        "$kuid": "pejPUrNYY",
+        "label": [
+          "SORONG - FAKFAK"
+        ],
+        "list_name": "S2",
+        "$autovalue": "99"
+      },
+      {
+        "S1": "27",
+        "name": "100",
+        "$kuid": "EHQoiUWDu",
+        "label": [
+          "FAKFAK - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "100"
+      },
+      {
+        "S1": "27",
+        "name": "101",
+        "$kuid": "G8L83ntQJ",
+        "label": [
+          "SORONG - SOLALI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "101"
+      },
+      {
+        "S1": "27",
+        "name": "102",
+        "$kuid": "xKZUFIohm",
+        "label": [
+          "SOLALI - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "102"
+      },
+      {
+        "S1": "27",
+        "name": "103",
+        "$kuid": "yQltQQvtQ",
+        "label": [
+          "SORONG - YENENAS"
+        ],
+        "list_name": "S2",
+        "$autovalue": "103"
+      },
+      {
+        "S1": "27",
+        "name": "104",
+        "$kuid": "rTap7u9hq",
+        "label": [
+          "YENENAS - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "104"
+      },
+      {
+        "S1": "27",
+        "name": "105",
+        "$kuid": "TyVAC3FkD",
+        "label": [
+          "SORONG - AREFI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "105"
+      },
+      {
+        "S1": "27",
+        "name": "106",
+        "$kuid": "FkJoTZ2i5",
+        "label": [
+          "AREFI - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "106"
+      },
+      {
+        "S1": "27",
+        "name": "107",
+        "$kuid": "sw1GR7p8t",
+        "label": [
+          "SORONG - LEMALAS"
+        ],
+        "list_name": "S2",
+        "$autovalue": "107"
+      },
+      {
+        "S1": "27",
+        "name": "108",
+        "$kuid": "WGzDtpthr",
+        "label": [
+          "LEMALAS - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "108"
+      },
+      {
+        "S1": "27",
+        "name": "109",
+        "$kuid": "pVEnVPmHC",
+        "label": [
+          "SORONG - VOLLEY"
+        ],
+        "list_name": "S2",
+        "$autovalue": "109"
+      },
+      {
+        "S1": "27",
+        "name": "110",
+        "$kuid": "KxX6x8zsq",
+        "label": [
+          "VOLLEY - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "110"
+      },
+      {
+        "S1": "27",
+        "name": "111",
+        "$kuid": "tX0m4q9DN",
+        "label": [
+          "SORONG - WEJIM"
+        ],
+        "list_name": "S2",
+        "$autovalue": "111"
+      },
+      {
+        "S1": "27",
+        "name": "112",
+        "$kuid": "rEOWSTyUX",
+        "label": [
+          "WEJIM - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "112"
+      },
+      {
+        "S1": "27",
+        "name": "113",
+        "$kuid": "YTOUO307J",
+        "label": [
+          "SORONG - WAISAI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "113"
+      },
+      {
+        "S1": "27",
+        "name": "114",
+        "$kuid": "DGkcCABt3",
+        "label": [
+          "WAISAI - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "114"
+      },
+      {
+        "S1": "27",
+        "name": "115",
+        "$kuid": "LlP7baJab",
+        "label": [
+          "SORONG - BABO"
+        ],
+        "list_name": "S2",
+        "$autovalue": "115"
+      },
+      {
+        "S1": "27",
+        "name": "116",
+        "$kuid": "YQnRLTfLY",
+        "label": [
+          "BABO - SORONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "116"
+      },
+      {
+        "S1": "28",
+        "name": "117",
+        "$kuid": "QvlJ6WJIK",
+        "label": [
+          "UJUNG - KAMAL"
+        ],
+        "list_name": "S2",
+        "$autovalue": "117"
+      },
+      {
+        "S1": "28",
+        "name": "118",
+        "$kuid": "NIJFWwE14",
+        "label": [
+          "KAMAL - UJUNG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "118"
+      },
+      {
+        "S1": "29",
+        "name": "119",
+        "$kuid": "G2pnBGnZY",
+        "label": [
+          "TERNATE - BITUNG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "119"
+      },
+      {
+        "S1": "29",
+        "name": "120",
+        "$kuid": "6LqS2ufai",
+        "label": [
+          "BASTIONG - SIDANGOLE"
+        ],
+        "list_name": "S2",
+        "$autovalue": "120"
+      },
+      {
+        "S1": "29",
+        "name": "121",
+        "$kuid": "zYa4a4fzv",
+        "label": [
+          "SIDANGOLE - BASTIONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "121"
+      },
+      {
+        "S1": "29",
+        "name": "122",
+        "$kuid": "jHidV92mM",
+        "label": [
+          "BASTIONG - RUM"
+        ],
+        "list_name": "S2",
+        "$autovalue": "122"
+      },
+      {
+        "S1": "29",
+        "name": "123",
+        "$kuid": "QjpyXnTqL",
+        "label": [
+          "RUM - BASTIONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "123"
+      },
+      {
+        "S1": "29",
+        "name": "124",
+        "$kuid": "nyB89SJGl",
+        "label": [
+          "BASTIONG - SOFIFI"
+        ],
+        "list_name": "S2",
+        "$autovalue": "124"
+      },
+      {
+        "S1": "29",
+        "name": "125",
+        "$kuid": "YMA4l3e28",
+        "label": [
+          "SOFIFI - BASTIONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "125"
+      },
+      {
+        "S1": "29",
+        "name": "126",
+        "$kuid": "rg4E2VuSw",
+        "label": [
+          "BASTIONG - MAKIAN"
+        ],
+        "list_name": "S2",
+        "$autovalue": "126"
+      },
+      {
+        "S1": "29",
+        "name": "127",
+        "$kuid": "G5z8F40VV",
+        "label": [
+          "MAKIAN - BASTIONG"
+        ],
+        "list_name": "S2",
+        "$autovalue": "127"
+      },
+      {
+        "name": "999",
+        "$kuid": "huMcgg5jV",
+        "label": [
+          "Lainnya"
+        ],
+        "list_name": "S2",
+        "$autovalue": "999"
+      },
+      {
+        "name": "1",
+        "$kuid": "trnji4LZy",
+        "label": [
+          "ASDP"
+        ],
+        "list_name": "S4",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "bL4UKufo9",
+        "label": [
+          "Kompetitor"
+        ],
+        "list_name": "S4",
+        "$autovalue": "2"
+      },
+      {
+        "name": "1",
+        "$kuid": "FpDLbWhFt",
+        "label": [
+          "Laki-laki"
+        ],
+        "list_name": "S6",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "wQaknNef0",
+        "label": [
+          "Perempuan"
+        ],
+        "list_name": "S6",
+        "$autovalue": "2"
+      },
+      {
+        "name": "1",
+        "$kuid": "jNNrpuOlB",
+        "label": [
+          "Ya"
+        ],
+        "list_name": "ya",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "75wcF8hk9",
+        "label": [
+          "Tidak"
+        ],
+        "list_name": "ya",
+        "$autovalue": "2"
+      },
+      {
+        "name": "1",
+        "$kuid": "o0svNip1C",
+        "label": [
+          "<2 kali"
+        ],
+        "list_name": "S8",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "gLv9X8SsV",
+        "label": [
+          "2-5 kali"
+        ],
+        "list_name": "S8",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "JPHs1C3Dn",
+        "label": [
+          "5-10 kali"
+        ],
+        "list_name": "S8",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "mVnGFAW8i",
+        "label": [
+          "10-15 kali"
+        ],
+        "list_name": "S8",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "PsR5bKDIf",
+        "label": [
+          ">15 kali"
+        ],
+        "list_name": "S8",
+        "$autovalue": "5"
+      },
+      {
+        "name": "1",
+        "$kuid": "GTvPRPlhQ",
+        "label": [
+          "Bisnis"
+        ],
+        "list_name": "S9",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "AmmhaRv8G",
+        "label": [
+          "Pulang pergi ke kantor"
+        ],
+        "list_name": "S9",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "WblmyJfo1",
+        "label": [
+          "Wisata"
+        ],
+        "list_name": "S9",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "7neku2M1s",
+        "label": [
+          "Mengunjungi rekan/keluarga"
+        ],
+        "list_name": "S9",
+        "$autovalue": "4"
+      },
+      {
+        "name": "96",
+        "$kuid": "VN0DOmwco",
+        "label": [
+          "Lainnya"
+        ],
+        "list_name": "S9",
+        "$autovalue": "96"
+      },
+      {
+        "name": "1",
+        "$kuid": "EWrgTWty0",
+        "label": [
+          "Suami / istri"
+        ],
+        "list_name": "S10",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "JJDdaNsRc",
+        "label": [
+          "Orang tua"
+        ],
+        "list_name": "S10",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "xU3dhCYYN",
+        "label": [
+          "Anak"
+        ],
+        "list_name": "S10",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "GOKzCwroE",
+        "label": [
+          "Teman"
+        ],
+        "list_name": "S10",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "BioOmFGBm",
+        "label": [
+          "Wisata"
+        ],
+        "list_name": "S10",
+        "$autovalue": "5"
+      },
+      {
+        "name": "96",
+        "$kuid": "ZwhKRuYfZ",
+        "label": [
+          "Lainnya"
+        ],
+        "list_name": "S10",
+        "$autovalue": "96"
+      },
+      {
+        "name": "1",
+        "$kuid": "Ggy6RZ6Bz",
+        "label": [
+          "Golongan II - Sepeda Motor ( < 500CC )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "Y6hDakJwy",
+        "label": [
+          "Golongan III - Sepeda Motor ( >= 500CC )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "1vhNpka3A",
+        "label": [
+          "Golongan IVa - Mobil/Sedan ( <= 5m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "35AW52SZm",
+        "label": [
+          "Golongan IVb - Mobil Barang ( <= 5m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "Z9Bcq2vl8",
+        "label": [
+          "Golongan Va - Bis Sedang ( <= 7m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "KY6QEwQYl",
+        "label": [
+          "Golongan Vb - Truk Sedang ( <= 7m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "6"
+      },
+      {
+        "name": "7",
+        "$kuid": "DfOWZSKIZ",
+        "label": [
+          "Golongan VIa - Bis Besar ( <= 10m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "7"
+      },
+      {
+        "name": "8",
+        "$kuid": "Ffwis6vlX",
+        "label": [
+          "Golongan VIb - Truk Besar ( <= 10m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "8"
+      },
+      {
+        "name": "9",
+        "$kuid": "SDPNRFT8y",
+        "label": [
+          "Golongan VII - Truk Trailer ( <= 12m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "9"
+      },
+      {
+        "name": "10",
+        "$kuid": "DbxrWvd1B",
+        "label": [
+          "Golongan VIII - Truk Trailer ( <= 16m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "10"
+      },
+      {
+        "name": "11",
+        "$kuid": "5gWoHNwdq",
+        "label": [
+          "Golongan IX - Truk Trailer ( > 16m )"
+        ],
+        "list_name": "S12",
+        "$autovalue": "11"
+      },
+      {
+        "name": "96",
+        "$kuid": "kMfUThS7T",
+        "label": [
+          "Lainnya"
+        ],
+        "list_name": "S12",
+        "$autovalue": "96"
+      },
+      {
+        "name": "1",
+        "$kuid": "sTGK4agwQ",
+        "label": [
+          "Loket di pelabuhan"
+        ],
+        "list_name": "S14",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "lGL9Uhr0q",
+        "label": [
+          "Online / Ferizy"
+        ],
+        "list_name": "S14",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "jXSdILdau",
+        "label": [
+          "Travel agent"
+        ],
+        "list_name": "S14",
+        "$autovalue": "3"
+      },
+      {
+        "name": "96",
+        "$kuid": "M9fOHM9Hm",
+        "label": [
+          "Lainnya"
+        ],
+        "list_name": "S14",
+        "$autovalue": "96"
+      },
+      {
+        "name": "1",
+        "$kuid": "EVuiOPaNW",
+        "label": [
+          "< 20 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "lkxv3SPyA",
+        "label": [
+          "20 – 25 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "TttSZrGwb",
+        "label": [
+          "26 – 30 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "YIACY2dij",
+        "label": [
+          "31 – 35 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "ylo7mFmnx",
+        "label": [
+          "36 – 40 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "la49M1uuD",
+        "label": [
+          "41 – 45 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "6"
+      },
+      {
+        "name": "7",
+        "$kuid": "RJHuvSCzs",
+        "label": [
+          "46 – 50 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "7"
+      },
+      {
+        "name": "8",
+        "$kuid": "BkX0FkDBu",
+        "label": [
+          "51 – 55 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "8"
+      },
+      {
+        "name": "9",
+        "$kuid": "fM3IE6BBJ",
+        "label": [
+          "56 – 60 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "9"
+      },
+      {
+        "name": "10",
+        "$kuid": "K4IaUyrb3",
+        "label": [
+          ">60 tahun"
+        ],
+        "list_name": "S15",
+        "$autovalue": "10"
+      },
+      {
+        "name": "1",
+        "$kuid": "uXDxNK2WA",
+        "label": [
+          "Pegawai/karyawan swasta"
+        ],
+        "list_name": "S16",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "WDKVuualK",
+        "label": [
+          "Pegawai Pemerintahan (PNS)"
+        ],
+        "list_name": "S16",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "8eTNnH4Sh",
+        "label": [
+          "Dokter"
+        ],
+        "list_name": "S16",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "MAEt6vhVU",
+        "label": [
+          "Arsitek"
+        ],
+        "list_name": "S16",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "tWy3VlCUc",
+        "label": [
+          "Artis"
+        ],
+        "list_name": "S16",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "JkMOjkEPF",
+        "label": [
+          "Entertainer"
+        ],
+        "list_name": "S16",
+        "$autovalue": "6"
+      },
+      {
+        "name": "7",
+        "$kuid": "CNlCSSFSx",
+        "label": [
+          "Pengacara"
+        ],
+        "list_name": "S16",
+        "$autovalue": "7"
+      },
+      {
+        "name": "8",
+        "$kuid": "1DCEPaDMQ",
+        "label": [
+          "Wiraswasta/ pengusaha (businessman)"
+        ],
+        "list_name": "S16",
+        "$autovalue": "8"
+      },
+      {
+        "name": "9",
+        "$kuid": "WdulZ86hC",
+        "label": [
+          "Militer (TNI/ Polri)"
+        ],
+        "list_name": "S16",
+        "$autovalue": "9"
+      },
+      {
+        "name": "10",
+        "$kuid": "AqgFbJ0Bs",
+        "label": [
+          "Ibu Rumah Tangga"
+        ],
+        "list_name": "S16",
+        "$autovalue": "10"
+      },
+      {
+        "name": "11",
+        "$kuid": "hqqOkfzFS",
+        "label": [
+          "Mahasiswa"
+        ],
+        "list_name": "S16",
+        "$autovalue": "11"
+      },
+      {
+        "name": "12",
+        "$kuid": "wsJXCsnX8",
+        "label": [
+          "Supir*"
+        ],
+        "list_name": "S16",
+        "$autovalue": "12"
+      },
+      {
+        "name": "13",
+        "$kuid": "29Lj4RsdZ",
+        "label": [
+          "Buruh*"
+        ],
+        "list_name": "S16",
+        "$autovalue": "13"
+      },
+      {
+        "name": "14",
+        "$kuid": "wfxUdmhFt",
+        "label": [
+          "Pensiunan"
+        ],
+        "list_name": "S16",
+        "$autovalue": "14"
+      },
+      {
+        "name": "96",
+        "$kuid": "JHx9zWo6q",
+        "label": [
+          "Lainnya"
+        ],
+        "list_name": "S16",
+        "$autovalue": "96"
+      },
+      {
+        "name": "1",
+        "$kuid": "jxIh1g0eg",
+        "label": [
+          "Perusahaan riset pemasaran"
+        ],
+        "list_name": "S17",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "pNmIdSgGE",
+        "label": [
+          "Perusahaan periklanan"
+        ],
+        "list_name": "S17",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "gnVCallIh",
+        "label": [
+          "Media cetak/elektronik (Surat Kabar/Majalah/Tabloid/TV/Radio)"
+        ],
+        "list_name": "S17",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "eYTJCQrSj",
+        "label": [
+          "Perusahaan penyedia transportasi laut"
+        ],
+        "list_name": "S17",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "jKGsTkLa8",
+        "label": [
+          "Nahkoda"
+        ],
+        "list_name": "S17",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "ooIKEmw3g",
+        "label": [
+          "Tidak satupun"
+        ],
+        "list_name": "S17",
+        "$autovalue": "6"
+      },
+      {
+        "name": "1",
+        "$kuid": "nRgt6XBXS",
+        "label": [
+          "< Rp 1.000.000"
+        ],
+        "list_name": "S19",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "mB680emXi",
+        "label": [
+          "Rp 1.000.000 – Rp 1.999.999"
+        ],
+        "list_name": "S19",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "qvc1nH2Y0",
+        "label": [
+          "Rp 2.000.000 – Rp 2.999.999"
+        ],
+        "list_name": "S19",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "R3jjuIz84",
+        "label": [
+          "Rp 3.000.000 – Rp 4.999.999"
+        ],
+        "list_name": "S19",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "jUrdSD3rY",
+        "label": [
+          "Rp 5.000.000 – Rp 7.999.999"
+        ],
+        "list_name": "S19",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "t067HfWQp",
+        "label": [
+          "Rp 8.000.000 – Rp 29.999.000"
+        ],
+        "list_name": "S19",
+        "$autovalue": "6"
+      },
+      {
+        "name": "7",
+        "$kuid": "oU4E9lY6W",
+        "label": [
+          "≥ Rp 30.000.000"
+        ],
+        "list_name": "S19",
+        "$autovalue": "7"
+      },
+      {
+        "name": "1",
+        "$kuid": "4Mp9sFiK3",
+        "label": [
+          "SD"
+        ],
+        "list_name": "S20",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "XJQ6j5bDE",
+        "label": [
+          "SLTP/Sederajat"
+        ],
+        "list_name": "S20",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "OdAXsG73J",
+        "label": [
+          "SLTA/Sederajat"
+        ],
+        "list_name": "S20",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "61K7NawFf",
+        "label": [
+          "SMK/Sederajat"
+        ],
+        "list_name": "S20",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "AW0XXDa5W",
+        "label": [
+          "Diploma/Sederajat"
+        ],
+        "list_name": "S20",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "K30doX97A",
+        "label": [
+          "Sarjana/Sederajat"
+        ],
+        "list_name": "S20",
+        "$autovalue": "6"
+      },
+      {
+        "name": "96",
+        "$kuid": "PvKYEkGWa",
+        "label": [
+          "Lainnya"
+        ],
+        "list_name": "S20",
+        "$autovalue": "96"
+      },
+      {
+        "name": "1",
+        "$kuid": "C2AdmBYGu",
+        "label": [
+          "1 (Sangat Tidak Penting)"
+        ],
+        "list_name": "penting",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "W7sPvOcMc",
+        "label": [
+          "2"
+        ],
+        "list_name": "penting",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "IAEoLtjRN",
+        "label": [
+          "3"
+        ],
+        "list_name": "penting",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "AdVyFDoC3",
+        "label": [
+          "4"
+        ],
+        "list_name": "penting",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "7mDGWySDV",
+        "label": [
+          "5"
+        ],
+        "list_name": "penting",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "qAJ8YKTgi",
+        "label": [
+          "6 (Sangat Penting)"
+        ],
+        "list_name": "penting",
+        "$autovalue": "6"
+      },
+      {
+        "name": "1",
+        "$kuid": "WtLCIIvjt",
+        "label": [
+          "1 (Sangat Tidak Puas)"
+        ],
+        "list_name": "puas",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "xBBpyQdWJ",
+        "label": [
+          "2"
+        ],
+        "list_name": "puas",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "oUSDXIQzu",
+        "label": [
+          "3"
+        ],
+        "list_name": "puas",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "yrAKZBO1v",
+        "label": [
+          "4"
+        ],
+        "list_name": "puas",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "ul8FnlZ9U",
+        "label": [
+          "5"
+        ],
+        "list_name": "puas",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "MEvf8OSC1",
+        "label": [
+          "6 (Sangat Puas)"
+        ],
+        "list_name": "puas",
+        "$autovalue": "6"
+      },
+      {
+        "name": "1",
+        "$kuid": "JmIxaZlIp",
+        "label": [
+          "0 (Tidak akan merekomendasikan)"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "KXZtSiWaH",
+        "label": [
+          "1"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "FW1Aq3DYF",
+        "label": [
+          "2"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "tOBqUjOmm",
+        "label": [
+          "3"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "mVvs2ErqM",
+        "label": [
+          "4"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "1iVZdI2d3",
+        "label": [
+          "5"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "6"
+      },
+      {
+        "name": "7",
+        "$kuid": "cR0glovaX",
+        "label": [
+          "6"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "7"
+      },
+      {
+        "name": "8",
+        "$kuid": "MXs53UdqZ",
+        "label": [
+          "7"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "8"
+      },
+      {
+        "name": "9",
+        "$kuid": "Cd5ATnV0H",
+        "label": [
+          "8"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "9"
+      },
+      {
+        "name": "10",
+        "$kuid": "HdkjYaH7V",
+        "label": [
+          "9"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "10"
+      },
+      {
+        "name": "11",
+        "$kuid": "RoAZd86FQ",
+        "label": [
+          "10 (Sangat merekomendasikan)"
+        ],
+        "list_name": "rekomendasi",
+        "$autovalue": "11"
+      },
+      {
+        "name": "1",
+        "$kuid": "0wANx8mxZ",
+        "label": [
+          "1 (Sangat tidak mungkin)"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "k6ZNPVNkY",
+        "label": [
+          "2"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "8eCIWDR3H",
+        "label": [
+          "3"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "mrfCclL2t",
+        "label": [
+          "4"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "p1JVfNoBJ",
+        "label": [
+          "5"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "sCEeGT7Es",
+        "label": [
+          "6"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "6"
+      },
+      {
+        "name": "7",
+        "$kuid": "BvurmWTE3",
+        "label": [
+          "7"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "7"
+      },
+      {
+        "name": "8",
+        "$kuid": "jpLkMyNlk",
+        "label": [
+          "8"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "8"
+      },
+      {
+        "name": "9",
+        "$kuid": "i5sHioUQR",
+        "label": [
+          "9"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "9"
+      },
+      {
+        "name": "10",
+        "$kuid": "Lfk4d62WR",
+        "label": [
+          "10 (Sangat mungkin)"
+        ],
+        "list_name": "mungkin",
+        "$autovalue": "10"
+      },
+      {
+        "name": "1",
+        "$kuid": "9ie6trEHT",
+        "label": [
+          "1 (Sangat tidak sesuai)"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "1"
+      },
+      {
+        "name": "2",
+        "$kuid": "hfU2pPmRx",
+        "label": [
+          "2"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "2"
+      },
+      {
+        "name": "3",
+        "$kuid": "0NSZEJXOp",
+        "label": [
+          "3"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "3"
+      },
+      {
+        "name": "4",
+        "$kuid": "NvSwvcHMp",
+        "label": [
+          "4"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "4"
+      },
+      {
+        "name": "5",
+        "$kuid": "Brl6vBOoF",
+        "label": [
+          "5"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "5"
+      },
+      {
+        "name": "6",
+        "$kuid": "VsR6zxUPI",
+        "label": [
+          "6"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "6"
+      },
+      {
+        "name": "7",
+        "$kuid": "dpMBPvHDq",
+        "label": [
+          "7"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "7"
+      },
+      {
+        "name": "8",
+        "$kuid": "Cc7YTMFFj",
+        "label": [
+          "8"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "8"
+      },
+      {
+        "name": "9",
+        "$kuid": "n3Otl4HGA",
+        "label": [
+          "9"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "9"
+      },
+      {
+        "name": "10",
+        "$kuid": "aIbM4xqRh",
+        "label": [
+          "10 (Sangat sesuai)"
+        ],
+        "list_name": "sesuai",
+        "$autovalue": "10"
+      }
+    ],
+    "settings": {
+      "style": "theme-grid pages no-text-transform",
+      "version": "8 (2021-10-08 01:40:43)",
+      "instance_name": "concat(${nama})"
+    },
+    "translated": [
+      "label"
+    ],
+    "translations": [
+      null
+    ]
+  },
+  "downloads": [
+    {
+      "format": "xls",
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6.xls"
+    },
+    {
+      "format": "xml",
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6.xml"
+    }
+  ],
+  "embeds": [
+    {
+      "format": "xls",
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/xls/"
+    },
+    {
+      "format": "xform",
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/xform/"
+    }
+  ],
+  "xform_link": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/xform/",
+  "hooks_link": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/hooks/",
+  "tag_string": "",
+  "uid": "aQJhqngNsednTaWshNJwN6",
+  "kind": "asset",
+  "xls_link": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/xls/",
+  "name": "ASDP - Berkendara",
+  "assignable_permissions": [
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/view_asset/",
+      "label": "View form"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/change_asset/",
+      "label": "Edit form"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/manage_asset/",
+      "label": "Manage project"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/add_submissions/",
+      "label": "Add submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/view_submissions/",
+      "label": "View submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/partial_submissions/",
+      "label": {
+        "default": "Act on submissions only from specific users",
+        "view_submissions": "View submissions only from specific users",
+        "change_submissions": "Edit submissions only from specific users",
+        "delete_submissions": "Delete submissions only from specific users",
+        "validate_submissions": "Validate submissions only from specific users"
+      }
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/change_submissions/",
+      "label": "Edit submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/delete_submissions/",
+      "label": "Delete submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/permissions/validate_submissions/",
+      "label": "Validate submissions"
+    }
+  ],
+  "permissions": [
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/pSqhCvwjz9FuMpXL9xsBjK/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/AnonymousUser/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/add_submissions/",
+      "label": "Add submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/p8DzxurkgCLfK5x8GNp4KZ/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/add_submissions/",
+      "label": "Add submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/pRdGhSrcZSJR5dPSYC2Dfp/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/change_asset/",
+      "label": "Edit form"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/p53uGmvqeav3UGBvwRbEhk/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/change_submissions/",
+      "label": "Edit submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/pS3eciuYTh4PtPCNtchnps/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/delete_submissions/",
+      "label": "Delete submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/pGXQLyBJ5Qfv4aKEiGVbBX/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/manage_asset/",
+      "label": "Manage project"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/pJaJh26EjqxNGsP7U3Qopg/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/validate_submissions/",
+      "label": "Validate submissions"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/p7USAdeWiT4nBKKWYpWy8D/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/view_asset/",
+      "label": "View form"
+    },
+    {
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/permission-assignments/p9MEtGUmi8eKvMdCNsjAUu/",
+      "user": "https://kf.kobotoolbox.org/api/v2/users/survey_spi01/",
+      "permission": "https://kf.kobotoolbox.org/api/v2/permissions/view_submissions/",
+      "label": "View submissions"
+    }
+  ],
+  "effective_permissions": [
+    {
+      "codename": "validate_submissions"
+    },
+    {
+      "codename": "delete_asset"
+    },
+    {
+      "codename": "manage_asset"
+    },
+    {
+      "codename": "delete_submissions"
+    },
+    {
+      "codename": "view_submissions"
+    },
+    {
+      "codename": "view_asset"
+    },
+    {
+      "codename": "change_asset"
+    },
+    {
+      "codename": "change_submissions"
+    },
+    {
+      "codename": "add_submissions"
+    }
+  ],
+  "exports": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/exports/",
+  "export_settings": [
+    {
+      "uid": "esMQEo9B3qaojJXqT8QmDyV",
+      "url": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/export-settings/esMQEo9B3qaojJXqT8QmDyV/",
+      "data_url_csv": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/export-settings/esMQEo9B3qaojJXqT8QmDyV/data.csv",
+      "data_url_xlsx": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/export-settings/esMQEo9B3qaojJXqT8QmDyV/data.xlsx",
+      "name": "",
+      "date_modified": "2024-06-04T02:56:44.734766Z",
+      "export_settings": {
+        "lang": "_xml",
+        "type": "xls",
+        "fields": [],
+        "group_sep": "/",
+        "multiple_select": "summary",
+        "include_media_url": true,
+        "xls_types_as_text": false,
+        "hierarchy_in_labels": false,
+        "fields_from_all_versions": true
+      }
+    }
+  ],
+  "data": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/data/",
+  "children": {
+    "count": 0
+  },
+  "subscribers_count": 0,
+  "status": "shared",
+  "access_types": null,
+  "data_sharing": {},
+  "paired_data": "https://kf.kobotoolbox.org/api/v2/assets/aQJhqngNsednTaWshNJwN6/paired-data/",
+  "project_ownership": null,
+  "owner_label": "survey_spi01",
+  "last_modified_by": "survey_spi01"
+}

@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Classification Progress - M-Coder Platform{% endblock %}
+
+{% block page_title %}Classification in Progress{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Progress Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-hourglass-split"></i> 
+                        <span id="status-text">Processing Classification...</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Overall Progress Bar -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span><strong>Overall Progress:</strong></span>
+                            <span id="progress-percentage">0%</span>
+                        </div>
+                        <div class="progress" style="height: 30px;">
+                            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                                 role="progressbar" style="width: 0%">
+                                <span id="progress-text">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Variable Info -->
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title"><i class="bi bi-box"></i> Current Variable</h6>
+                                    <h4 class="mb-0" id="current-variable">
+                                        <span class="text-muted">Initializing...</span>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title"><i class="bi bi-gear"></i> Current Step</h6>
+                                    <p class="mb-0" id="current-step">
+                                        <span class="text-muted">Starting...</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Statistics -->
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <i class="bi bi-list-check text-primary" style="font-size: 2rem;"></i>
+                                <h5 class="mt-2 mb-0">
+                                    <span id="completed-vars">0</span> / <span id="total-vars">0</span>
+                                </h5>
+                                <small class="text-muted">Variables Completed</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <i class="bi bi-clock text-info" style="font-size: 2rem;"></i>
+                                <h5 class="mt-2 mb-0" id="elapsed-time">0s</h5>
+                                <small class="text-muted">Elapsed Time</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded">
+                                <i class="bi bi-speedometer text-warning" style="font-size: 2rem;"></i>
+                                <h5 class="mt-2 mb-0" id="status-badge">
+                                    <span class="badge bg-primary">Processing</span>
+                                </h5>
+                                <small class="text-muted">Status</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Activity Log -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-journal-text"></i> Activity Log</h5>
+                </div>
+                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    <div id="activity-log">
+                        <p class="text-muted">Waiting for updates...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Completion Message (hidden initially) -->
+    <div id="completion-section" class="row mt-4" style="display: none;">
+        <div class="col-12">
+            <div class="alert alert-success">
+                <h4><i class="bi bi-check-circle-fill"></i> Classification Complete!</h4>
+                <p class="mb-3">All variables have been successfully processed.</p>
+                <a href="{{ url_for('main.classification_complete', job_id=job_id) }}" class="btn btn-success">
+                    <i class="bi bi-eye"></i> View Results
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Error Message (hidden initially) -->
+    <div id="error-section" class="row mt-4" style="display: none;">
+        <div class="col-12">
+            <div class="alert alert-danger">
+                <h4><i class="bi bi-exclamation-triangle-fill"></i> Error!</h4>
+                <p id="error-message" class="mb-3"></p>
+                <a href="{{ url_for('main.classify') }}" class="btn btn-danger">
+                    <i class="bi bi-arrow-counterclockwise"></i> Coba Lagi
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const jobId = "{{ job_id }}";
+let startTime = new Date();
+let elapsedInterval;
+let pollInterval;
+
+// AJAX Polling function
+async function pollProgress() {
+    try {
+        const response = await fetch(`/api/progress/${jobId}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch progress');
+        }
+        
+        const data = await response.json();
+        
+        // Handle error
+        if (data.error) {
+            document.getElementById('error-message').textContent = data.error;
+            document.getElementById('error-section').style.display = 'block';
+            document.getElementById('status-badge').innerHTML = '<span class="badge bg-danger">Error</span>';
+            stopPolling();
+            return;
+        }
+        
+        // Update progress bar
+        const progress = data.progress || 0;
+        document.getElementById('progress-bar').style.width = progress + '%';
+        document.getElementById('progress-text').textContent = progress + '%';
+        document.getElementById('progress-percentage').textContent = progress + '%';
+        
+        // Update current variable with FULL question text (no truncation)
+        if (data.current_variable) {
+            let varHtml = `<code class="text-primary fs-5">${data.current_variable}</code>`;
+            if (data.current_variable_question) {
+                // Display FULL question with smaller, compact font
+                varHtml += `<br><small class="text-muted" style="font-size: 0.75rem; line-height: 1.3;">${data.current_variable_question}</small>`;
+            }
+            document.getElementById('current-variable').innerHTML = varHtml;
+        }
+        
+        // Update current step
+        if (data.current_step) {
+            document.getElementById('current-step').textContent = data.current_step;
+            document.getElementById('status-text').textContent = data.current_step;
+        }
+        
+        // Update statistics
+        if (data.completed_variables !== undefined) {
+            document.getElementById('completed-vars').textContent = data.completed_variables;
+        }
+        if (data.total_variables) {
+            document.getElementById('total-vars').textContent = data.total_variables;
+        }
+        
+        // Update activity log
+        if (data.messages && data.messages.length > 0) {
+            const logHtml = data.messages.map(msg => 
+                `<div class="mb-2">
+                    <span class="badge bg-secondary">${msg.time}</span>
+                    <span class="ms-2">${msg.text}</span>
+                </div>`
+            ).reverse().join('');
+            document.getElementById('activity-log').innerHTML = logHtml;
+        }
+        
+        // Check if completed
+        if (data.completed) {
+            document.getElementById('progress-bar').classList.remove('progress-bar-animated');
+            document.getElementById('status-badge').innerHTML = '<span class="badge bg-success">Completed</span>';
+            document.getElementById('completion-section').style.display = 'block';
+            stopPolling();
+        }
+        
+    } catch (error) {
+        console.error('Polling error:', error);
+        document.getElementById('error-message').textContent = 'Connection error: ' + error.message;
+        document.getElementById('error-section').style.display = 'block';
+        stopPolling();
+    }
+}
+
+function stopPolling() {
+    if (pollInterval) {
+        clearInterval(pollInterval);
+        pollInterval = null;
+    }
+    if (elapsedInterval) {
+        clearInterval(elapsedInterval);
+    }
+}
+
+// Start polling every 2 seconds
+pollProgress(); // Initial call
+pollInterval = setInterval(pollProgress, 2000);
+
+// Update elapsed time
+elapsedInterval = setInterval(() => {
+    const elapsed = Math.floor((new Date() - startTime) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    
+    if (minutes > 0) {
+        document.getElementById('elapsed-time').textContent = `${minutes}m ${seconds}s`;
+    } else {
+        document.getElementById('elapsed-time').textContent = `${seconds}s`;
+    }
+}, 1000);
+</script>
+{% endblock %}

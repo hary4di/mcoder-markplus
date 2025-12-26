@@ -1,0 +1,19 @@
+requests>=2.31.0
+openai>=1.54.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+python-dotenv>=1.0.0
+
+# Image Processing for Favicon Generation
+Pillow>=10.1.0
+
+# Flask Web Application
+flask>=3.0.0
+flask-login>=0.6.0
+flask-sqlalchemy>=3.0.0
+flask-wtf>=1.2.0
+werkzeug>=3.0.0
+email-validator>=2.1.0
+
+# Email Service
+sib-api-v3-sdk>=7.6.0

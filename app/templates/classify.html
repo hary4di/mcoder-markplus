@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Classify - M-Coder Platform{% endblock %}
+
+{% block page_title %}Start Classification{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Progress Steps -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-2 p-md-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <strong>1</strong>
+                            </div>
+                            <div class="mt-2 fw-bold d-none d-md-block">Upload Files</div>
+                            <div class="mt-2 fw-bold d-md-none" style="font-size: 0.75rem;">Upload</div>
+                        </div>
+                        <div class="flex-fill" style="height: 2px; background: #ddd;"></div>
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <strong>2</strong>
+                            </div>
+                            <div class="mt-2 text-muted d-none d-md-block">Select Variables</div>
+                            <div class="mt-2 text-muted d-md-none" style="font-size: 0.75rem;">Variables</div>
+                        </div>
+                        <div class="flex-fill" style="height: 2px; background: #ddd;"></div>
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <strong>3</strong>
+                            </div>
+                            <div class="mt-2 text-muted d-none d-md-block">Run Classification</div>
+                            <div class="mt-2 text-muted d-md-none" style="font-size: 0.75rem;">Classify</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upload Form -->
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-cloud-upload"></i> 
+                        <span class="d-none d-md-inline">Upload Excel Files</span>
+                        <span class="d-md-none">Upload Files</span>
+                    </h5>
+                </div>
+                <div class="card-body p-3 p-md-4">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <!-- Kobo System File -->
+                        <div class="mb-3 mb-md-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-file-earmark-text"></i> Kobo System File
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" class="form-control" id="koboSystemFile" name="kobo_system_file" accept=".xlsx,.xls" required>
+                            <small class="text-muted d-none d-md-block">Excel file containing form structure with survey sheet (kobo_system_*.xlsx)</small>
+                            <small class="text-muted d-md-none">Form structure file (kobo_system_*.xlsx)</small>
+                        </div>
+                        
+                        <!-- Raw Data File -->
+                        <div class="mb-3 mb-md-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-file-earmark-spreadsheet"></i> Raw Data File
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" class="form-control" id="rawDataFile" name="raw_data_file" accept=".xlsx,.xls" required>
+                            <small class="text-muted d-none d-md-block">Excel file containing survey responses with open-ended answers</small>
+                            <small class="text-muted d-md-none">Survey responses with open-ended data</small>
+                        </div>
+                        
+                        <!-- Info Alert -->
+                        <div class="alert alert-info py-2 py-md-3">
+                            <i class="bi bi-info-circle"></i>
+                            <strong class="d-none d-md-inline">Auto-Detection:</strong>
+                            <strong class="d-md-none">Auto-Detect:</strong>
+                            <span class="d-none d-md-inline">System will detect open-ended variables (type=text, name≥S1, excluding "lainnya/sebutkan"). Maximum file size: 50MB</span>
+                            <span class="d-md-none">Detects text variables (name≥S1, no "lainnya"). Max: 50MB</span>
+                        </div>
+                        
+                        <!-- Upload Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg" id="uploadBtn">
+                                <i class="bi bi-cloud-upload"></i> 
+                                <span class="d-none d-md-inline">Upload & Analyze Files</span>
+                                <span class="d-md-none">Upload & Analyze</span>
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Progress -->
+                    <div id="uploadProgress" class="mt-3" style="display: none;">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        </div>
+                        <p class="text-center mt-2 text-muted">Uploading and analyzing files...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Example Files -->
+            <div class="card mt-3 bg-light">
+                <div class="card-body p-2 p-md-3">
+                    <h6 class="mb-2 mb-md-3">
+                        <i class="bi bi-question-circle"></i> 
+                        <span class="d-none d-md-inline">Detection Rules</span>
+                        <span class="d-md-none" style="font-size: 0.9rem;">Rules</span>
+                    </h6>
+                    <ul class="mb-0 small d-none d-md-block">
+                        <li><strong>Included:</strong> Variables with type="text", name≥"S1", no "lainnya/sebutkan" in label</li>
+                        <li><strong>Excluded:</strong> Profile fields (before S1), semi open-ended (pre-coded with "lainnya")</li>
+                        <li><strong>Example:</strong> E1, E2, F1 will be detected; X1_lainnya will be skipped</li>
+                    </ul>
+                    <ul class="mb-0 d-md-none" style="font-size: 0.75rem; padding-left: 1.2rem;">
+                        <li><strong>Include:</strong> type="text", name≥S1, no "lainnya" in label</li>
+                        <li><strong>Exclude:</strong> Profile fields, semi open-ended</li>
+                        <li><strong>Ex:</strong> E1, E2 detected; X1_lainnya skipped</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadProgress = document.getElementById('uploadProgress');
+    
+    // Show progress
+    uploadBtn.disabled = true;
+    uploadProgress.style.display = 'block';
+    
+    try {
+        const response = await fetch('{{ url_for("main.upload_files") }}', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Redirect to variable selection
+            window.location.href = '{{ url_for("main.select_variables") }}';
+        } else {
+            alert('Error: ' + result.error);
+            uploadBtn.disabled = false;
+            uploadProgress.style.display = 'none';
+        }
+    } catch (error) {
+        alert('Upload failed: ' + error.message);
+        uploadBtn.disabled = false;
+        uploadProgress.style.display = 'none';
+    }
+});
+</script>
+{% endblock %}

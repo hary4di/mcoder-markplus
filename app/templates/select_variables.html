@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+
+{% block title %}Select Variables - M-Coder Platform{% endblock %}
+
+{% block page_title %}Select Variables to Classify{% endblock %}
+
+{% block content %}
+<script>
+console.log('*** INLINE SCRIPT EXECUTED ***');
+console.log('Page:', window.location.href);
+</script>
+
+<div class="container-fluid">
+    <!-- Progress Steps -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-check"></i>
+                            </div>
+                            <div class="mt-2 text-muted">Upload Files</div>
+                        </div>
+                        <div class="flex-fill" style="height: 2px; background: #28a745;"></div>
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <strong>2</strong>
+                            </div>
+                            <div class="mt-2 fw-bold">Select Variables</div>
+                        </div>
+                        <div class="flex-fill" style="height: 2px; background: #ddd;"></div>
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <strong>3</strong>
+                            </div>
+                            <div class="mt-2 text-muted">Run Classification</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- File Info -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle"></i>
+                <strong>Files Uploaded Successfully!</strong> 
+                Found {{ file_info.rows }} rows and {{ file_info.columns }} columns. 
+                Detected {{ variables|length }} open-ended variables{% if semi_open_pairs %} and {{ semi_open_pairs|length }} semi open-ended pairs{% endif %}.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Semi Open-Ended Section -->
+    {% if semi_open_pairs %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-check"></i> Semi Open-Ended (Pre-coded + "Lainnya")
+                    </h5>
+                    <span class="badge bg-white text-info">{{ semi_open_pairs|length }} pairs detected</span>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-3">
+                        <i class="bi bi-info-circle"></i> <strong>What is Semi Open-Ended?</strong><br>
+                        These are questions with pre-coded options plus a "Lainnya" (Other) text field. 
+                        Only "Lainnya" responses will be classified, making this <strong>70-80% cheaper</strong> than full open-ended!
+                    </div>
+                    
+                    <form id="semiOpenForm" action="{{ url_for('main.start_classification') }}" method="POST">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="50">
+                                            <input type="checkbox" id="selectAllSemiOpen" onchange="toggleAllSemiOpen(this)">
+                                        </th>
+                                        <th>Select Variable</th>
+                                        <th>Text Variable</th>
+                                        <th>Lainnya Code</th>
+                                        <th>"Lainnya" Selected</th>
+                                        <th>Text Filled</th>
+                                        <th>Sample Responses</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pair in semi_open_pairs %}
+                                    <tr {% if pair.classification_status == 'completed' %}class="table-success"{% endif %}>
+                                        <td>
+                                            <input type="checkbox" name="selected_semi_open" value="{{ pair.select_var }}" class="semi-open-checkbox" 
+                                                   {% if pair.classification_status != 'completed' %}checked{% endif %}
+                                                   data-status="{{ pair.classification_status }}">
+                                        </td>
+                                        <td>
+                                            <code class="text-primary">{{ pair.select_var }}</code>
+                                            {% if pair.classification_status == 'completed' %}
+                                                <span class="badge bg-success ms-1"><i class="bi bi-check-circle"></i> Done</span>
+                                            {% endif %}
+                                        </td>
+                                        <td><code class="text-secondary">{{ pair.text_var }}</code></td>
+                                        <td><span class="badge bg-warning text-dark">{{ pair.lainnya_code }}</span></td>
+                                        <td><span class="badge bg-info">{{ pair.lainnya_count }}</span> responses</td>
+                                        <td><span class="badge bg-success">{{ pair.text_filled_count }}</span> filled</td>
+                                        <td>
+                                            {% if pair.sample_texts %}
+                                                {% for text in pair.sample_texts[:2] %}
+                                                    <small class="text-muted d-block">• {{ text[:80] }}{% if text|length > 80 %}...{% endif %}</small>
+                                                {% endfor %}
+                                            {% else %}
+                                                <small class="text-muted">No samples</small>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Cost Estimate -->
+                        <div class="alert alert-success mt-3">
+                            <i class="bi bi-cash-coin"></i> <strong>Estimated Cost:</strong>
+                            {% set total_lainnya = semi_open_pairs|sum(attribute='text_filled_count') %}
+                            Processing {{ total_lainnya }} "Lainnya" responses ≈ 
+                            <strong>$0.006</strong> (Rp 100) vs 
+                            <del>${{ "%.2f"|format(file_info.rows * 0.08 / 1000) }}</del> for full open-ended.
+                            <strong>Savings: ~{{ "%.0f"|format(100 - (total_lainnya / file_info.rows * 100)) }}%!</strong>
+                        </div>
+                        
+                        <!-- Semi Open-Ended Settings -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h6><i class="bi bi-gear"></i> Semi Open-Ended Settings</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Max Categories (New)</label>
+                                    <input type="number" name="semi_open_max_categories" class="form-control" value="10" min="5" max="50">
+                                    <small class="text-muted">Maximum new categories to generate from "Lainnya" responses</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="bi bi-gear"></i> Merging Options</h6>
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" name="create_merged_column" id="createMergedColumn" checked>
+                                    <label class="form-check-label" for="createMergedColumn">
+                                        Create merged column (e.g., <code>S10_merged</code>)
+                                    </label>
+                                    <small class="text-muted d-block">Combines pre-coded + AI classifications into single variable</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-play-circle"></i> Process Semi Open-Ended Variables
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Variable Selection -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-check2-square"></i> Select Variables to Classify
+                    </h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary" onclick="selectAll()">Select All</button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="deselectAll()">Deselect All</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if variables %}
+                    <form id="variableForm" action="{{ url_for('main.start_classification') }}" method="POST">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="50">
+                                            <input type="checkbox" id="selectAllCheckbox" onchange="toggleAll(this)">
+                                        </th>
+                                        <th>Variable</th>
+                                        <th>Question Label</th>
+                                        <th>Responses</th>
+                                        <th>Avg Length</th>
+                                        <th>Sample Data</th>
+                                        <th width="250">Question Context</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for var in variables %}
+                                    <tr {% if var.classification_status == 'completed' %}class="table-success"{% elif var.classification_status == 'partial' %}class="table-warning"{% endif %}>
+                                        <td>
+                                            <input type="checkbox" name="selected_vars" value="{{ var.name }}" class="var-checkbox" 
+                                                   {% if var.classification_status != 'completed' %}checked{% endif %}
+                                                   data-status="{{ var.classification_status }}">
+                                        </td>
+                                        <td>
+                                            <code class="text-primary">{{ var.name }}</code>
+                                            {% if var.classification_status == 'completed' %}
+                                                <span class="badge bg-success ms-1" title="All rows classified"><i class="bi bi-check-circle"></i> Done</span>
+                                            {% elif var.classification_status == 'partial' %}
+                                                <span class="badge bg-warning ms-1" title="{{ var.coded_empty_count }} rows not classified"><i class="bi bi-exclamation-triangle"></i> Partial</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ var.label }}</td>
+                                        <td>
+                                            <span class="badge bg-info">{{ var.response_count }}</span>
+                                            {% if var.classification_status == 'partial' %}
+                                                <small class="text-muted d-block">{{ var.coded_empty_count }} empty rows</small>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ var.avg_length }} chars</td>
+                                        <td>
+                                            <small class="text-muted">{{ var.sample_data }}</small>
+                                        </td>
+                                        <td>
+                                            <input type="text" 
+                                                   name="question_{{ var.name }}" 
+                                                   class="form-control form-control-sm" 
+                                                   placeholder="Optional context..."
+                                                   value="{{ var.label }}">
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Classification Mode -->
+                        <div class="alert alert-info mt-4" id="classificationModeAlert" style="display: none;">
+                            <h6><i class="bi bi-info-circle"></i> Classification Mode</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="classification_mode" id="modeIncremental" value="incremental" checked>
+                                <label class="form-check-label" for="modeIncremental">
+                                    <strong>Incremental (Recommended)</strong> - Only classify empty rows in variables with partial data
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="classification_mode" id="modeRerun" value="rerun">
+                                <label class="form-check-label" for="modeRerun">
+                                    <strong>Re-run All</strong> - Re-classify all rows (will overwrite existing classifications)
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Classification Settings -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h6 class="mb-3"><i class="bi bi-gear"></i> Classification Settings</h6>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Maximum Categories per Variable</label>
+                                    <input type="number" name="max_categories" class="form-control" value="10" min="3" max="20">
+                                    <small class="text-muted">AI will generate up to this many categories (default: 10)</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Confidence Threshold</label>
+                                    <input type="number" name="confidence_threshold" class="form-control" value="0.50" min="0.1" max="1.0" step="0.05">
+                                    <small class="text-muted">Minimum confidence for outlier detection (default: 0.50)</small>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" name="auto_upload" class="form-check-input" id="autoUpload" checked>
+                                    <label class="form-check-label" for="autoUpload">
+                                        Auto-upload results to Kobo
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card bg-light border-0">
+                                    <div class="card-body">
+                                        <h6 class="mb-3">
+                                            <i class="bi bi-info-circle text-primary"></i> Detection Summary
+                                        </h6>
+                                        <ul class="small mb-0">
+                                            <li>Variables detected from <strong>survey sheet</strong></li>
+                                            <li>Filtered: <strong>type=text</strong>, <strong>name≥S1</strong></li>
+                                            <li>Excluded: Semi open-ended with "lainnya/sebutkan"</li>
+                                            <li>Context helps AI generate better categories</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 justify-content-between mt-4">
+                            <a href="{{ url_for('main.classify') }}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg" onclick="console.log('BUTTON CLICKED'); return true;">
+                                <i class="bi bi-play-circle"></i> Start Classification
+                            </button>
+                        </div>
+                    </form>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        No open-ended variables detected{% if not semi_open_pairs %} and no semi open-ended pairs found{% endif %}. Please check your kobo_system file structure.
+                    </div>
+                    <a href="{{ url_for('main.classify') }}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to Upload
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleAll(checkbox) {
+    const checkboxes = document.querySelectorAll('.var-checkbox');
+    checkboxes.forEach(cb => cb.checked = checkbox.checked);
+    updateClassificationModeVisibility();
+}
+
+function toggleAllSemiOpen(checkbox) {
+    const checkboxes = document.querySelectorAll('.semi-open-checkbox');
+    checkboxes.forEach(cb => cb.checked = checkbox.checked);
+}
+
+function selectAll() {
+    const checkboxes = document.querySelectorAll('.var-checkbox');
+    checkboxes.forEach(cb => cb.checked = true);
+    document.getElementById('selectAllCheckbox').checked = true;
+    updateClassificationModeVisibility();
+}
+
+function deselectAll() {
+    const checkboxes = document.querySelectorAll('.var-checkbox');
+    checkboxes.forEach(cb => cb.checked = false);
+    document.getElementById('selectAllCheckbox').checked = false;
+    updateClassificationModeVisibility();
+}
+
+function updateClassificationModeVisibility() {
+    const checkedBoxes = document.querySelectorAll('.var-checkbox:checked');
+    let hasCompleted = false;
+    let hasPartial = false;
+    
+    checkedBoxes.forEach(cb => {
+        const status = cb.getAttribute('data-status');
+        if (status === 'completed') hasCompleted = true;
+        if (status === 'partial') hasPartial = true;
+    });
+    
+    const modeAlert = document.getElementById('classificationModeAlert');
+    if (modeAlert && (hasCompleted || hasPartial)) {
+        modeAlert.style.display = 'block';
+    } else if (modeAlert) {
+        modeAlert.style.display = 'none';
+    }
+}
+
+// Form validation
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== PAGE LOADED ===');
+    
+    // Initialize mode visibility
+    updateClassificationModeVisibility();
+    
+    // Add listener to all checkboxes
+    document.querySelectorAll('.var-checkbox').forEach(cb => {
+        cb.addEventListener('change', updateClassificationModeVisibility);
+    });
+    
+    // Pure open-ended form
+    const form = document.getElementById('variableForm');
+    if (form) {
+        console.log('Pure open-ended form found, action:', form.action);
+        
+        form.addEventListener('submit', function(e) {
+            console.log('Submit triggered');
+            const checked = document.querySelectorAll('.var-checkbox:checked');
+            console.log('Checked count:', checked.length);
+            
+            if (checked.length === 0) {
+                e.preventDefault();
+                alert('Please select at least one variable to classify');
+                return false;
+            }
+            
+            console.log('Form will submit...');
+        });
+    }
+    
+    // Semi open-ended form
+    const semiOpenForm = document.getElementById('semiOpenForm');
+    if (semiOpenForm) {
+        console.log('Semi open-ended form found');
+        
+        semiOpenForm.addEventListener('submit', function(e) {
+            const checked = document.querySelectorAll('.semi-open-checkbox:checked');
+            
+            if (checked.length === 0) {
+                e.preventDefault();
+                alert('Please select at least one semi open-ended pair to process');
+                return false;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

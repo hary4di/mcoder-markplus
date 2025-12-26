@@ -1,0 +1,55 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Flask
+instance/
+*.db
+*.sqlite3
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Files
+files/uploads/*
+files/output/*
+files/logo/*
+!files/uploads/.gitkeep
+!files/output/.gitkeep
+!files/logo/.gitkeep
+
+# Logs
+files/logs/*.log
+files/logs/*.txt
+!files/logs/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backups
+*.backup_*
+backups/
+
+# Temporary
+*.tmp
+*.temp
+
+# Deployment
+quick-deploy.ps1
+setup-git.ps1

@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - M-Coder Platform{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Welcome Banner -->
+    <div class="row mb-2 mb-md-3">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px;">
+                <div class="card-body py-2 py-md-3 px-3 px-md-4">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <div>
+                                <h6 class="text-white mb-0 fw-bold" style="font-size: 0.9rem;">
+                                    <i class="bi bi-hand-wave me-1 me-md-2"></i>Welcome back, {{ current_user.full_name or current_user.username }}!
+                                </h6>
+                                <small class="text-white d-none d-md-block" style="opacity: 0.9; font-size: 0.8rem;">
+                                    <i class="bi bi-calendar-check me-1"></i>{{ now.strftime('%A, %d %B %Y') }}
+                                </small>
+                                <small class="text-white d-md-none" style="opacity: 0.9; font-size: 0.75rem;">
+                                    <i class="bi bi-calendar-check me-1"></i>{{ now.strftime('%a, %d %b %Y') }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-end d-none d-lg-block">
+                            <a href="{{ url_for('main.classify') }}" class="btn btn-light btn-sm rounded-pill px-3 py-2 text-decoration-none" style="backdrop-filter: blur(10px);">
+                                <i class="bi bi-lightning-charge me-1"></i>
+                                <span class="fw-semibold">Start Classifying</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile CTA Button -->
+                    <div class="d-lg-none mt-3">
+                        <a href="{{ url_for('main.classify') }}" class="btn btn-light w-100 py-2 rounded-3 text-decoration-none shadow-sm" style="backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3);">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-gradient rounded-circle p-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                        <i class="bi bi-lightning-charge-fill text-white" style="font-size: 1.1rem;"></i>
+                                    </div>
+                                    <div class="text-start">
+                                        <div class="fw-bold" style="color: #667eea; font-size: 0.95rem;">Start Classification</div>
+                                        <small class="text-muted" style="font-size: 0.7rem;">Upload and classify your data</small>
+                                    </div>
+                                </div>
+                                <i class="bi bi-arrow-right-circle-fill" style="font-size: 1.5rem; color: #667eea;"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row mb-4 g-3">
+        <div class="col-6 col-md-3">
+            <div class="card h-100">
+                <div class="card-body p-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start">
+                        <div class="mb-2 mb-md-0 w-100">
+                            <h6 class="text-muted mb-1 mb-md-2" style="font-size: 0.8rem;">Total Classifications</h6>
+                            <h3 class="mb-0 fs-4 fs-md-3">0</h3>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 p-2 p-md-3 rounded align-self-end align-self-md-center">
+                            <i class="bi bi-file-earmark-bar-graph fs-4 fs-md-2 text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-6 col-md-3">
+            <div class="card h-100">
+                <div class="card-body p-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start">
+                        <div class="mb-2 mb-md-0 w-100">
+                            <h6 class="text-muted mb-1 mb-md-2" style="font-size: 0.8rem;">Data Processed</h6>
+                            <h3 class="mb-0 fs-4 fs-md-3">0</h3>
+                        </div>
+                        <div class="bg-success bg-opacity-10 p-2 p-md-3 rounded align-self-end align-self-md-center">
+                            <i class="bi bi-check-circle fs-4 fs-md-2 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-6 col-md-3">
+            <div class="card h-100">
+                <div class="card-body p-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start">
+                        <div class="mb-2 mb-md-0 w-100">
+                            <h6 class="text-muted mb-1 mb-md-2" style="font-size: 0.8rem;">Categories Created</h6>
+                            <h3 class="mb-0 fs-4 fs-md-3">0</h3>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 p-2 p-md-3 rounded align-self-end align-self-md-center">
+                            <i class="bi bi-tags fs-4 fs-md-2 text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-6 col-md-3">
+            <div class="card h-100">
+                <div class="card-body p-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start">
+                        <div class="mb-2 mb-md-0 w-100">
+                            <h6 class="text-muted mb-1 mb-md-2" style="font-size: 0.8rem;">Avg Confidence</h6>
+                            <h3 class="mb-0 fs-4 fs-md-3">0%</h3>
+                        </div>
+                        <div class="bg-info bg-opacity-10 p-2 p-md-3 rounded align-self-end align-self-md-center">
+                            <i class="bi bi-graph-up fs-4 fs-md-2 text-info"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Quick Actions -->
+    <div class="row mb-4 d-md-none">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                <div class="card-body p-3">
+                    <h6 class="fw-bold mb-3" style="color: #495057;">
+                        <i class="bi bi-grid-3x3-gap me-2"></i>Quick Actions
+                    </h6>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <a href="{{ url_for('main.classify') }}" class="text-decoration-none">
+                                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <div class="card-body p-3 text-center">
+                                        <i class="bi bi-play-circle-fill text-white" style="font-size: 2rem;"></i>
+                                        <div class="text-white fw-semibold mt-2" style="font-size: 0.85rem;">Classify</div>
+                                        <small class="text-white" style="opacity: 0.9; font-size: 0.7rem;">Start new</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ url_for('main.results') }}" class="text-decoration-none">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body p-3 text-center" style="background: #f8f9fa;">
+                                        <i class="bi bi-bar-chart-fill" style="font-size: 2rem; color: #667eea;"></i>
+                                        <div class="fw-semibold mt-2" style="font-size: 0.85rem; color: #495057;">Results</div>
+                                        <small class="text-muted" style="font-size: 0.7rem;">View history</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning"></i> Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <a href="{{ url_for('main.classify') }}" class="text-decoration-none">
+                                <div class="d-flex align-items-center p-3 border rounded hover-shadow" style="transition: all 0.3s;">
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                        <i class="bi bi-play-circle fs-3 text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Start New Classification</h6>
+                                        <small class="text-muted">Process open-ended survey data</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <a href="{{ url_for('main.results') }}" class="text-decoration-none">
+                                <div class="d-flex align-items-center p-3 border rounded hover-shadow" style="transition: all 0.3s;">
+                                    <div class="bg-success bg-opacity-10 p-3 rounded me-3">
+                                        <i class="bi bi-bar-chart fs-3 text-success"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">View Results</h6>
+                                        <small class="text-muted">Review classification results</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        {% if current_user.is_admin %}
+                        <div class="col-md-6">
+                            <a href="{{ url_for('main.users') }}" class="text-decoration-none">
+                                <div class="d-flex align-items-center p-3 border rounded hover-shadow" style="transition: all 0.3s;">
+                                    <div class="bg-warning bg-opacity-10 p-3 rounded me-3">
+                                        <i class="bi bi-people fs-3 text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Manage Users</h6>
+                                        <small class="text-muted">Add or manage user accounts</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="col-md-6">
+                            <a href="{{ url_for('main.profile') }}" class="text-decoration-none">
+                                <div class="d-flex align-items-center p-3 border rounded hover-shadow" style="transition: all 0.3s;">
+                                    <div class="bg-info bg-opacity-10 p-3 rounded me-3">
+                                        <i class="bi bi-person-circle fs-3 text-info"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">My Profile</h6>
+                                        <small class="text-muted">View & edit profile</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- System Info -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-info-circle"></i> System Info
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Status</span>
+                                <span class="badge bg-success">Online</span>
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">AI Model</span>
+                                <span class="fw-bold">GPT-4o-mini</span>
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Version</span>
+                                <span class="fw-bold">1.0.0</span>
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Last Login</span>
+                                <span class="fw-bold">
+                                    {% if current_user.last_login %}
+                                        {{ current_user.last_login.strftime('%d %b %H:%M') }}
+                                    {% else %}
+                                        First login
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Help Card -->
+            <div class="card mt-3 bg-light">
+                <div class="card-body text-center">
+                    <i class="bi bi-question-circle fs-1 text-muted mb-2"></i>
+                    <h6>Need Help?</h6>
+                    <p class="small text-muted mb-0">
+                        Contact support team or view documentation
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-shadow:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
