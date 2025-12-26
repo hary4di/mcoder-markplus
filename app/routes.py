@@ -495,6 +495,14 @@ def classification_progress():
         flash('No classification process running', 'warning')
         return redirect(url_for('main.classify'))
     
+    # Check if job still exists (might be lost after restart)
+    progress_data = progress_tracker.get_progress(job_id)
+    if not progress_data:
+        print(f"[PROGRESS_PAGE] Job {job_id} not found in tracker, clearing session")
+        session.pop('classification_job_id', None)
+        flash('Classification session expired. Please start a new classification.', 'warning')
+        return redirect(url_for('main.classify'))
+    
     return render_template('classification_progress.html', job_id=job_id)
 
 @main_bp.route('/api/progress/<job_id>')
