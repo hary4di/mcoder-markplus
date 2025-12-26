@@ -501,15 +501,30 @@ def classification_progress():
 @login_required
 def api_progress(job_id):
     """AJAX polling endpoint - return progress as JSON"""
-    progress_data = progress_tracker.get_progress(job_id)
-    
-    if not progress_data:
+    try:
+        progress_data = progress_tracker.get_progress(job_id)
+        
+        if not progress_data:
+            print(f"[API_PROGRESS] Job not found: {job_id}")
+            return jsonify({
+                'error': 'Job not found',
+                'completed': True
+            }), 404
+        
+        print(f"[API_PROGRESS] Returning progress for {job_id}: {progress_data.get('progress', 0)}%")
+        response = jsonify(progress_data)
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
+    except Exception as e:
+        print(f"[API_PROGRESS] Error: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({
-            'error': 'Job not found',
+            'error': str(e),
             'completed': True
-        }), 404
-    
-    return jsonify(progress_data)
+        }), 500
 
 @main_bp.route('/classification-complete/<job_id>')
 @login_required
