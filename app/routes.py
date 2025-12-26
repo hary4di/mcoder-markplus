@@ -280,12 +280,25 @@ def run_classification_background(job_id, kobo_system_path, raw_data_path, varia
     """Background function to run classification with progress tracking"""
     import time
     import sys
+    import traceback
+    
+    print(f"\n{'='*80}")
+    print(f"[BACKGROUND] Thread started for job: {job_id}")
+    print(f"[BACKGROUND] Thread ID: {threading.current_thread().ident}")
+    print(f"[BACKGROUND] Variables to process: {len(variables_to_process)}")
+    print(f"{'='*80}\n", flush=True)
     
     try:
-        print(f"\n[BACKGROUND] Starting classification job: {job_id}", flush=True)
-        print(f"[BACKGROUND] Processing {len(variables_to_process)} variables", flush=True)
+        # Verify job exists in tracker
+        job_data = progress_tracker.get_progress(job_id)
+        if not job_data:
+            print(f"[BACKGROUND] ERROR: Job {job_id} not found in progress_tracker!", flush=True)
+            print(f"[BACKGROUND] Available jobs: {list(progress_tracker.data.keys())}", flush=True)
+            return
         
-        # Add small delay to ensure job is created
+        print(f"[BACKGROUND] Job verified in tracker: {job_data.get('status')}", flush=True)
+        
+        # Add small delay to ensure redirect completes
         time.sleep(0.5)
         
         # Initialize classifier
