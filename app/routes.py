@@ -574,6 +574,32 @@ def results():
     
     return render_template('results.html', results=classification_results)
 
+@main_bp.route('/download-file/<path:filename>')
+@login_required
+def download_file(filename):
+    """Download classified Excel files"""
+    import os
+    from flask import send_from_directory
+    
+    # Security: Only allow downloads from uploads directory
+    uploads_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'files', 'uploads')
+    
+    # Get just the filename without path
+    safe_filename = os.path.basename(filename)
+    
+    filepath = os.path.join(uploads_dir, safe_filename)
+    
+    if not os.path.exists(filepath):
+        flash(f'File not found: {safe_filename}', 'error')
+        return redirect(url_for('main.results'))
+    
+    return send_from_directory(
+        uploads_dir, 
+        safe_filename,
+        as_attachment=True,
+        download_name=safe_filename
+    )
+
 @main_bp.route('/admin/settings')
 @login_required
 def admin_settings():
