@@ -14,6 +14,55 @@
 - **Application URL**: https://m-coder.flazinsight.com
 - **Instance Path**: /opt/markplus/mcoder-markplus/
 
+### Version Control & Deployment
+- **Repository**: https://github.com/hary4di/mcoder-markplus
+- **Visibility**: Public repository
+- **Current Commit**: b02a93a - "Initial commit: M-Coder Platform"
+- **Deployment Method**: Git-based automated workflow
+- **Local Development**: Windows (OneDrive sync path)
+- **Production**: VPS Ubuntu via Git pull
+
+### Deployment Workflow (Development → Production)
+**Automated Deployment (Recommended):**
+```powershell
+# From Windows local development
+.\quick-deploy.ps1 -message "Deskripsi perubahan"
+```
+
+Script otomatis akan:
+1. ✅ Git commit dengan message
+2. ✅ Push ke GitHub
+3. ✅ SSH ke VPS
+4. ✅ Pull code terbaru
+5. ✅ Update dependencies (jika ada perubahan requirements.txt)
+6. ✅ Restart service via supervisorctl
+7. ✅ Report deployment status
+
+**Manual Deployment:**
+```powershell
+# Local (Windows)
+git add .
+git commit -m "Pesan commit"
+git push
+```
+
+```bash
+# VPS (Production)
+ssh root@145.79.10.104
+cd /opt/markplus/mcoder-markplus
+git pull
+supervisorctl restart mcoder-markplus
+```
+
+**Rollback (jika ada masalah):**
+```bash
+# Di VPS
+cd /opt/markplus/mcoder-markplus
+git log --oneline -10  # Lihat commit history
+git reset --hard <commit-hash>  # Rollback ke commit tertentu
+supervisorctl restart mcoder-markplus
+```
+
 ### Multi-Tenant Architecture
 - **Structure**: Modular design supporting multiple company instances
 - **Port Strategy**: Each instance runs on separate internal port (8000, 8001, 8002...)
