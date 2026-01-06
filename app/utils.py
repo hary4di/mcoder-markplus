@@ -61,6 +61,11 @@ class FileProcessor:
         3. Exclude: Profil fields (nama, alamat, telepon, email, ktp, dll)
         4. Exclude: Screening fields (S*) and semi open-ended (label contains "lainnya/sebutkan")
         
+        Exclusion Rules (Updated Jan 7, 2026):
+        - Exact match: nama, alamat, email, telepon, ktp, interviewer, dll
+        - Pattern match: Fields/labels containing profil keywords
+        - Example excluded: "nama_responden", "alamat_lengkap", "email_interviewer"
+        
         Args:
             kobo_system_path: Path to kobo_system Excel file
         
@@ -78,14 +83,29 @@ class FileProcessor:
             if 'type' not in df_survey.columns or 'name' not in df_survey.columns:
                 return []
             
-            # Field profil yang harus di-exclude
+            # Field profil yang harus di-exclude (exact match)
             profile_fields = [
                 'nama', 'name', 'alamat', 'address', 'telepon', 'telpon', 'phone',
                 'hp', 'handphone', 'email', 'ktp', 'nik', 'interviewer', 'enumerator',
-                'tanggal', 'date', 'waktu', 'time', 'lokasi', 'location', 'wilayah'
+                'tanggal', 'date', 'waktu', 'time', 'lokasi', 'location', 'wilayah',
+                'kota', 'city', 'kecamatan', 'kelurahan', 'provinsi', 'kabupaten',
+                'rt', 'rw', 'kodepos', 'zipcode', 'postal', 'npwp', 'sim', 'passport',
+                'umur', 'age', 'usia', 'jeniskelamin', 'jenis_kelamin', 'gender',
+                'pekerjaan', 'occupation', 'pendidikan', 'education', 'status',
+                'gaji', 'salary', 'income', 'penghasilan', 'nohp', 'no_hp', 'no_telp',
+                'koordinat', 'latitude', 'longitude', 'gps', 'maps'
+            ]
+            
+            # Pattern yang harus di-exclude (contains)
+            profile_patterns = [
+                'nama', 'name', 'alamat', 'address', 'telp', 'telepon', 'phone', 'hp',
+                'email', 'ktp', 'nik', 'interviewer', 'enum', 'koordinat',
+                'latitude', 'longitude', 'gps', 'tanggal', 'date', 'waktu', 'time',
+                'responden', 'respondent', 'pewawancara', 'surveyor', 'notelp', 'no_telp'
             ]
             
             detected_vars = []
+            skipped_vars = []
             
             for idx, row in df_survey.iterrows():
                 var_type = str(row['type']).lower().strip()
@@ -96,17 +116,33 @@ class FileProcessor:
                 if var_type != 'text':
                     continue
                 
-                # Filter 2: Exclude profile fields
+                # Filter 2: Exclude profile fields (exact match case-insensitive)
                 if var_name.lower() in profile_fields:
+                    skipped_vars.append(f"{var_name} (exact match)")
+                    continue
+                
+                # Filter 2b: Exclude profile patterns (contains)
+                var_name_lower = var_name.lower()
+                matched_pattern = next((p for p in profile_patterns if p in var_name_lower), None)
+                if matched_pattern:
+                    skipped_vars.append(f"{var_name} (pattern: {matched_pattern})")
+                    continue
+                
+                # Filter 2c: Exclude by label patterns
+                label_lower = var_label.lower()
+                matched_label_pattern = next((p for p in profile_patterns if p in label_lower), None)
+                if matched_label_pattern:
+                    skipped_vars.append(f"{var_name} (label pattern: {matched_label_pattern})")
                     continue
                 
                 # Filter 3: Exclude screening fields (dimulai dengan S)
                 if var_name.upper().startswith('S'):
+                    skipped_vars.append(f"{var_name} (screening)")
                     continue
                 
                 # Filter 4: Exclude semi open-ended (pre-coded)
-                label_lower = var_label.lower()
                 if any(keyword in label_lower for keyword in ['lainnya', 'sebutkan', 'lain nya', 'other', 'others']):
+                    skipped_vars.append(f"{var_name} (semi open-ended)")
                     continue
                 
                 detected_vars.append({
@@ -114,6 +150,14 @@ class FileProcessor:
                     'label': var_label,
                     'type': var_type
                 })
+            
+            # Log skipped variables for debugging
+            if skipped_vars:
+                print(f"\n[SKIP] Excluded {len(skipped_vars)} profile/screening variables:")
+                for skip in skipped_vars[:10]:  # Show first 10
+                    print(f"  - {skip}")
+                if len(skipped_vars) > 10:
+                    print(f"  ... and {len(skipped_vars) - 10} more")
             
             return detected_vars
             
