@@ -84,6 +84,19 @@ class SystemSettings(db.Model):
             db.session.add(setting)
         db.session.commit()
     
+    @staticmethod
+    def get_settings():
+        """Get all settings as an object with properties"""
+        class SettingsObject:
+            def __init__(self):
+                self.app_name = SystemSettings.get_setting('app_name', 'M-Code Pro')
+                self.logo_filename = SystemSettings.get_setting('logo_filename', None)
+                self.brevo_api_key = SystemSettings.get_setting('brevo_api_key', None)
+                self.brevo_sender_email = SystemSettings.get_setting('brevo_sender_email', None)
+                self.brevo_sender_name = SystemSettings.get_setting('brevo_sender_name', 'M-Code Pro')
+        
+        return SettingsObject()
+    
     def __repr__(self):
         return f'<SystemSettings {self.key}>'
 

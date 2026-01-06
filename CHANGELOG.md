@@ -2,6 +2,101 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-01-07] - OTP Email Verification - Production Deployment ✅
+
+### 🎯 Status: FULLY DEPLOYED - All OTP Features Working
+**Production**: ✅ https://m-coder.flazinsight.com
+**Features**: ✅ Sign Up with OTP, Forgot Password, Profile Change Password, Delete User
+**Email Service**: ✅ Brevo API (msurvey@markplusinc.com)
+
+### Deployment Journey (Jan 7, 2026)
+1. **Initial Upload** ✅ - Uploaded auth.py, email_service.py, routes.py, 5 templates
+2. **First Issue** ❌ - Register & Forgot Password: Internal Server Error 500
+3. **Root Cause 1** 🔍 - Missing `SystemSettings.get_settings()` method in models.py
+4. **Fix 1** ✅ - Added `get_settings()` method to SystemSettings model
+5. **Root Cause 2** 🔍 - Production `__init__.py` missing CSRFProtect initialization
+6. **Fix 2** ✅ - Uploaded complete `__init__.py` with CSRFProtect + Flask-Migrate
+7. **Dependency Issue** ❌ - flask-migrate not installed in production venv
+8. **Fix 3** ✅ - Installed flask-migrate package in production
+9. **Second Issue** ❌ - Delete User: "CSRF token not found"
+10. **Root Cause 3** 🔍 - Production `base.html` missing csrf-token meta tag
+11. **Fix 4** ✅ - Uploaded complete `base.html` with csrf-token meta tag
+12. **FINAL RESULT** 🎉 - All features working perfectly!
+
+### Technical Fixes Applied
+
+**1. SystemSettings Model Enhancement**
+```python
+# app/models.py - Added get_settings() method
+@staticmethod
+def get_settings():
+    """Get all settings as an object with properties"""
+    class SettingsObject:
+        def __init__(self):
+            self.app_name = SystemSettings.get_setting('app_name', 'M-Code Pro')
+            self.logo_filename = SystemSettings.get_setting('logo_filename', None)
+            self.brevo_api_key = SystemSettings.get_setting('brevo_api_key', None)
+            self.brevo_sender_email = SystemSettings.get_setting('brevo_sender_email', None)
+            self.brevo_sender_name = SystemSettings.get_setting('brevo_sender_name', 'M-Code Pro')
+    
+    return SettingsObject()
+```
+
+**2. CSRFProtect Initialization**
+```python
+# app/__init__.py - Added CSRF protection
+from flask_wtf.csrf import CSRFProtect
+csrf = CSRFProtect()
+
+def create_app(config_name='default'):
+    # ...
+    csrf.init_app(app)
+```
+
+**3. CSRF Token Meta Tag**
+```html
+<!-- app/templates/base.html - Line 36 -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+```
+
+### Files Updated in Production
+1. ✅ `app/auth.py` - OTP registration, verification routes
+2. ✅ `app/email_service.py` - Brevo email integration
+3. ✅ `app/routes.py` - Profile change password with OTP
+4. ✅ `app/models.py` - Added `get_settings()` method
+5. ✅ `app/__init__.py` - CSRFProtect + Flask-Migrate initialization
+6. ✅ `app/templates/base.html` - CSRF token meta tag
+7. ✅ `app/templates/register.html` - CSRF token in form
+8. ✅ `app/templates/verify_registration_simple.html` - OTP verification page
+9. ✅ `app/templates/forgot_password.html` - CSRF token in form
+10. ✅ `app/templates/reset_password.html` - CSRF token in form
+11. ✅ `app/templates/profile.html` - CSRF in AJAX requests
+12. ✅ Installed `flask-migrate==4.1.0` package
+
+### Brevo Configuration
+- API Key: Configured in production `.env`
+- Sender Email: msurvey@markplusinc.com (verified)
+- Sender Name: M-Code Pro
+- Daily Limit: 300 emails/day (free plan)
+
+### Testing Results
+- ✅ Sign Up with Email OTP: Working
+- ✅ Email Verification (6-digit code): Working
+- ✅ Forgot Password with OTP: Working
+- ✅ Profile Change Password with OTP: Working
+- ✅ Delete User with CSRF: Working
+- ✅ OTP Expiry (15 minutes): Working
+- ✅ Resend OTP (60-second cooldown): Working
+
+### Lessons Learned
+1. **Complete File Sync**: Always check and upload ALL related files (models.py, __init__.py, base.html)
+2. **Dependency Check**: Verify all packages installed in production venv
+3. **CSRF Protection**: Ensure csrf-token meta tag exists in base template
+4. **Systematic Testing**: Test with actual curl/test scripts to get exact error messages
+5. **Log Analysis**: Use test scripts instead of generic error pages for debugging
+
+---
+
 ## [2026-01-05] - PostgreSQL Migration SUCCESS ✅
 
 ### 🎯 Status: MIGRATION COMPLETE - Production Running on PostgreSQL
