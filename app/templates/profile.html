@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Profile - M-Coder Platform{% endblock %}
+{% block title %}Profile - M-Code Pro{% endblock %}
 
 {% block page_title %}My Profile{% endblock %}
 
@@ -10,15 +10,36 @@
         <div class="col-12 col-md-4">
             <div class="card">
                 <div class="card-body text-center py-4">
-                    <i class="bi bi-person-circle" style="font-size: 4rem; color: #667eea;" class="d-none d-md-inline"></i>
-                    <i class="bi bi-person-circle" style="font-size: 3.5rem; color: #667eea;" class="d-inline d-md-none"></i>
+                    {% if current_user.profile_photo is defined and current_user.profile_photo %}
+                    <img src="{{ url_for('main.serve_profile_photo', filename=current_user.profile_photo) }}" 
+                         alt="Profile Photo" 
+                         class="rounded-circle mb-3" 
+                         style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #667eea;">
+                    {% else %}
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" 
+                         style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 3px solid #667eea;">
+                        <span style="font-size: 3rem; color: white; font-weight: 600;">
+                            {{ current_user.full_name[0] if current_user.full_name else current_user.username[0]|upper }}
+                        </span>
+                    </div>
+                    {% endif %}
+                    
                     <h4 class="mt-3 fs-5 fs-md-4">{{ current_user.full_name or current_user.username }}</h4>
                     <p class="text-muted">{{ current_user.email }}</p>
-                    {% if current_user.is_admin %}
-                    <span class="badge bg-warning text-dark">Administrator</span>
+                    {% if current_user.is_super_admin %}
+                    <span class="badge bg-danger">Super Admin</span>
+                    {% elif current_user.is_admin %}
+                    <span class="badge bg-warning text-dark">Admin</span>
                     {% else %}
                     <span class="badge bg-secondary">User</span>
                     {% endif %}
+                    
+                    <!-- Upload Photo Button -->
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#uploadPhotoModal">
+                            <i class="bi bi-camera"></i> {{ 'Change Photo' if (current_user.profile_photo is defined and current_user.profile_photo) else 'Upload Photo' }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -153,6 +174,12 @@
 </div>
 
 <script>
+// Get CSRF token from meta tag
+function getCSRFToken() {
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    return csrfMeta ? csrfMeta.content : '';
+}
+
 // Request OTP
 async function requestOTP() {
     const statusDiv = document.getElementById('otp-status');
@@ -162,7 +189,8 @@ async function requestOTP() {
         const response = await fetch('{{ url_for("main.request_password_otp") }}', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
             }
         });
         
@@ -210,7 +238,8 @@ async function changePassword(event) {
         const response = await fetch('{{ url_for("main.verify_otp_change_password") }}', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
             },
             body: JSON.stringify({
                 otp_code: otpCode,
@@ -266,5 +295,59 @@ function resetForm() {
 document.getElementById('otp_code')?.addEventListener('input', function(e) {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+
+// Image preview for profile photo upload
+document.getElementById('profile_photo')?.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('previewImage').src = e.target.result;
+            document.getElementById('imagePreview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
 </script>
+
+<!-- Upload Photo Modal -->
+<div class="modal fade" id="uploadPhotoModal" tabindex="-1" aria-labelledby="uploadPhotoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadPhotoModalLabel">
+                    <i class="bi bi-camera"></i> Upload Profile Photo
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" enctype="multipart/form-data" id="uploadPhotoForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="profile_photo" class="form-label fw-bold">Select Photo</label>
+                        <input type="file" class="form-control" id="profile_photo" name="profile_photo" 
+                               accept="image/png,image/jpeg,image/jpg,image/gif" required>
+                        <div class="form-text">
+                            <i class="bi bi-info-circle"></i> Supported formats: PNG, JPG, JPEG, GIF. Max size: 5MB
+                        </div>
+                    </div>
+                    
+                    <!-- Image Preview -->
+                    <div id="imagePreview" class="text-center" style="display: none;">
+                        <p class="text-muted mb-2">Preview:</p>
+                        <img id="previewImage" src="" alt="Preview" 
+                             class="rounded-circle" 
+                             style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #667eea;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-upload"></i> Upload Photo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

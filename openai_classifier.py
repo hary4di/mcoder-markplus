@@ -250,7 +250,7 @@ Instruksi:
    - Mutually exclusive (tidak overlap)
    - Comprehensive (mencakup mayoritas jawaban)
 5. Gunakan bahasa Indonesia untuk nama kategori
-6. WAJIB ada kategori "Other" untuk jawaban yang tidak masuk kategori lain
+6. WAJIB ada kategori "Lainnya" untuk jawaban yang tidak masuk kategori lain (gunakan kata "Lainnya", bukan "Other")
 
 Format output (JSON):
 {{
@@ -285,12 +285,25 @@ PENTING: Hanya output JSON, tidak ada text tambahan."""
             
             print(f"[OPENAI] Received {len(categories)} categories from API", flush=True)
             
-            # Ensure "Other" is included
-            if "Other" not in categories:
-                categories.append("Other")
+            # Normalize categories: replace 'Other' with 'Lainnya' and remove duplicates
+            normalized = []
+            has_other = False
+            for cat in categories:
+                if cat.lower() in ['other', 'lainnya']:
+                    if not has_other:
+                        normalized.append('Lainnya')
+                        has_other = True
+                else:
+                    normalized.append(cat)
+            
+            # Ensure "Lainnya" is included
+            if not has_other:
+                normalized.append("Lainnya")
+            
+            print(f"[OPENAI] Normalized to {len(normalized)} categories (duplicates removed)", flush=True)
             
             # Use all categories from OpenAI (no artificial limit)
-            return categories
+            return normalized
             
         except Exception as e:
             print(f"Error generating categories: {e}")
@@ -305,7 +318,7 @@ PENTING: Hanya output JSON, tidak ada text tambahan."""
                 "Jadwal/Frekuensi",
                 "Kenyamanan",
                 "Teknologi/Digitalisasi",
-                "Other"
+                "Lainnya"
             ]
     
     def classify_responses_batch(self, responses: List[str], categories: List[str], question_text: str = None):
@@ -340,8 +353,42 @@ PENTING: Hanya output JSON, tidak ada text tambahan."""
         # CRITICAL FIX: Generate examples dynamically based on ACTUAL categories
         # to avoid AI confusion with mismatched category names
         
-        # Get first 5 categories (excluding "Other") for concrete examples
-        example_cats = [c for c in categories if c.lower() != 'other'][:5]
+        # Normalize categories: replace 'Other' with 'Lainnya' and remove duplicates
+        normalized_cats = []
+        has_other = False
+        for c in categories:
+            if c.lower() in ['other', 'lainnya']:
+                if not has_other:
+                    normalized_cats.append('Lainnya')
+                    has_other = True
+            else:
+                normalized_cats.append(c)
+        
+        # Update categories list with normalized version
+        categories = normalized_cats
+        
+        # Get first 5 categories (excluding "Lainnya") for concrete examples
+        example_cats = [c for c in categories if c.lower() != 'lainnya'][:5]
+        
+        # Create EXPLICIT examples using actual category names
+        def generate_examples(cats):
+            """Generate explicit examples using actual category names"""
+            examples = []
+            if len(cats) >= 1:
+                cat1_lower = cats[0].lower()
+                examples.append(f'- Jika jawaban JELAS tentang "{cat1_lower}" (kata kunci: {cat1_lower}) → {cats[0]}')
+            if len(cats) >= 2:
+                cat2_lower = cats[1].lower()
+                examples.append(f'- Jika jawaban JELAS tentang "{cat2_lower}" (kata kunci: {cat2_lower}) → {cats[1]}')
+            if len(cats) >= 3:
+                cat3_lower = cats[2].lower()
+                examples.append(f'- Jika jawaban JELAS tentang "{cat3_lower}" (kata kunci: {cat3_lower}) → {cats[2]}')
+            if len(cats) >= 4:
+                examples.append(f'- Jika jawaban menyebut KEDUA "{cats[0].lower()}" DAN "{cats[3].lower()}" → [{cats[0]}, {cats[3]}]')
+            examples.append('- Jika tidak ada kategori yang cocok atau jawaban terlalu umum → Other')
+            return "\n".join(examples)
+        
+        examples_text = generate_examples(example_cats)
         
         # Try to load custom prompts from database, fallback to defaults
         try:
@@ -356,18 +403,21 @@ PENTING: Hanya output JSON, tidak ada text tambahan."""
 
 SANGAT PENTING: Jawaban responden BISA mengandung MULTIPLE tema sekaligus!
 
+CRITICAL INSTRUCTION: Anda HARUS berusaha maksimal untuk match jawaban ke kategori yang tersedia!
+JANGAN terlalu cepat assign ke "Other" - coba temukan kategori yang paling mendekati!
+
 Analisis SETIAP jawaban dengan cermat:
 1. Identifikasi SEMUA tema/topik yang disebutkan dalam jawaban
-2. Jika jawaban menyebutkan 2+ tema berbeda, WAJIB assign ke SEMUA kategori yang relevan
-3. Berikan confidence score (0.0-1.0) untuk SETIAP kategori yang terdeteksi
-4. Hanya include kategori dengan confidence ≥ {min_category_confidence}
-5. Maksimal {max_categories_per_response} kategori per jawaban
-6. EXCEPTION: Jika ada 1 kategori dengan confidence ≥ {single_category_threshold} (very dominant), gunakan HANYA kategori tersebut
-7. Jika tidak ada yang cocok → "Other"
+2. Cari KATA KUNCI dalam jawaban yang COCOK dengan nama kategori
+3. Jika ada kata yang MIRIP atau TERKAIT dengan kategori, assign ke kategori tersebut!
+4. Jika jawaban menyebutkan 2+ tema berbeda, WAJIB assign ke SEMUA kategori yang relevan
+5. Berikan confidence score (0.0-1.0) untuk SETIAP kategori yang terdeteksi
+6. Hanya include kategori dengan confidence ≥ {min_category_confidence}
+7. Maksimal {max_categories_per_response} kategori per jawaban
+8. EXCEPTION: Jika ada 1 kategori dengan confidence ≥ {single_category_threshold} (very dominant), gunakan HANYA kategori tersebut
+9. HANYA gunakan "Other" jika BENAR-BENAR tidak ada kategori yang cocok!
 
-IMPORTANT: Match jawaban dengan kategori yang tersedia di atas! Lihat KATA KUNCI dalam jawaban yang cocok dengan nama kategori.
-
-CONTOH MATCHING (gunakan kategori yang tersedia):
+CONTOH MATCHING DENGAN KATEGORI YANG TERSEDIA:
 {examples}
 
 Format output (JSON):
@@ -382,16 +432,8 @@ Format output (JSON):
   ]
 }}"""
                 
-                # Generate dynamic examples using actual categories
-                examples_list = []
-                if len(example_cats) >= 1:
-                    examples_list.append(f'- Jika jawaban menyebut "{example_cats[0].lower()}" → {example_cats[0]}')
-                if len(example_cats) >= 2:
-                    examples_list.append(f'- Jika jawaban menyebut "{example_cats[1].lower()}" → {example_cats[1]}')
-                if len(example_cats) >= 3:
-                    examples_list.append(f'- Jika jawaban menyebut "{example_cats[0].lower()}" DAN "{example_cats[2].lower()}" → [{example_cats[0]}, {example_cats[2]}]')
-                examples_list.append('- Jika tidak jelas atau tidak cocok → Other')
-                examples_text = "\n".join(examples_list)
+                # Generate dynamic examples using actual categories (already defined above)
+                # examples_text already created before try block
                 
                 # Replace template variables
                 instruction = prompt_template.format(
@@ -407,16 +449,19 @@ Format output (JSON):
                     # Default single-label prompt WITH DYNAMIC EXAMPLES
                     prompt_template = """Instruksi SINGLE-LABEL CLASSIFICATION:
 
+CRITICAL INSTRUCTION: Anda HARUS berusaha maksimal untuk match jawaban ke kategori yang tersedia!
+JANGAN terlalu cepat assign ke "Other" - cari kategori yang paling mendekati!
+
 Pilih SATU kategori yang PALING relevan untuk setiap jawaban:
 1. Analisis tema utama dari jawaban responden
-2. Pilih kategori yang paling tepat menggambarkan maksud utama jawaban
-3. Berikan confidence score (0.0-1.0)
-4. Hanya assign jika confidence ≥ {min_category_confidence}
-5. Jika tidak ada yang cocok → "Other"
+2. Cari KATA KUNCI dalam jawaban yang COCOK atau MIRIP dengan nama kategori
+3. Jika ada kata yang TERKAIT dengan kategori, assign ke kategori tersebut!
+4. Pilih kategori yang paling tepat menggambarkan maksud utama jawaban
+5. Berikan confidence score (0.0-1.0)
+6. Hanya assign jika confidence ≥ {min_category_confidence}
+7. HANYA gunakan "Other" jika BENAR-BENAR tidak ada kategori yang cocok!
 
-IMPORTANT: Match jawaban dengan kategori yang tersedia di atas! Lihat KATA KUNCI dalam jawaban yang cocok dengan nama kategori.
-
-CONTOH MATCHING (gunakan kategori yang tersedia):
+CONTOH MATCHING DENGAN KATEGORI YANG TERSEDIA:
 {examples}
 
 Format output (JSON):
@@ -427,16 +472,8 @@ Format output (JSON):
   ]
 }}"""
                 
-                # Generate dynamic examples using actual categories
-                examples_list = []
-                if len(example_cats) >= 1:
-                    examples_list.append(f'- Jika jawaban tentang "{example_cats[0].lower()}" → {example_cats[0]}')
-                if len(example_cats) >= 2:
-                    examples_list.append(f'- Jika jawaban tentang "{example_cats[1].lower()}" → {example_cats[1]}')
-                if len(example_cats) >= 3:
-                    examples_list.append(f'- Jika jawaban tentang "{example_cats[2].lower()}" → {example_cats[2]}')
-                examples_list.append('- Jika tidak jelas atau tidak cocok → Other')
-                examples_text = "\n".join(examples_list)
+                # Generate dynamic examples using actual categories (already defined above)
+                # examples_text already created before try block
                 
                 # Replace template variables
                 instruction = prompt_template.format(
@@ -556,11 +593,16 @@ Jawaban Responden ({len(responses)} responses):
                         # Limit max categories and sort by confidence
                         filtered = sorted(filtered, key=lambda x: x[1], reverse=True)
                         filtered = filtered[:self.max_categories_per_response]
-                        results.append(filtered if filtered else [('Other', 0.3)])
+                        results.append(filtered if filtered else [('Lainnya', 0.3)])
                 else:
                     # Single-label: One category
-                    category = item.get('category', 'Other')
+                    category = item.get('category', 'Lainnya')
                     confidence = float(item.get('confidence', 0.5))
+                    
+                    # Normalize 'Other' to 'Lainnya'
+                    if category.lower() == 'other':
+                        category = 'Lainnya'
+                    
                     results.append([(category, confidence)])
             
             print(f"[OPENAI] Batch completed: {len(results)} classifications", flush=True)
@@ -568,8 +610,8 @@ Jawaban Responden ({len(responses)} responses):
             
         except Exception as e:
             print(f"Error in batch classification: {e}")
-            # Fallback: return "Other" for all
-            return [[("Other", 0.5)] for _ in responses]
+            # Fallback: return "Lainnya" for all
+            return [[("Lainnya", 0.5)] for _ in responses]
     
     def classify_response(self, response: str, categories: List[str], question_text: str = None) -> Tuple[str, float]:
         """
@@ -625,12 +667,16 @@ PENTING: Hanya output JSON, tidak ada text tambahan."""
             )
             
             result = json.loads(response_obj.choices[0].message.content)
-            category = result.get('category', 'Other')
+            category = result.get('category', 'Lainnya')
             confidence = result.get('confidence', 0.5)
+            
+            # Normalize 'Other' to 'Lainnya'
+            if category.lower() == 'other':
+                category = 'Lainnya'
             
             # Ensure category is valid
             if category not in categories:
-                category = "Other"
+                category = "Lainnya"
                 confidence = 0.5
             
             return category, confidence

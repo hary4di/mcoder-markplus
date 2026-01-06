@@ -1,25 +1,41 @@
 # Kobo Survey Classification Automation - AI Coding Guide
 
 ## Project Overview
-Survey automation system for MarkPlus Indonesia that classifies open-ended survey responses from Kobo Toolbox using OpenAI GPT-4o-mini, then optionally pushes coded results back to Kobo.
+**M-Code Pro** - MarkPlus AI-Powered Classification System
 
-**Core Flow**: Kobo API → AI Classification → Excel Export → (Optional) Kobo Update
+Web-based survey automation platform for MarkPlus Indonesia that classifies open-ended survey responses using OpenAI GPT-4o-mini. Supports both pure open-ended and semi open-ended questions with Kobo Toolbox integration.
+
+**Production URL**: https://m-coder.flazinsight.com
+**Stack**: Flask 3.0 + Python 3.11 + SQLite + Bootstrap 5 + OpenAI API
+
+**Core Flow**: Excel Upload → AI Classification → Results Display → Download Excel
 
 ## Architecture
 
-### Three-Module Design
-1. **[kobo_client.py](kobo_client.py)**: Kobo Toolbox API client - fetches submissions and asset metadata
-2. **[openai_classifier.py](openai_classifier.py)**: Two-phase AI classification with validation filtering
-3. **[kobo_uploader.py](kobo_uploader.py)**: Reverse API - creates form fields and uploads numeric codes
+### Web Application Structure
+1. **[app/](app/)**: Flask application
+   - `routes.py`: Main routes, classification orchestration, progress tracking
+   - `auth.py`: Login, registration, password management
+   - `models.py`: User model with SQLAlchemy
+   - `forms.py`: WTForms for validation
+   - `templates/`: Jinja2 HTML templates
+   - `static/`: CSS, JS, images
 
-### Two Entry Points
-- **[main.py](main.py)**: Full automation pipeline (Kobo → Classification → Optional upload)
-- **[excel_classifier.py](excel_classifier.py)**: Excel-based workflow with hybrid outlier re-analysis
+### Classification Engine
+1. **[excel_classifier.py](excel_classifier.py)**: Main classification workflow with Excel I/O
+2. **[openai_classifier.py](openai_classifier.py)**: Two-phase AI classification with validation filtering
+3. **[parallel_classifier.py](parallel_classifier.py)**: Multi-variable parallel processing
+4. **[semi_open_processor.py](semi_open_processor.py)**: Semi open-ended question handler
+
+### Legacy/Optional Modules
+- **[kobo_client.py](kobo_client.py)**: Kobo Toolbox API client (optional, for direct Kobo integration)
+- **[kobo_uploader.py](kobo_uploader.py)**: Upload coded results back to Kobo (optional)
+- **[main.py](main.py)**: Standalone CLI pipeline (legacy, not used in web app)
 
 ### Data Flow Pattern
 ```
-Kobo API → Filter invalid responses → Phase 1: Generate categories (sample) 
-→ Phase 2: Classify all responses → Excel output → (Optional) Upload codes to Kobo
+User Upload Excel → Parse Variables → AI Classification (background thread)
+→ Progress Tracking → Results Page → Download Classified Excel
 ```
 
 ## Critical Conventions
@@ -50,16 +66,24 @@ cols.insert(e1_index + 2, 'E1_confidence')
 ## Configuration (.env)
 
 ### Required Keys
-- `KOBO_ASSET_ID`, `KOBO_API_TOKEN`: Kobo API access
-- `OPENAI_API_KEY`: Must not be placeholder `your_openai_api_key_here`
+- `OPENAI_API_KEY`: OpenAI API key for GPT-4o-mini
+- `SECRET_KEY`: Flask session encryption key
+- `DATABASE_URL`: SQLite database path (default: instance/mcoder.db)
 
-### Operation Modes
-- `AUTO_UPLOAD_TO_KOBO=true`: Activates Step 10 in [main.py](main.py#L296-L358) - creates Kobo field + uploads codes
-- `AUTO_UPLOAD_TO_KOBO=false`: Classification-only mode (Excel export only)
+### Optional Keys (Kobo Integration)
+- `KOBO_ASSET_ID`, `KOBO_API_TOKEN`: For direct Kobo API access (rarely used)
+- `AUTO_UPLOAD_TO_KOBO`: Enable Kobo upload feature (default: false)
 
-### Field Naming Convention
-Source field: `Group_E/E1` (Kobo group/question format)
-Coded field: `Group_E/E1_coded` (suffix from `CODED_FIELD_SUFFIX`)
+### Classification Settings
+- `MAX_CATEGORIES`: Default max categories (default: 10, can be None for unlimited)
+- `CONFIDENCE_THRESHOLD`: Minimum confidence score (default: 0.5)
+- `CATEGORY_SAMPLE_RATIO`: Sampling percentage for category generation (default: 0.8)
+- `MAX_SAMPLE_SIZE`: Hard cap on sample size (default: 500)
+
+### Branding (Current as of 2025-12-27)
+- Application Name: **M-Code Pro**
+- Subtitle: **MarkPlus AI-Powered Classification System**
+- Logo: MarkPlus corporate logo with bold "M" styling
 
 ## Kobo API Patterns
 
@@ -99,39 +123,74 @@ Category generation prompt emphasizes: "Kategori harus spesifik, tidak generik" 
 
 ## Testing & Debugging
 
-### Test Scripts
-- `explore_kobo.py`: Inspect Kobo asset structure and sample data
-- `test_connection.py`: Validate Kobo API credentials
-- Run these BEFORE main pipeline when troubleshooting field not found errors
-
 ### Log Files Structure
 All outputs in `files/`:
-- `logs/classification_YYYYMMDD_HHMMSS.log`: Full execution log with progress
-- `logs/generated_categories.json`: Categories from Phase 1 (for review)
-- `logs/sample_e1_responses.txt`: Sample valid/invalid responses
-- `output/classified_responses_*.xlsx`: Final Excel with classifications
+- `uploads/`: User-uploaded Excel files and classification results
+- `logs/`: Classification logs and debugging info (if logging enabled)
+- `logo/`: Application logo and branding assets
 
 ### Common Issues
-**"Field 'Group_E/E1' not found"**: Field name varies by survey. Use `explore_kobo.py` to discover actual field name, then update `e1_field_name` in [main.py](main.py#L67)
+**Results Page Error**: Session data may be cleared after app restart. Re-run classification to see results.
 
-**OpenAI rate limit**: Retry logic built-in. For persistent errors, check quota at platform.openai.com/usage
+**File Upload Issues**: Ensure Excel files have proper column headers matching Kobo field names.
+
+**OpenAI Rate Limit**: Retry logic built-in. Check quota at platform.openai.com/usage
+
+### Error Handling (Added 2025-12-27)
+- Results page has try-catch to handle corrupted session data
+- Automatic session cleanup on error with user-friendly redirect
+- Flash messages explain errors instead of showing 500 pages
 
 ## Windows-Specific
-- Batch files: [run.bat](run.bat) and [test_kobo.bat](test_kobo.bat) use `py` launcher
-- UTF-8 encoding explicitly set in [excel_classifier.py](excel_classifier.py#L11-L14) for console output
+- PowerShell scripts: `quick-deploy.ps1` for deployment to VPS
+- Cleanup script: `cleanup_unused_files.ps1` (already executed - 48 files removed)
+- UTF-8 encoding explicitly set in classifiers for console output
 - File paths use `os.path.join()` for cross-platform compatibility
+
+## Production Deployment
+- **Server**: Hostinger VPS Ubuntu 24.04
+- **IP**: 145.79.10.104
+- **Domain**: https://m-coder.flazinsight.com
+- **Process Manager**: Supervisor (mcoder-markplus service)
+- **Web Server**: Nginx reverse proxy
+- **Python**: 3.11 with venv
+- **Deployment**: Manual SCP upload + supervisorctl restart (no git on VPS)
+
+## Recent Changes (2025-12-27)
+See [CHANGELOG.md](../CHANGELOG.md) for detailed change history including:
+- Branding update to "M-Code Pro"
+- UI/UX improvements (2-line user display, spacing fixes)
+- Cleanup of 48 unused files
+- Documentation rewrite (PROJECT_OVERVIEW.md reduced from 2245 to 350 lines)
+- Error handling improvements
 
 ## When Modifying
 
-### Adding New Question Fields
-1. Update field name (e.g., `E1` → `E2`) in main pipeline
-2. Ensure field path includes group: `Group_E/E2`
-3. Adjust coded field suffix: `E2_coded`
-4. Categories generate fresh per field - no reuse
+### Adding New Features
+1. Check [PROJECT_OVERVIEW.md](../PROJECT_OVERVIEW.md) for current priorities (🔴🟡🟢)
+2. Review [CHANGELOG.md](../CHANGELOG.md) for recent changes
+3. Test locally before deploying to VPS
+4. Update documentation after completing feature
 
 ### Changing Category Limits
 Modify `MAX_CATEGORIES` in `.env` (default 10). Note: `excel_classifier.py` passes `max_categories=None` for unlimited categories with outlier re-analysis.
 
 ### Excel vs Full Pipeline
 **Use excel_classifier.py when**: Source data is Excel (not Kobo), need outlier re-analysis
-**Use main.py when**: Live Kobo integration, need automated field creation and code upload
+**Use main.py when**: Live Kobo integration, need automated field creation and code upload (rarely used)
+
+### Deployment Workflow
+1. Test changes locally
+2. Upload files: `scp file.py root@145.79.10.104:/opt/markplus/mcoder-markplus/`
+3. Restart service: `ssh root@145.79.10.104 "supervisorctl restart mcoder-markplus"`
+4. Verify: Check https://m-coder.flazinsight.com
+
+## Key Documentation
+- **[PROJECT_OVERVIEW.md](../PROJECT_OVERVIEW.md)**: Master reference (350 lines, concise)
+- **[CHANGELOG.md](../CHANGELOG.md)**: Change history with dates
+- **[README.md](../README.md)**: User guide and setup instructions
+- **This file**: Technical guide for AI agents
+
+---
+
+**Note**: Yes, copilot-instructions.md is similar to MCP (Model Context Protocol) - it provides structured context for AI agents to understand the project architecture, conventions, and current state.

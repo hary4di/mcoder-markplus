@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}M-Code Pro{% endblock %}</title>
+    
+    <!-- Favicon - Multiple sizes for compatibility -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Open Graph Meta Tags - Link Preview for WhatsApp/Facebook/LinkedIn -->
+    <meta property="og:site_name" content="M-Code Pro">
+    <meta property="og:title" content="{% block og_title %}M-Code Pro - MarkPlus AI-Powered Classification System{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}MarkPlus AI-Powered Classification System - Fast, accurate, and cost-effective survey classification for open-ended responses.{% endblock %}">
+    <meta property="og:image" content="{{ url_for('main.serve_og_image', _external=True) }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}M-Code Pro{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}MarkPlus AI-Powered Classification System{% endblock %}">
+    <meta name="twitter:image" content="{{ url_for('main.serve_og_image', _external=True) }}">
+    
+    <!-- Additional Meta -->
+    <meta name="description" content="M-Coder Platform - AI-powered survey classification for MarkPlus Indonesia">
+    <meta name="author" content="MarkPlus Indonesia">
+    <meta name="keywords" content="survey classification, AI coding, open-ended analysis, MarkPlus">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --sidebar-width: 250px;
+            --sidebar-collapsed: 70px;
+            --markplus-blue: #0047BB;
+            --markplus-red: #E31E24;
+        }
+        
+        body {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        /* Mobile Hamburger Button */
+        .mobile-menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1050;
+            width: 45px;
+            height: 45px;
+            background: var(--markplus-blue);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 71, 187, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-toggle:active {
+            transform: scale(0.95);
+        }
+        
+        .mobile-menu-toggle i {
+            font-size: 1.3rem;
+        }
+        
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .sidebar-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Collapsible Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-collapsed);
+            background: linear-gradient(180deg, var(--markplus-blue) 0%, #003399 100%);
+            color: white;
+            padding: 20px 0;
+            z-index: 999;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar:hover {
+            width: var(--sidebar-width);
+            z-index: 1001;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.15);
+        }
+        
+        .sidebar .logo {
+            padding: 0 12px 20px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .sidebar .logo-img {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            flex-shrink: 0;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--markplus-blue);
+            font-size: 1.2rem;
+        }
+        
+        .sidebar .logo-text {
+            font-size: 1rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.1s;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .sidebar:hover .logo-text {
+            opacity: 1;
+        }
+        
+        /* Mobile - always show text */
+        @media (max-width: 768px) {
+            .sidebar .logo-text,
+            .sidebar .nav-link .nav-text,
+            .sidebar .user-info .user-details {
+                opacity: 1 !important;
+            }
+            
+            .sidebar-close-btn {
+                display: flex;
+            }
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 15px;
+            margin: 2px 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            white-space: nowrap;
+        }
+        
+        .sidebar .nav-link i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .sidebar .nav-link .nav-text {
+            opacity: 0;
+            transition: opacity 0.3s ease 0.1s;
+        }
+        
+        .sidebar:hover .nav-link .nav-text {
+            opacity: 1;
+        }
+        
+        .sidebar .nav-link:hover {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .sidebar .nav-link.active {
+            color: white;
+            background-color: var(--markplus-red);
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-collapsed);
+            padding: 5px 20px 15px;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .navbar {
+            position: sticky;
+            top: 0;
+            margin-left: var(--sidebar-collapsed);
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            transition: margin-left 0.3s ease;
+            z-index: 1000;
+            padding: 10px 20px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        
+        .btn-primary {
+            background: var(--markplus-blue);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #003399;
+        }
+        
+        .alert {
+            border: none;
+            border-radius: 8px;
+        }
+        
+        .user-info {
+            padding: 15px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+        
+        .user-info .user-details {
+            opacity: 0;
+            transition: opacity 0.3s ease 0.1s;
+        }
+        
+        .sidebar:hover .user-info .user-details {
+            opacity: 1;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: white;
+            color: var(--markplus-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        hr.sidebar-divider {
+            border-color: rgba(255,255,255,0.2);
+            margin: 10px 15px;
+        }
+        
+        /* Mobile Close Button in Sidebar */
+        .sidebar-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .sidebar-close-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .sidebar-close-btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+                z-index: 1000;
+                transition: transform 0.3s ease;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .sidebar:hover {
+                width: 280px;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            .navbar {
+                margin-left: 0 !important;
+                padding-left: 70px !important;
+                padding-right: 15px !important;
+            }
+            
+            .navbar .container-fluid {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            
+            .navbar-brand {
+                font-size: 1rem !important;
+            }
+            
+            .navbar small {
+                font-size: 0.7rem !important;
+            }
+        }
+        
+        /* Smaller mobile phones */
+        @media (max-width: 576px) {
+            .mobile-menu-toggle {
+                width: 42px;
+                height: 42px;
+                top: 12px;
+                left: 12px;
+            }
+            
+            .mobile-menu-toggle i {
+                font-size: 1.2rem;
+            }
+            
+            .navbar {
+                padding-left: 60px !important;
+            }
+            
+            .navbar .d-flex.gap-3 {
+                gap: 0.5rem !important;
+            }
+            
+            .navbar .text-muted {
+                font-size: 0.75rem;
+            }
+        }
+        
+        /* Desktop - show sidebar, hide hamburger */
+        @media (min-width: 769px) {
+            .mobile-menu-toggle {
+                display: none;
+            }
+            
+            .sidebar-overlay {
+                display: none !important;
+            }
+        }
+        
+        /* User Dropdown in Navbar */
+        .user-dropdown {
+            position: relative;
+        }
+        
+        .user-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 15px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #374151;
+        }
+        
+        .user-dropdown-toggle:hover {
+            background: #f9fafb;
+            border-color: var(--markplus-blue);
+            box-shadow: 0 2px 8px rgba(0, 71, 187, 0.1);
+        }
+        
+        .user-dropdown-toggle .user-avatar-nav {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--markplus-blue) 0%, var(--markplus-red) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .user-dropdown-toggle .user-info-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+        
+        .user-dropdown-toggle .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1f2937;
+            line-height: 1.2;
+        }
+        
+        .user-dropdown-toggle .user-role {
+            font-size: 0.75rem;
+            color: #6b7280;
+            line-height: 1.2;
+        }
+        
+        .user-dropdown-toggle .dropdown-icon {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .user-dropdown-toggle[aria-expanded="true"] .dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            min-width: 200px;
+            z-index: 1050;
+            overflow: hidden;
+        }
+        
+        .user-dropdown-menu .dropdown-item {
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #374151;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+        
+        .user-dropdown-menu .dropdown-item:hover {
+            background: #f3f4f6;
+        }
+        
+        .user-dropdown-menu .dropdown-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .user-dropdown-menu .dropdown-item.logout {
+            color: #dc2626;
+            border-top: 1px solid #f3f4f6;
+        }
+        
+        .user-dropdown-menu .dropdown-item.logout:hover {
+            background: #fef2f2;
+        }
+        
+        /* Hide user dropdown on small mobile */
+        @media (max-width: 576px) {
+            .user-dropdown {
+                display: none;
+            }
+        }
+        
+        /* Desktop - hide user info in sidebar */
+        @media (min-width: 769px) {
+            .sidebar .user-info {
+                display: none;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileSidebar()">
+        <i class="bi bi-list"></i>
+    </button>
+    
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+    
+    <!-- Collapsible Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Mobile Close Button -->
+        <button class="sidebar-close-btn" onclick="closeMobileSidebar()">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        
+        <div class="logo">
+            <div class="logo-img">
+                {% if logo_url %}
+                <img src="{{ logo_url }}" alt="MarkPlus" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">
+                {% else %}
+                M<span style="color: var(--markplus-red); font-size: 0.8rem;">+</span>
+                {% endif %}
+            </div>
+            <span class="logo-text">M-Coder Platform</span>
+        </div>
+        
+        <nav class="nav flex-column">
+            <a class="nav-link {% if request.endpoint == 'main.dashboard' %}active{% endif %}" href="{{ url_for('main.dashboard') }}">
+                <i class="bi bi-speedometer2"></i>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a class="nav-link {% if request.endpoint == 'main.classify' %}active{% endif %}" href="{{ url_for('main.classify') }}">
+                <i class="bi bi-play-circle"></i>
+                <span class="nav-text">Start Classification</span>
+            </a>
+            <a class="nav-link {% if request.endpoint == 'main.results' %}active{% endif %}" href="{{ url_for('main.results') }}">
+                <i class="bi bi-bar-chart"></i>
+                <span class="nav-text">Results</span>
+            </a>
+            
+            <hr class="sidebar-divider">
+            <a class="nav-link {% if request.endpoint == 'main.profile' %}active{% endif %}" href="{{ url_for('main.profile') }}">
+                <i class="bi bi-person-circle"></i>
+                <span class="nav-text">My Profile</span>
+            </a>
+            
+            {% if current_user.is_admin %}
+            <hr class="sidebar-divider">
+            <a class="nav-link {% if request.endpoint == 'main.admin_settings' %}active{% endif %}" href="{{ url_for('main.admin_settings') }}">
+                <i class="bi bi-gear-fill"></i>
+                <span class="nav-text">System Settings</span>
+            </a>
+            <a class="nav-link {% if request.endpoint == 'main.logo_upload' %}active{% endif %}" href="{{ url_for('main.logo_upload') }}">
+                <i class="bi bi-image"></i>
+                <span class="nav-text">Upload Logo</span>
+            </a>
+            <a class="nav-link {% if request.endpoint == 'main.users' %}active{% endif %}" href="{{ url_for('main.users') }}">
+                <i class="bi bi-people"></i>
+                <span class="nav-text">Manage Users</span>
+            </a>
+            {% endif %}
+        </nav>
+        
+        <div style="position: absolute; bottom: 20px; width: 100%;">
+            <div class="user-info d-flex align-items-center gap-2">
+                <div class="user-avatar">
+                    {{ current_user.full_name[0] if current_user.full_name else current_user.username[0]|upper }}
+                </div>
+                <div class="user-details">
+                    <small class="d-block text-white-50">Logged in as</small>
+                    <strong style="font-size: 0.9rem;">{{ current_user.full_name or current_user.username }}</strong>
+                    {% if current_user.is_admin %}
+                    <span class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem;">Admin</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Mobile Logout Link -->
+            <a class="nav-link mt-2 d-md-none" href="{{ url_for('auth.logout') }}" style="color: rgba(255, 255, 255, 0.9);">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="nav-text">Log out</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container-fluid">
+            <div class="d-flex flex-column">
+                <span class="navbar-brand mb-0 h5 fw-bold" style="line-height: 1.2;">{% block page_title %}M-Coder Platform{% endblock %}</span>
+                <small class="text-muted" style="font-size: 0.75rem; margin-top: -4px;">
+                    <i class="bi bi-stars me-1"></i>AI-powered Survey Classification System
+                </small>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <small class="text-muted d-none d-lg-block" style="font-size: 0.8rem;">
+                    <i class="bi bi-calendar-check"></i> Last Updated<br>
+                    <strong>{{ now.strftime('%B %d, %Y at %I:%M %p') if now else '' }}</strong>
+                </small>
+                
+                <!-- User Dropdown Menu -->
+                <div class="dropdown user-dropdown">
+                    <button class="user-dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-avatar-nav">
+                            {{ current_user.full_name[0] if current_user.full_name else current_user.username[0]|upper }}
+                        </div>
+                        <div class="user-info-nav d-none d-md-block">
+                            <span class="user-name">{{ current_user.full_name or current_user.username }}</span>
+                            <span class="user-role">
+                                {% if current_user.is_admin %}
+                                super_admin
+                                {% else %}
+                                user
+                                {% endif %}
+                            </span>
+                        </div>
+                        <i class="bi bi-chevron-down dropdown-icon d-none d-md-inline"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('main.profile') }}">
+                                <i class="bi bi-person-circle"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        {% if current_user.is_admin %}
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('main.admin_settings') }}">
+                                <i class="bi bi-gear-fill"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-item logout" href="{{ url_for('auth.logout') }}">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Log out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Mobile user icon -->
+                <a href="{{ url_for('main.profile') }}" class="text-muted d-md-none" style="font-size: 1.5rem;">
+                    <i class="bi bi-person-circle"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="main-content" style="margin-top: 60px;">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+    {% else %}
+    <!-- Not authenticated - show login page content -->
+    {% block auth_content %}{% endblock %}
+    {% endif %}
+    
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Mobile Sidebar Toggle
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('show');
+            
+            if (isOpen) {
+                closeMobileSidebar();
+            } else {
+                sidebar.classList.add('show');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        // Close sidebar when clicking a link (mobile)
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    closeMobileSidebar();
+                });
+            });
+        }
+        
+        // Close sidebar on window resize to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeMobileSidebar();
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

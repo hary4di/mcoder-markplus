@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Verify Email - M-Code Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 100px;">
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <!-- Logo -->
+                    <div class="text-center mb-4">
+                        <div class="mb-3" style="font-size: 2.5rem; font-weight: 700; 
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                background-clip: text;">
+                            M-Code Pro
+                        </div>
+                        <h4 class="mb-1">Verify Your Email</h4>
+                        <p class="text-muted small">Enter the 6-digit code sent to<br><strong>{{ email }}</strong></p>
+                    </div>
+
+                    <!-- Flash Messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- OTP Form -->
+                    <form method="POST" action="{{ url_for('auth.verify_registration') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="hidden" name="email" value="{{ email }}">
+                        
+                        <div class="mb-3">
+                            <label for="otp_code" class="form-label">Verification Code</label>
+                            <input type="text" class="form-control form-control-lg text-center" 
+                                   id="otp_code" name="otp_code" 
+                                   placeholder="000000" 
+                                   maxlength="6" 
+                                   pattern="\d{6}"
+                                   required 
+                                   autofocus
+                                   style="letter-spacing: 8px; font-size: 1.5rem; font-weight: 600;">
+                            <small class="form-text text-muted">Enter the 6-digit code from your email</small>
+                        </div>
+                        
+                        <!-- Timer -->
+                        <div class="mb-3 text-center">
+                            <small class="text-muted">
+                                Code expires in: <span id="timer" class="fw-bold text-danger">15:00</span>
+                            </small>
+                        </div>
+                        
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle me-2"></i>Verify Email
+                            </button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="button" class="btn btn-link btn-sm" id="resendBtn" disabled>
+                                <i class="bi bi-arrow-clockwise me-1"></i>
+                                Resend Code <span id="resendTimer">(60s)</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Back to Login -->
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('auth.login') }}" class="text-decoration-none small">
+                            <i class="bi bi-arrow-left me-1"></i>Back to Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// OTP Input - Auto format
+document.getElementById('otp_code').addEventListener('input', function(e) {
+    this.value = this.value.replace(/\D/g, '').substring(0, 6);
+});
+
+// Expiry Timer (15 minutes)
+let expirySeconds = 15 * 60;
+const timerElement = document.getElementById('timer');
+const expiryInterval = setInterval(() => {
+    expirySeconds--;
+    const minutes = Math.floor(expirySeconds / 60);
+    const seconds = expirySeconds % 60;
+    timerElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    
+    if (expirySeconds <= 0) {
+        clearInterval(expiryInterval);
+        timerElement.textContent = 'EXPIRED';
+        timerElement.classList.remove('text-danger');
+        timerElement.classList.add('text-secondary');
+        document.querySelector('button[type="submit"]').disabled = true;
+    }
+}, 1000);
+
+// Resend Timer (60 seconds cooldown)
+let resendSeconds = 60;
+const resendBtn = document.getElementById('resendBtn');
+const resendTimer = document.getElementById('resendTimer');
+const resendInterval = setInterval(() => {
+    resendSeconds--;
+    resendTimer.textContent = '(' + resendSeconds + 's)';
+    
+    if (resendSeconds <= 0) {
+        clearInterval(resendInterval);
+        resendBtn.disabled = false;
+        resendTimer.textContent = '';
+    }
+}, 1000);
+
+// Resend OTP
+resendBtn.addEventListener('click', function() {
+    if (this.disabled) return;
+    
+    this.disabled = true;
+    this.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i>Sending...';
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const email = document.querySelector('input[name="email"]').value;
+    
+    fetch('{{ url_for("auth.resend_otp") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrfToken
+        },
+        body: 'email=' + encodeURIComponent(email)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('✓ New verification code sent to your email');
+            expirySeconds = 15 * 60;
+            resendSeconds = 60;
+            resendTimer.textContent = '(60s)';
+            const newInterval = setInterval(() => {
+                resendSeconds--;
+                resendTimer.textContent = '(' + resendSeconds + 's)';
+                if (resendSeconds <= 0) {
+                    clearInterval(newInterval);
+                    resendBtn.disabled = false;
+                    resendTimer.textContent = '';
+                }
+            }, 1000);
+        } else {
+            alert('✗ Failed: ' + data.message);
+            resendBtn.disabled = false;
+        }
+        resendBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i>Resend Code <span id="resendTimer">(60s)</span>';
+    })
+    .catch(error => {
+        alert('✗ Network error');
+        resendBtn.disabled = false;
+        resendBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i>Resend Code';
+    });
+});
+</script>
+</body>
+</html>

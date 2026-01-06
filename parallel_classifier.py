@@ -48,7 +48,7 @@ class ParallelClassifier:
             
             # Call OpenAI API for batch classification
             print(f"[OPENAI] Batch classifying {len(responses)} responses (multi-label: {self.classifier.enable_multi_label})...")
-            classifications = self.classifier.classify_responses_batch_api(
+            classifications = self.classifier.classify_responses_batch(
                 responses, categories, question_text
             )
             print(f"[OPENAI] Batch completed: {len(classifications)} classifications")
@@ -184,7 +184,7 @@ class ParallelClassifier:
             try:
                 # Classify batch
                 print(f"[OPENAI] Batch classifying {len(batch)} responses (multi-label: {self.classifier.enable_multi_label})...")
-                classifications = self.classifier.classify_responses_batch_api(
+                classifications = self.classifier.classify_responses_batch(
                     batch, categories, question_text
                 )
                 print(f"[OPENAI] Batch completed: {len(classifications)} classifications")

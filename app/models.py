@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     full_name = db.Column(db.String(120))
     password_hash = db.Column(db.String(255), nullable=False)
+    profile_photo = db.Column(db.String(255))  # Profile photo filename
     is_admin = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -34,6 +35,21 @@ class User(UserMixin, db.Model):
         """Update last login timestamp"""
         self.last_login = datetime.utcnow()
         db.session.commit()
+    
+    @property
+    def is_super_admin(self):
+        """Check if user is super admin (email ends with @markplusinc.com and is admin)"""
+        return self.is_admin and self.email and self.email.endswith('@markplusinc.com')
+    
+    @property
+    def role_name(self):
+        """Get user role name"""
+        if self.is_super_admin:
+            return 'Super Admin'
+        elif self.is_admin:
+            return 'Admin'
+        else:
+            return 'User'
     
     def __repr__(self):
         return f'<User {self.username}>'
@@ -153,6 +169,194 @@ class OTPToken(db.Model):
     
     def __repr__(self):
         return f'<OTPToken user_id={self.user_id} code={self.code}>'
+
+class ClassificationJob(db.Model):
+    """Classification job tracking with database persistence"""
+    
+    __tablename__ = 'classification_jobs'
+    
+    # Primary Key
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.String(36), unique=True, nullable=False, index=True)  # UUID
+    
+    # User & Metadata
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
+    job_type = db.Column(db.String(20), nullable=False)  # 'open_ended' or 'semi_open'
+    status = db.Column(db.String(20), default='pending')  # pending, processing, completed, error
+    
+    # Input Files
+    original_kobo_filename = db.Column(db.String(255))
+    original_raw_filename = db.Column(db.String(255))
+    input_kobo_path = db.Column(db.String(500))  # Timestamped input file
+    input_raw_path = db.Column(db.String(500))   # Timestamped input file
+    
+    # Output Files (NEW: timestamped outputs, not overwriting inputs)
+    output_kobo_filename = db.Column(db.String(255))
+    output_raw_filename = db.Column(db.String(255))
+    output_kobo_path = db.Column(db.String(500))
+    output_raw_path = db.Column(db.String(500))
+    
+    # Classification Settings (JSON)
+    settings = db.Column(db.Text)  # JSON: {max_categories, confidence_threshold, mode, etc}
+    
+    # Progress Tracking
+    progress = db.Column(db.Integer, default=0)  # 0-100
+    current_step = db.Column(db.String(255))
+    
+    # Timing
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    started_at = db.Column(db.DateTime)
+    completed_at = db.Column(db.DateTime)
+    
+    # Results Summary (JSON)
+    results_summary = db.Column(db.Text)  # JSON: {total_variables, duration, etc}
+    error_message = db.Column(db.Text)
+    
+    # Relationships
+    user = db.relationship('User', backref=db.backref('classification_jobs', lazy='dynamic'))
+    variables = db.relationship('ClassificationVariable', backref='job', lazy='dynamic', cascade='all, delete-orphan')
+    
+    @property
+    def duration_seconds(self):
+        """Calculate job duration in seconds"""
+        if self.started_at and self.completed_at:
+            return (self.completed_at - self.started_at).total_seconds()
+        return None
+    
+    @property
+    def is_download_available(self):
+        """Check if download is still available (24 hours from completion)"""
+        if not self.completed_at:
+            return False
+        
+        import pytz
+        wib = pytz.timezone('Asia/Jakarta')
+        now_wib = datetime.now(wib)
+        completed_wib = self.completed_at.replace(tzinfo=pytz.UTC).astimezone(wib)
+        
+        hours_elapsed = (now_wib - completed_wib).total_seconds() / 3600
+        return hours_elapsed < 24
+    
+    @property
+    def download_expires_at(self):
+        """Get download expiration time in WIB"""
+        if not self.completed_at:
+            return None
+        
+        import pytz
+        from datetime import timedelta
+        wib = pytz.timezone('Asia/Jakarta')
+        completed_wib = self.completed_at.replace(tzinfo=pytz.UTC).astimezone(wib)
+        return completed_wib + timedelta(hours=24)
+    
+    @property
+    def hours_until_expiry(self):
+        """Get hours remaining until download expiry"""
+        if not self.completed_at:
+            return None
+        
+        import pytz
+        wib = pytz.timezone('Asia/Jakarta')
+        now_wib = datetime.now(wib)
+        completed_wib = self.completed_at.replace(tzinfo=pytz.UTC).astimezone(wib)
+        
+        hours_elapsed = (now_wib - completed_wib).total_seconds() / 3600
+        hours_remaining = 24 - hours_elapsed
+        return max(0, hours_remaining)  # Never negative
+    
+    @property
+    def completed_at_wib(self):
+        """Get completion time in WIB timezone"""
+        if not self.completed_at:
+            return None
+        
+        import pytz
+        wib = pytz.timezone('Asia/Jakarta')
+        return self.completed_at.replace(tzinfo=pytz.UTC).astimezone(wib)
+    
+    def to_dict(self):
+        """Convert to dictionary for JSON serialization"""
+        import json
+        return {
+            'id': self.id,
+            'job_id': self.job_id,
+            'job_type': self.job_type,
+            'status': self.status,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'started_at': self.started_at.isoformat() if self.started_at else None,
+            'completed_at': self.completed_at.isoformat() if self.completed_at else None,
+            'duration': self.duration_seconds,
+            'progress': self.progress,
+            'settings': json.loads(self.settings) if self.settings else {},
+            'results_summary': json.loads(self.results_summary) if self.results_summary else {},
+            'variables': [v.to_dict() for v in self.variables],
+            'output_files': {
+                'kobo': self.output_kobo_filename,
+                'raw': self.output_raw_filename
+            }
+        }
+    
+    def __repr__(self):
+        return f'<ClassificationJob {self.job_id} - {self.status}>'
+
+
+class ClassificationVariable(db.Model):
+    """Individual variable classification results"""
+    
+    __tablename__ = 'classification_variables'
+    
+    # Primary Key
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('classification_jobs.id'), nullable=False, index=True)
+    
+    # Variable Info
+    variable_name = db.Column(db.String(100), nullable=False)
+    question_text = db.Column(db.Text)
+    
+    # Classification Results
+    categories_generated = db.Column(db.Integer)
+    total_responses = db.Column(db.Integer)
+    valid_classified = db.Column(db.Integer)
+    invalid_count = db.Column(db.Integer)
+    empty_count = db.Column(db.Integer)
+    
+    # Categories Detail (JSON)
+    categories = db.Column(db.Text)  # JSON: [{category, code, count, percentage}]
+    
+    # Timing
+    started_at = db.Column(db.DateTime)
+    completed_at = db.Column(db.DateTime)
+    
+    # Status
+    status = db.Column(db.String(20), default='pending')  # pending, processing, completed, error
+    error_message = db.Column(db.Text)
+    
+    @property
+    def duration_seconds(self):
+        """Calculate variable processing duration"""
+        if self.started_at and self.completed_at:
+            return (self.completed_at - self.started_at).total_seconds()
+        return None
+    
+    def to_dict(self):
+        """Convert to dictionary for JSON serialization"""
+        import json
+        return {
+            'variable_name': self.variable_name,
+            'question_text': self.question_text,
+            'categories_generated': self.categories_generated,
+            'total_responses': self.total_responses,
+            'valid_classified': self.valid_classified,
+            'invalid_count': self.invalid_count,
+            'empty_count': self.empty_count,
+            'categories': json.loads(self.categories) if self.categories else [],
+            'status': self.status,
+            'duration': self.duration_seconds
+        }
+    
+    def __repr__(self):
+        return f'<ClassificationVariable {self.variable_name}>'
+
 
 @login_manager.user_loader
 def load_user(user_id):

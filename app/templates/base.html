@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}M-Coder Platform{% endblock %}</title>
+    <title>{% block title %}M-Code Pro{% endblock %}</title>
     
     <!-- Favicon - Multiple sizes for compatibility -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -12,9 +12,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
     <!-- Open Graph Meta Tags - Link Preview for WhatsApp/Facebook/LinkedIn -->
-    <meta property="og:site_name" content="M-Coder Platform">
-    <meta property="og:title" content="{% block og_title %}M-Coder Platform - AI Survey Classification{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}AI-powered survey classification system for open-ended responses. Fast, accurate, and cost-effective data coding solution by MarkPlus Indonesia.{% endblock %}">
+    <meta property="og:site_name" content="M-Code Pro">
+    <meta property="og:title" content="{% block og_title %}M-Code Pro - MarkPlus AI-Powered Classification System{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}MarkPlus AI-Powered Classification System - Fast, accurate, and cost-effective survey classification for open-ended responses.{% endblock %}">
     <meta property="og:image" content="{{ url_for('main.serve_og_image', _external=True) }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -23,14 +23,17 @@
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% block twitter_title %}M-Coder Platform{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}AI-powered survey classification system{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}M-Code Pro{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}MarkPlus AI-Powered Classification System{% endblock %}">
     <meta name="twitter:image" content="{{ url_for('main.serve_og_image', _external=True) }}">
     
     <!-- Additional Meta -->
-    <meta name="description" content="M-Coder Platform - AI-powered survey classification for MarkPlus Indonesia">
+    <meta name="description" content="M-Code Pro - AI-powered survey classification for MarkPlus Indonesia">
     <meta name="author" content="MarkPlus Indonesia">
     <meta name="keywords" content="survey classification, AI coding, open-ended analysis, MarkPlus">
+    
+    <!-- CSRF Token for AJAX requests -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -217,7 +220,7 @@
         
         .main-content {
             margin-left: var(--sidebar-collapsed);
-            padding: 5px 20px 15px;
+            padding: 0px 20px 15px;
             transition: margin-left 0.3s ease;
         }
         
@@ -554,7 +557,7 @@
                 M<span style="color: var(--markplus-red); font-size: 0.8rem;">+</span>
                 {% endif %}
             </div>
-            <span class="logo-text">M-Coder Platform</span>
+            <span class="logo-text" style="font-weight: 600;"><span style="font-weight: 700;">M</span>-Code Pro</span>
         </div>
         
         <nav class="nav flex-column">
@@ -595,15 +598,18 @@
         </nav>
         
         <div style="position: absolute; bottom: 20px; width: 100%;">
-            <div class="user-info d-flex align-items-center gap-2">
+            <div class="user-info d-flex align-items-center gap-2 d-md-none">
                 <div class="user-avatar">
                     {{ current_user.full_name[0] if current_user.full_name else current_user.username[0]|upper }}
                 </div>
                 <div class="user-details">
-                    <small class="d-block text-white-50">Logged in as</small>
-                    <strong style="font-size: 0.9rem;">{{ current_user.full_name or current_user.username }}</strong>
-                    {% if current_user.is_admin %}
-                    <span class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem;">Admin</span>
+                    <strong style="font-size: 0.9rem; display: block;">{{ current_user.full_name or current_user.email.split('@')[0] }}</strong>
+                    {% if current_user.is_super_admin %}
+                    <span class="badge bg-danger" style="font-size: 0.65rem;">Super Admin</span>
+                    {% elif current_user.is_admin %}
+                    <span class="badge bg-warning text-dark" style="font-size: 0.65rem;">Admin</span>
+                    {% else %}
+                    <span class="badge bg-secondary" style="font-size: 0.65rem;">User</span>
                     {% endif %}
                 </div>
             </div>
@@ -620,9 +626,9 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container-fluid">
             <div class="d-flex flex-column">
-                <span class="navbar-brand mb-0 h5 fw-bold" style="line-height: 1.2;">{% block page_title %}M-Coder Platform{% endblock %}</span>
+                <span class="navbar-brand mb-0 h4 fw-bold" style="line-height: 1.2;">{% block page_title %}M-Code Pro{% endblock %}</span>
                 <small class="text-muted" style="font-size: 0.75rem; margin-top: -4px;">
-                    <i class="bi bi-stars me-1"></i>AI-powered Survey Classification System
+                    <i class="bi bi-stars me-1"></i><strong>MarkPlus</strong> AI-Powered Classification System
                 </small>
             </div>
             <div class="d-flex align-items-center gap-3">
@@ -637,13 +643,15 @@
                         <div class="user-avatar-nav">
                             {{ current_user.full_name[0] if current_user.full_name else current_user.username[0]|upper }}
                         </div>
-                        <div class="user-info-nav d-none d-md-block">
-                            <span class="user-name">{{ current_user.full_name or current_user.username }}</span>
-                            <span class="user-role">
-                                {% if current_user.is_admin %}
-                                super_admin
+                        <div class="user-info-nav d-none d-md-block" style="line-height: 1.3;">
+                            <span class="user-name" style="display: block; font-weight: 500;">{{ current_user.full_name or current_user.email.split('@')[0] }}</span>
+                            <span class="user-role" style="display: block; margin-top: 2px;">
+                                {% if current_user.is_super_admin %}
+                                <span class="badge bg-danger" style="font-size: 0.65rem; padding: 2px 6px;">Super Admin</span>
+                                {% elif current_user.is_admin %}
+                                <span class="badge bg-warning text-dark" style="font-size: 0.65rem; padding: 2px 6px;">Admin</span>
                                 {% else %}
-                                user
+                                <span class="badge bg-secondary" style="font-size: 0.65rem; padding: 2px 6px;">User</span>
                                 {% endif %}
                             </span>
                         </div>
@@ -682,7 +690,7 @@
     </nav>
     
     <!-- Main Content -->
-    <div class="main-content" style="margin-top: 60px;">
+    <div class="main-content">
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

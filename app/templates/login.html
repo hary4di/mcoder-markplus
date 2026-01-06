@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login - M-Coder Platform{% endblock %}
+{% block title %}Login - M-Code Pro{% endblock %}
 
 {% block auth_content %}
 <div class="container px-3 px-md-0">
@@ -13,8 +13,8 @@
                         <!-- MarkPlus Logo -->
                         <div class="mb-2 mb-md-3">
                             {% if logo_url %}
-                                <img src="{{ logo_url }}" alt="MarkPlus" style="max-height: 50px; max-width: 160px;" class="d-none d-sm-inline">
-                                <img src="{{ logo_url }}" alt="MarkPlus" style="max-height: 40px; max-width: 130px;" class="d-inline d-sm-none">
+                                <img src="{{ logo_url }}" alt="MarkPlus" style="max-height: 70px; max-width: 200px;" class="d-none d-sm-inline">
+                                <img src="{{ logo_url }}" alt="MarkPlus" style="max-height: 55px; max-width: 160px;" class="d-inline d-sm-none">
                             {% else %}
                                 <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;" class="d-none d-sm-inline-flex">
                                     <i class="bi bi-code-slash" style="font-size: 2rem; color: white;"></i>
@@ -24,8 +24,8 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <h3 class="fw-bold mb-1 fs-4 fs-md-3" style="color: #2d3748;">M-Coder Platform</h3>
-                        <p class="text-muted mb-0" style="font-size: 0.85rem;">Please login to continue</p>
+                        <h3 class="fw-bold mb-1 fs-4 fs-md-3" style="color: #2d3748; font-weight: 600;"><span style="font-weight: 700;">M</span>-Code Pro</h3>
+                        <p class="text-muted mb-0" style="font-size: 0.85rem;"><strong>MarkPlus</strong> AI-Powered Classification System</p>
                     </div>
                     
                     <!-- Flash Messages -->
@@ -46,16 +46,16 @@
                         {{ form.hidden_tag() }}
                         
                         <div class="mb-3">
-                            {{ form.username.label(class="form-label fw-semibold", style="color: #2d3748; font-size: 0.9rem;") }}
+                            {{ form.email.label(class="form-label fw-semibold", style="color: #2d3748; font-size: 0.9rem;") }}
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0" style="border-radius: 10px 0 0 10px;">
-                                    <i class="bi bi-person"></i>
+                                    <i class="bi bi-envelope"></i>
                                 </span>
-                                {{ form.username(class="form-control border-start-0 ps-0" + (" is-invalid" if form.username.errors else ""), placeholder="Enter username", style="border-radius: 0 10px 10px 0; border-left: none;") }}
+                                {{ form.email(class="form-control border-start-0 ps-0" + (" is-invalid" if form.email.errors else ""), placeholder="Enter your email", style="border-radius: 0 10px 10px 0; border-left: none;", type="email") }}
                             </div>
-                            {% if form.username.errors %}
+                            {% if form.email.errors %}
                                 <div class="invalid-feedback d-block">
-                                    {% for error in form.username.errors %}{{ error }}{% endfor %}
+                                    {% for error in form.email.errors %}{{ error }}{% endfor %}
                                 </div>
                             {% endif %}
                         </div>

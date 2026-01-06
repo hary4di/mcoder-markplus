@@ -3,14 +3,14 @@ WTForms for Flask application
 """
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
-from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, Optional
 from app.models import User
 
 class LoginForm(FlaskForm):
     """Login form"""
-    username = StringField('Username', validators=[
-        DataRequired(message='Username is required'),
-        Length(min=3, max=80, message='Username must be 3-80 characters')
+    email = StringField('Email', validators=[
+        DataRequired(message='Email is required'),
+        Email(message='Invalid email format')
     ])
     password = PasswordField('Password', validators=[
         DataRequired(message='Password is required')
@@ -20,9 +20,9 @@ class LoginForm(FlaskForm):
 
 class CreateUserForm(FlaskForm):
     """Create new user form (Admin only)"""
-    username = StringField('Username', validators=[
-        DataRequired(message='Username is required'),
-        Length(min=3, max=80, message='Username must be 3-80 characters')
+    full_name = StringField('Name', validators=[
+        DataRequired(message='Name is required'),
+        Length(min=2, max=120, message='Name must be 2-120 characters')
     ])
     email = StringField('Email', validators=[
         DataRequired(message='Email is required'),
@@ -39,15 +39,32 @@ class CreateUserForm(FlaskForm):
     is_admin = BooleanField('Admin User')
     submit = SubmitField('Create User')
     
-    def validate_username(self, field):
-        """Check if username already exists"""
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError('Username already exists')
-    
     def validate_email(self, field):
         """Check if email already exists"""
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already exists')
+
+class EditUserForm(FlaskForm):
+    """Edit user form (Admin only)"""
+    full_name = StringField('Name', validators=[
+        DataRequired(message='Name is required'),
+        Length(min=2, max=120, message='Name must be 2-120 characters')
+    ])
+    email = StringField('Email', validators=[
+        DataRequired(message='Email is required'),
+        Email(message='Invalid email format')
+    ])
+    password = PasswordField('New Password', validators=[
+        Optional(),
+        Length(min=6, message='Password must be at least 6 characters')
+    ])
+    confirm_password = PasswordField('Confirm New Password', validators=[
+        Optional(),
+        EqualTo('password', message='Passwords do not match')
+    ])
+    is_admin = BooleanField('Admin User')
+    is_active = BooleanField('Active')
+    submit = SubmitField('Update User')
 
 class ClassificationForm(FlaskForm):
     """Classification settings form"""

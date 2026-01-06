@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Classification Progress - M-Coder Platform{% endblock %}
+{% block title %}Classification Progress - M-Code Pro{% endblock %}
 
 {% block page_title %}Classification in Progress{% endblock %}
 
@@ -225,21 +225,28 @@ async function pollProgress() {
             document.getElementById('status-badge').innerHTML = '<span class="badge bg-success">Completed</span>';
             
             // Show download buttons if results have output files
-            if (data.results && data.results.summaries) {
+            if (data.results && data.results.output_files) {
                 let downloadHtml = '<h6 class="text-muted mb-2"><i class="bi bi-download"></i> Download Files:</h6><div class="d-flex flex-wrap gap-2">';
                 
-                data.results.summaries.forEach(summary => {
-                    if (summary.output_files) {
-                        summary.output_files.forEach(file => {
-                            const filename = file.split('/').pop();
-                            downloadHtml += `
-                                <a href="/download-file/${filename}" class="btn btn-outline-success">
-                                    <i class="bi bi-file-earmark-excel"></i> ${filename}
-                                </a>
-                            `;
-                        });
-                    }
-                });
+                // Display output files only once (not per variable)
+                const koboFile = data.results.output_files.kobo;
+                const rawFile = data.results.output_files.raw;
+                
+                if (koboFile) {
+                    downloadHtml += `
+                        <a href="/download-file/${koboFile}" class="btn btn-outline-success">
+                            <i class="bi bi-file-earmark-excel"></i> ${koboFile}
+                        </a>
+                    `;
+                }
+                
+                if (rawFile) {
+                    downloadHtml += `
+                        <a href="/download-file/${rawFile}" class="btn btn-outline-success">
+                            <i class="bi bi-file-earmark-excel"></i> ${rawFile}
+                        </a>
+                    `;
+                }
                 
                 downloadHtml += '</div>';
                 document.getElementById('download-files-section').innerHTML = downloadHtml;

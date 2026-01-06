@@ -59,6 +59,21 @@ class ExcelClassifier:
         self.categories = []
         self.category_codes = {}
         self.classifications = []
+        
+        # Output paths (separate from input paths)
+        self.output_kobo_path = None
+        self.output_raw_path = None
+    
+    def set_output_paths(self, output_kobo_path, output_raw_path):
+        """
+        Set separate output paths (don't overwrite inputs)
+        
+        Args:
+            output_kobo_path: Path for output kobo system file
+            output_raw_path: Path for output raw data file
+        """
+        self.output_kobo_path = output_kobo_path
+        self.output_raw_path = output_raw_path
     
     def _get_setting(self, key, default):
         """
@@ -106,22 +121,22 @@ class ExcelClassifier:
         Returns:
             dict: Summary hasil proses
         """
-        # Create backup before processing
-        import shutil
-        from datetime import datetime
+        # NOTE: Backup feature disabled - original files preserved with Opsi B (no overwrite)
+        # import shutil
+        # from datetime import datetime
         
-        backup_dir = os.path.join(os.path.dirname(self.raw_data_file_path), 'backups')
-        os.makedirs(backup_dir, exist_ok=True)
+        # backup_dir = os.path.join(os.path.dirname(self.raw_data_file_path), 'backups')
+        # os.makedirs(backup_dir, exist_ok=True)
         
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        raw_backup = os.path.join(backup_dir, f"{os.path.basename(self.raw_data_file_path)}.backup_{timestamp}")
-        kobo_backup = os.path.join(backup_dir, f"{os.path.basename(self.kobo_file_path)}.backup_{timestamp}")
+        # timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        # raw_backup = os.path.join(backup_dir, f"{os.path.basename(self.raw_data_file_path)}.backup_{timestamp}")
+        # kobo_backup = os.path.join(backup_dir, f"{os.path.basename(self.kobo_file_path)}.backup_{timestamp}")
         
-        shutil.copy2(self.raw_data_file_path, raw_backup)
-        shutil.copy2(self.kobo_file_path, kobo_backup)
+        # shutil.copy2(self.raw_data_file_path, raw_backup)
+        # shutil.copy2(self.kobo_file_path, kobo_backup)
         
-        print(f"✓ Backup created: {os.path.basename(raw_backup)}")
-        print(f"✓ Backup created: {os.path.basename(kobo_backup)}")
+        # print(f"✓ Backup created: {os.path.basename(raw_backup)}")
+        # print(f"✓ Backup created: {os.path.basename(kobo_backup)}")
         
         print(f"\n[DEBUG] process_variable called for {variable_name}", flush=True)
         print(f"[DEBUG] progress_callback is {'SET' if progress_callback else 'NONE'}", flush=True)
@@ -793,6 +808,14 @@ class ExcelClassifier:
         # 1. Update raw data with coded column
         print(f"\n   [1/2] Updating raw data file...")
         
+        # Determine output path
+        output_path = self.output_raw_path if self.output_raw_path else self.raw_data_file_path
+        
+        # If output file already exists (from previous variable), read it first
+        if os.path.exists(output_path) and output_path != self.raw_data_file_path:
+            print(f"      Reading existing output file to preserve previous variables...")
+            df_raw = pd.read_excel(output_path)
+        
         # Find column position
         col_idx = df_raw.columns.get_loc(variable_name)
         
@@ -813,13 +836,12 @@ class ExcelClassifier:
             df_raw.insert(col_idx + 1, coded_col_name, codes)
             print(f"      Added new column: {coded_col_name}")
         
-        # Save to original file (overwrite) with file lock detection
         max_retries = 3
         for attempt in range(max_retries):
             try:
-                df_raw.to_excel(self.raw_data_file_path, index=False)
-                output_files.append(self.raw_data_file_path)
-                print(f"      Saved: {self.raw_data_file_path}")
+                df_raw.to_excel(output_path, index=False)
+                output_files.append(output_path)
+                print(f"      Saved: {output_path}")
                 break
             except PermissionError:
                 if attempt < max_retries - 1:
@@ -836,13 +858,21 @@ class ExcelClassifier:
         # 2. Update kobo system file - add choices
         print(f"\n   [2/2] Updating kobo system file...")
         
-        # Load kobo system file
-        xl_kobo = pd.ExcelFile(self.kobo_file_path)
+        # Determine kobo source path - use output if exists, otherwise original
+        output_kobo_path = self.output_kobo_path if self.output_kobo_path else self.kobo_file_path
+        kobo_source_path = output_kobo_path if os.path.exists(output_kobo_path) and output_kobo_path != self.kobo_file_path else self.kobo_file_path
+        
+        if kobo_source_path == output_kobo_path:
+            print(f"      Reading existing output kobo file to preserve previous variables...")
+        
+        # Load kobo system file and get sheet names
+        with pd.ExcelFile(kobo_source_path) as xl_kobo:
+            sheet_names = xl_kobo.sheet_names
         
         # Read all sheets
         sheets = {}
-        for sheet_name in xl_kobo.sheet_names:
-            sheets[sheet_name] = pd.read_excel(self.kobo_file_path, sheet_name=sheet_name)
+        for sheet_name in sheet_names:
+            sheets[sheet_name] = pd.read_excel(kobo_source_path, sheet_name=sheet_name)
         
         # Update choices sheet
         if 'choices' in sheets:
@@ -901,7 +931,7 @@ class ExcelClassifier:
                     new_row = {
                         'type': f"select_one {variable_name}_codes",
                         'name': coded_col_name,
-                        'label': f"{original_row.get('label', variable_name)} - Kode Klasifikasi",
+                        'label': f"{original_row.get('label', variable_name)} - Coded",
                         'required': False,
                         'appearance': None,
                         'constraint': None,
@@ -923,16 +953,18 @@ class ExcelClassifier:
                 else:
                     print(f"      Field '{coded_col_name}' already exists in survey")
         
-        # Save to original kobo system file (overwrite) with file lock detection
+        # Save to output kobo file (or overwrite if output path not set)
+        output_kobo_path = self.output_kobo_path if self.output_kobo_path else self.kobo_file_path
+        
         max_retries = 3
         for attempt in range(max_retries):
             try:
-                with pd.ExcelWriter(self.kobo_file_path, engine='openpyxl') as writer:
+                with pd.ExcelWriter(output_kobo_path, engine='openpyxl') as writer:
                     for sheet_name, df_sheet in sheets.items():
                         df_sheet.to_excel(writer, sheet_name=sheet_name, index=False)
                 
-                output_files.append(self.kobo_file_path)
-                print(f"      Saved: {self.kobo_file_path}")
+                output_files.append(output_kobo_path)
+                print(f"      Saved: {output_kobo_path}")
                 break
             except PermissionError:
                 if attempt < max_retries - 1:
@@ -941,7 +973,7 @@ class ExcelClassifier:
                     import time
                     time.sleep(3)
                 else:
-                    error_msg = f"❌ Cannot save file - please close '{os.path.basename(self.kobo_file_path)}' and try again"
+                    error_msg = f"❌ Cannot save file - please close '{os.path.basename(output_kobo_path)}' and try again"
                     if progress_callback:
                         progress_callback(error_msg, None)
                     raise PermissionError(error_msg)

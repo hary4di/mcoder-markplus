@@ -86,9 +86,9 @@ def upload_files():
         if not file_processor.allowed_file(raw_file.filename):
             return jsonify({'success': False, 'error': 'Invalid raw data file format'}), 400
         
-        # Save files with original names (will be updated in-place)
-        kobo_path = file_processor.save_file(kobo_file)
-        raw_path = file_processor.save_file(raw_file)
+        # Save files with original names (no timestamp)
+        kobo_path, kobo_original = file_processor.save_file(kobo_file, prefix='', add_timestamp=False)
+        raw_path, raw_original = file_processor.save_file(raw_file, prefix='', add_timestamp=False)
         
         # Validate structure
         is_valid, error_msg = file_processor.validate_excel_structure(raw_path)
@@ -124,6 +124,8 @@ def upload_files():
         # Store in session
         session['raw_data_path'] = raw_path
         session['kobo_system_path'] = kobo_path
+        session['kobo_original_filename'] = kobo_original
+        session['raw_original_filename'] = raw_original
         session['file_info'] = file_info
         session['detected_variables'] = detected_vars
         session['semi_open_pairs'] = semi_open_pairs
@@ -256,11 +258,17 @@ def start_classification():
             # Initialize progress tracker
             progress_tracker.create_job(job_id, len(variables_to_process))
             
+            # Get data that needs request context (before thread starts)
+            user_id = current_user.id
+            kobo_original = session.get('kobo_original_filename', os.path.basename(kobo_system_path))
+            raw_original = session.get('raw_original_filename', os.path.basename(raw_data_path))
+            
             # Start classification in background thread
             thread = threading.Thread(
                 target=run_classification_background,
                 args=(job_id, kobo_system_path, raw_data_path, variables_to_process, 
-                      max_categories, confidence_threshold, auto_upload, classification_mode)
+                      max_categories, confidence_threshold, auto_upload, classification_mode,
+                      user_id, kobo_original, raw_original)
             )
             thread.daemon = True
             thread.start()
@@ -276,11 +284,15 @@ def start_classification():
         return redirect(url_for('main.select_variables'))
 
 def run_classification_background(job_id, kobo_system_path, raw_data_path, variables_to_process, 
-                                   max_categories, confidence_threshold, auto_upload, classification_mode='incremental'):
+                                   max_categories, confidence_threshold, auto_upload, classification_mode,
+                                   user_id, kobo_original_filename, raw_original_filename):
     """Background function to run classification with progress tracking"""
     import time
     import sys
     import traceback
+    import json
+    from app import create_app, db
+    from app.models import ClassificationJob, ClassificationVariable
     
     print(f"\n{'='*80}")
     print(f"[BACKGROUND] Thread started for job: {job_id}")
@@ -301,12 +313,64 @@ def run_classification_background(job_id, kobo_system_path, raw_data_path, varia
         # Add small delay to ensure redirect completes
         time.sleep(0.5)
         
+        # Create Flask app context for database operations
+        app = create_app()
+        with app.app_context():
+            # Create ClassificationJob record in database
+            # Use passed user_id instead of current_user (no request context in background thread)
+            
+            # Generate output filenames with timestamp in files/output/ directory
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            
+            # Get base directory (files/) and create output directory
+            files_dir = os.path.dirname(os.path.dirname(raw_data_path))  # Go up from uploads/ to files/
+            output_dir = os.path.join(files_dir, 'output')
+            os.makedirs(output_dir, exist_ok=True)  # Create if not exists
+            
+            output_kobo = os.path.join(output_dir, f'output_kobo_{timestamp}.xlsx')
+            output_raw = os.path.join(output_dir, f'output_raw_{timestamp}.xlsx')
+            
+            print(f"[BACKGROUND] Output directory: {output_dir}", flush=True)
+            
+            # Create job record
+            classification_job = ClassificationJob(
+                job_id=job_id,
+                user_id=user_id,  # Use passed parameter
+                job_type='open_ended',
+                status='processing',
+                original_kobo_filename=kobo_original_filename,  # Use passed parameter
+                original_raw_filename=raw_original_filename,    # Use passed parameter
+                input_kobo_path=kobo_system_path,
+                input_raw_path=raw_data_path,
+                output_kobo_filename=os.path.basename(output_kobo),
+                output_raw_filename=os.path.basename(output_raw),
+                output_kobo_path=output_kobo,
+                output_raw_path=output_raw,
+                settings=json.dumps({
+                    'max_categories': max_categories,
+                    'confidence_threshold': confidence_threshold,
+                    'auto_upload': auto_upload,
+                    'classification_mode': classification_mode
+                }),
+                started_at=datetime.utcnow()
+            )
+            db.session.add(classification_job)
+            db.session.commit()
+            print(f"[BACKGROUND] ClassificationJob created in database (ID: {classification_job.id})", flush=True)
+        
         # Initialize classifier
         print(f"[BACKGROUND] Initializing ExcelClassifier...", flush=True)
         print(f"[BACKGROUND] Kobo system: {kobo_system_path}", flush=True)
         print(f"[BACKGROUND] Raw data: {raw_data_path}", flush=True)
         
         classifier = ExcelClassifier(kobo_system_path, raw_data_path)
+        
+        # Set output paths (preserve originals)
+        classifier.set_output_paths(output_kobo, output_raw)
+        print(f"[BACKGROUND] Output paths configured:", flush=True)
+        print(f"[BACKGROUND]   Kobo: {output_kobo}", flush=True)
+        print(f"[BACKGROUND]   Raw: {output_raw}", flush=True)
+        
         print(f"[BACKGROUND] Classifier initialized successfully", flush=True)
         
         # Process each variable
@@ -350,7 +414,37 @@ def run_classification_background(job_id, kobo_system_path, raw_data_path, varia
             
             print(f"[BACKGROUND] Variable {var_name} processed successfully", flush=True)
             
-            # Mark variable as complete
+            # Save variable results to database
+            with app.app_context():
+                # Query job again to avoid detached instance error
+                job_to_update = ClassificationJob.query.filter_by(job_id=job_id).first()
+                if not job_to_update:
+                    print(f"[BACKGROUND ERROR] Job {job_id} not found!", flush=True)
+                    continue
+                
+                classification_var = ClassificationVariable(
+                    job_id=job_to_update.id,
+                    variable_name=var_name,
+                    question_text=question_text,
+                    categories_generated=summary.get('categories_generated', 0),
+                    total_responses=summary.get('total_responses', 0),
+                    valid_classified=summary.get('valid_classified', 0),
+                    invalid_count=summary.get('invalid_count', 0),
+                    empty_count=summary.get('empty_count', 0),
+                    categories=json.dumps(summary.get('category_summary', [])),
+                    started_at=datetime.utcnow(),
+                    completed_at=datetime.utcnow(),
+                    status='completed'
+                )
+                db.session.add(classification_var)
+                
+                # Update job progress
+                job_to_update.progress = int((idx / total_vars) * 100)
+                job_to_update.current_step = f"Completed {idx}/{total_vars} variables"
+                db.session.commit()
+                print(f"[BACKGROUND] Saved variable {var_name} to database", flush=True)
+            
+            # Mark variable as complete in progress tracker
             progress_tracker.complete_variable(job_id, var_name, summary)
             all_summaries.append(summary)
             
@@ -370,10 +464,43 @@ def run_classification_background(job_id, kobo_system_path, raw_data_path, varia
                 'max_categories': max_categories,
                 'confidence_threshold': confidence_threshold,
                 'auto_upload': auto_upload
+            },
+            'output_files': {
+                'kobo': os.path.basename(output_kobo),
+                'raw': os.path.basename(output_raw)
             }
         }
         
-        # Mark job as complete
+        # Update job as completed in database
+        with app.app_context():
+            # Query job again in this context (object from previous context is detached)
+            job_to_update = ClassificationJob.query.filter_by(job_id=job_id).first()
+            if job_to_update:
+                job_to_update.status = 'completed'
+                job_to_update.completed_at = datetime.utcnow()
+                job_to_update.progress = 100
+                job_to_update.results_summary = json.dumps(results)
+                db.session.commit()
+                print(f"[BACKGROUND] Updated ClassificationJob status to completed", flush=True)
+            else:
+                print(f"[BACKGROUND ERROR] Job {job_id} not found for completion update!", flush=True)
+        
+        # Delete input files to save disk space (keep only output files)
+        try:
+            if os.path.exists(kobo_system_path):
+                os.remove(kobo_system_path)
+                print(f"[BACKGROUND] Deleted input file: {os.path.basename(kobo_system_path)}", flush=True)
+            
+            if os.path.exists(raw_data_path):
+                os.remove(raw_data_path)
+                print(f"[BACKGROUND] Deleted input file: {os.path.basename(raw_data_path)}", flush=True)
+            
+            print(f"[BACKGROUND] Input files deleted successfully (only output files remain)", flush=True)
+        except Exception as delete_error:
+            # Log error but don't fail the job
+            print(f"[BACKGROUND WARNING] Failed to delete input files: {str(delete_error)}", flush=True)
+        
+        # Mark job as complete in progress tracker
         progress_tracker.complete_job(job_id, results)
         
         print(f"[BACKGROUND] Classification job {job_id} completed successfully", flush=True)
@@ -383,6 +510,23 @@ def run_classification_background(job_id, kobo_system_path, raw_data_path, varia
         print(f"[BACKGROUND ERROR] Classification failed: {error_msg}", flush=True)
         import traceback
         traceback.print_exc()
+        
+        # Update job as failed in database
+        try:
+            with app.app_context():
+                # Query job again in this context
+                job_to_update = ClassificationJob.query.filter_by(job_id=job_id).first()
+                if job_to_update:
+                    job_to_update.status = 'error'
+                    job_to_update.error_message = error_msg
+                    job_to_update.completed_at = datetime.utcnow()
+                    db.session.commit()
+                    print(f"[BACKGROUND] Updated ClassificationJob status to error", flush=True)
+                else:
+                    print(f"[BACKGROUND ERROR] Job {job_id} not found for error update!", flush=True)
+        except Exception as db_error:
+            print(f"[BACKGROUND] Failed to update database: {db_error}", flush=True)
+        
         progress_tracker.set_error(job_id, error_msg)
 
 def run_semi_open_background(job_id, kobo_system_path, raw_data_path, pairs_to_process, 
@@ -565,19 +709,135 @@ def classification_complete(job_id):
 @main_bp.route('/results')
 @login_required
 def results():
-    """Results page"""
-    classification_results = session.get('classification_results')
+    """Results page - show classification job history"""
+    from app.models import ClassificationJob
+    from sqlalchemy import desc
     
-    if not classification_results:
-        flash('No classification results available. Please run classification first.', 'warning')
-        return redirect(url_for('main.classify'))
+    try:
+        # Get all completed jobs for current user (most recent first)
+        jobs = ClassificationJob.query.filter_by(
+            user_id=current_user.id,
+            status='completed'
+        ).order_by(desc(ClassificationJob.completed_at)).limit(20).all()
+        
+        # Pass objects directly to template (need for properties like is_download_available)
+        return render_template('results.html', jobs=jobs)
+        
+    except Exception as e:
+        print(f"[ERROR] Results page error: {e}")
+        import traceback
+        traceback.print_exc()
+        flash(f'Error loading results: {str(e)}', 'error')
+        return redirect(url_for('main.dashboard'))
+
+@main_bp.route('/delete_jobs', methods=['POST'])
+@login_required
+def bulk_delete_jobs():
+    """Bulk delete classification jobs"""
+    import os
+    from app.models import ClassificationJob
+    from app import db
     
-    return render_template('results.html', results=classification_results)
+    try:
+        job_ids = request.form.getlist('job_ids[]')
+        if not job_ids:
+            flash('No jobs selected for deletion.', 'warning')
+            return redirect(url_for('main.results'))
+        
+        deleted_count = 0
+        for job_id in job_ids:
+            job = ClassificationJob.query.filter_by(
+                id=job_id,
+                user_id=current_user.id  # Security: only delete own jobs
+            ).first()
+            
+            if job:
+                # Delete associated files
+                files_to_delete = []
+                if job.input_kobo_path and os.path.exists(job.input_kobo_path):
+                    files_to_delete.append(job.input_kobo_path)
+                if job.input_raw_path and os.path.exists(job.input_raw_path):
+                    files_to_delete.append(job.input_raw_path)
+                if job.output_kobo_path and os.path.exists(job.output_kobo_path):
+                    files_to_delete.append(job.output_kobo_path)
+                if job.output_raw_path and os.path.exists(job.output_raw_path):
+                    files_to_delete.append(job.output_raw_path)
+                
+                # Delete database record (cascade will delete variables)
+                db.session.delete(job)
+                deleted_count += 1
+                
+                # Delete files after successful db deletion
+                for file_path in files_to_delete:
+                    try:
+                        os.remove(file_path)
+                        print(f"[INFO] Deleted file: {file_path}")
+                    except Exception as e:
+                        print(f"[WARNING] Failed to delete file {file_path}: {e}")
+        
+        db.session.commit()
+        
+        if deleted_count > 0:
+            flash(f'Successfully deleted {deleted_count} job(s).', 'success')
+        else:
+            flash('No jobs were deleted.', 'warning')
+            
+    except Exception as e:
+        db.session.rollback()
+        print(f"[ERROR] Bulk delete failed: {e}")
+        import traceback
+        traceback.print_exc()
+        flash(f'Error deleting jobs: {str(e)}', 'error')
+    
+    return redirect(url_for('main.results'))
+
+
+@main_bp.route('/results/<int:job_id>')
+@login_required
+def view_result(job_id):
+    """View detailed results for a specific job"""
+    import json
+    from app.models import ClassificationJob
+    
+    try:
+        # Get specific job
+        job = ClassificationJob.query.filter_by(
+            id=job_id,
+            user_id=current_user.id
+        ).first()
+        
+        if not job:
+            flash('Classification job not found.', 'error')
+            return redirect(url_for('main.results'))
+        
+        # Get results from database
+        results_summary = json.loads(job.results_summary) if job.results_summary else {}
+        
+        # Add job info
+        results_summary['job_info'] = {
+            'job_id': job.job_id,
+            'created_at': job.created_at.strftime('%Y-%m-%d %H:%M:%S') if job.created_at else None,
+            'completed_at': job.completed_at.strftime('%Y-%m-%d %H:%M:%S') if job.completed_at else None,
+            'duration': job.duration_seconds,
+            'original_raw_filename': job.original_raw_filename,
+            'output_raw_filename': job.output_raw_filename,
+            'output_kobo_filename': job.output_kobo_filename
+        }
+        
+        return render_template('view_result.html', results=results_summary, job=job)
+        
+    except Exception as e:
+        print(f"[ERROR] View result error: {e}")
+        import traceback
+        traceback.print_exc()
+        flash(f'Error loading result details: {str(e)}', 'error')
+        return redirect(url_for('main.results'))
+
 
 @main_bp.route('/download-file/<path:filename>')
 @login_required
 def download_file(filename):
-    """Download classified Excel files"""
+    """Download classified Excel files (legacy - single file)"""
     import os
     from flask import send_from_directory
     
@@ -596,9 +856,69 @@ def download_file(filename):
     return send_from_directory(
         uploads_dir, 
         safe_filename,
-        as_attachment=True,
-        download_name=safe_filename
+        as_attachment=True
     )
+
+@main_bp.route('/download-job/<int:job_id>')
+@login_required
+def download_job(job_id):
+    """Download classification job results as ZIP (2 files: kobo + raw)"""
+    import os
+    import zipfile
+    from io import BytesIO
+    from flask import send_file
+    from app.models import ClassificationJob
+    
+    # Get job
+    job = ClassificationJob.query.filter_by(id=job_id, user_id=current_user.id).first()
+    
+    if not job:
+        flash('Job not found', 'error')
+        return redirect(url_for('main.results'))
+    
+    # Check if download still available (24 hours)
+    if not job.is_download_available:
+        flash('Download expired. Files are only available for 24 hours after completion.', 'warning')
+        return redirect(url_for('main.results'))
+    
+    # Check if output files exist
+    if not job.output_kobo_path or not job.output_raw_path:
+        flash('Output files not found', 'error')
+        return redirect(url_for('main.results'))
+    
+    if not os.path.exists(job.output_kobo_path) or not os.path.exists(job.output_raw_path):
+        flash('Output files not found on server', 'error')
+        return redirect(url_for('main.results'))
+    
+    # Create ZIP in memory
+    memory_file = BytesIO()
+    
+    with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
+        # Add kobo file
+        zf.write(job.output_kobo_path, arcname=job.output_kobo_filename)
+        # Add raw file
+        zf.write(job.output_raw_path, arcname=job.output_raw_filename)
+    
+    memory_file.seek(0)
+    
+    # Generate ZIP filename with original name + timestamp
+    import re
+    original_base = re.sub(r'\d+\.xlsx$', '', job.original_raw_filename or 'results')
+    zip_filename = f"classified_{original_base}_{job.completed_at.strftime('%Y%m%d_%H%M%S')}.zip"
+    
+    response = send_file(
+        memory_file,
+        mimetype='application/zip',
+        as_attachment=True,
+        download_name=zip_filename
+    )
+    
+    # Add cache control headers to prevent caching
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    
+    return response
 
 @main_bp.route('/admin/settings')
 @login_required
@@ -856,6 +1176,13 @@ def serve_logo(filename):
     logo_dir = os.path.join(Config.UPLOAD_FOLDER, 'logos')
     return send_from_directory(logo_dir, filename)
 
+@main_bp.route('/profile-photo/<filename>')
+def serve_profile_photo(filename):
+    """Serve profile photo file"""
+    from flask import send_from_directory
+    profile_photos_dir = os.path.join(Config.UPLOAD_FOLDER, 'profile_photos')
+    return send_from_directory(profile_photos_dir, filename)
+
 @main_bp.route('/logo/upload', methods=['GET', 'POST'])
 @login_required
 def logo_upload():
@@ -1048,10 +1375,63 @@ def users():
     all_users = User.query.order_by(User.created_at.desc()).all()
     return render_template('users.html', users=all_users)
 
-@main_bp.route('/profile')
+@main_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     """User profile page"""
+    from werkzeug.utils import secure_filename
+    import os
+    
+    if request.method == 'POST':
+        if 'profile_photo' not in request.files:
+            flash('No file selected', 'warning')
+            return redirect(url_for('main.profile'))
+        
+        file = request.files['profile_photo']
+        
+        if file.filename == '':
+            flash('No file selected', 'warning')
+            return redirect(url_for('main.profile'))
+        
+        if file:
+            # Validate file type
+            allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+            filename = secure_filename(file.filename)
+            file_ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
+            
+            if file_ext not in allowed_extensions:
+                flash('Invalid file type. Please upload PNG, JPG, JPEG, or GIF', 'danger')
+                return redirect(url_for('main.profile'))
+            
+            # Create profile_photos directory if not exists
+            profile_photos_dir = os.path.join(Config.UPLOAD_FOLDER, 'profile_photos')
+            os.makedirs(profile_photos_dir, exist_ok=True)
+            
+            # Generate unique filename
+            unique_filename = f"profile_{current_user.id}_{uuid.uuid4().hex[:8]}.{file_ext}"
+            file_path = os.path.join(profile_photos_dir, unique_filename)
+            
+            # Save image
+            try:
+                file.save(file_path)
+                
+                # Delete old profile photo if exists
+                if current_user.profile_photo:
+                    old_photo_path = os.path.join(profile_photos_dir, current_user.profile_photo)
+                    if os.path.exists(old_photo_path):
+                        os.remove(old_photo_path)
+                
+                # Update user profile_photo field
+                current_user.profile_photo = unique_filename
+                db.session.commit()
+                
+                flash('Profile photo updated successfully!', 'success')
+                return redirect(url_for('main.profile'))
+                
+            except Exception as e:
+                flash(f'Error uploading image: {str(e)}', 'danger')
+                return redirect(url_for('main.profile'))
+    
     return render_template('profile.html')
 
 @main_bp.route('/api/status')
@@ -1100,7 +1480,7 @@ def test_brevo():
 @main_bp.route('/api/request-password-otp', methods=['POST'])
 @login_required
 def request_password_otp():
-    """Request OTP for password change"""
+    """Request OTP for password change from profile"""
     try:
         from app.models import OTPToken
         from app.email_service import EmailService
@@ -1108,7 +1488,7 @@ def request_password_otp():
         # Create OTP
         otp = OTPToken.create_otp(current_user.id, expiry_minutes=10)
         
-        # Send email
+        # Send email with app context
         email_service = EmailService()
         success, message = email_service.send_otp_email(
             recipient_email=current_user.email,
@@ -1119,15 +1499,20 @@ def request_password_otp():
         if success:
             return jsonify({
                 'success': True,
-                'message': f'OTP code has been sent to {current_user.email}. Please check your inbox.'
+                'message': f'Verification code sent to {current_user.email}. Please check your inbox.'
             })
         else:
+            # Log error for debugging
+            print(f"[ERROR] Failed to send OTP to {current_user.email}: {message}")
             return jsonify({
                 'success': False,
                 'message': f'Failed to send email: {message}'
             })
             
     except Exception as e:
+        print(f"[ERROR] Exception in request_password_otp: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return jsonify({
             'success': False,
             'message': f'Error: {str(e)}'

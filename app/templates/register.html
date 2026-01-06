@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Sign Up - M-Coder Platform{% endblock %}
+{% block title %}Sign Up - M-Code Pro{% endblock %}
 
 {% block auth_content %}
 <div class="container px-3 px-md-0">
@@ -21,7 +21,7 @@
                             {% endif %}
                         </div>
                         <h3 class="fw-bold mb-1 fs-4 fs-md-3" style="color: #2d3748;">Create Account</h3>
-                        <p class="text-muted mb-0" style="font-size: 0.85rem;">Join M-Coder Platform</p>
+                        <p class="text-muted mb-0" style="font-size: 0.85rem;">Join M-Code Pro</p>
                     </div>
                     
                     <!-- Flash Messages -->
@@ -39,6 +39,7 @@
                     
                     <!-- Registration Form -->
                     <form method="POST" action="{{ url_for('auth.register') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <div class="mb-3">
                             <label class="form-label fw-semibold" style="color: #2d3748; font-size: 0.85rem;">Full Name</label>
                             <input type="text" name="full_name" class="form-control" placeholder="Enter your full name" required style="border-radius: 10px; padding: 10px;">
@@ -47,12 +48,7 @@
                         <div class="mb-3">
                             <label class="form-label fw-semibold" style="color: #2d3748; font-size: 0.85rem;">Email Address</label>
                             <input type="email" name="email" class="form-control" placeholder="your.email@company.com" required style="border-radius: 10px; padding: 10px;">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" style="color: #2d3748; font-size: 0.85rem;">Username</label>
-                            <input type="text" name="username" class="form-control" placeholder="Choose a username" required style="border-radius: 10px; padding: 10px;">
-                            <small class="text-muted" style="font-size: 0.8rem;">This will be your login username</small>
+                            <small class="text-muted" style="font-size: 0.8rem;">Use this email to login</small>
                         </div>
                         
                         <div class="mb-3">

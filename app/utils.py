@@ -21,24 +21,35 @@ class FileProcessor:
         return '.' in filename and \
                filename.rsplit('.', 1)[1].lower() in self.ALLOWED_EXTENSIONS
     
-    def save_file(self, file, prefix: str = '') -> str:
+    def save_file(self, file, prefix: str = '', add_timestamp: bool = True) -> tuple:
         """
-        Save uploaded file securely
+        Save uploaded file securely with optional timestamp
         
         Args:
             file: FileStorage object
-            prefix: Prefix for filename (e.g., 'kobo_', 'raw_')
+            prefix: Prefix for filename (e.g., 'input_kobo', 'input_raw')
+            add_timestamp: Add timestamp to filename (default: True)
         
         Returns:
-            str: Full path to saved file
+            tuple: (filepath, original_filename)
         """
-        filename = secure_filename(file.filename)
-        if prefix:
-            filename = f"{prefix}_{filename}"
+        from datetime import datetime
+        
+        original_filename = secure_filename(file.filename)
+        base_name, extension = os.path.splitext(original_filename)
+        
+        if add_timestamp:
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            if prefix:
+                filename = f"{prefix}_{timestamp}{extension}"
+            else:
+                filename = f"{base_name}_{timestamp}{extension}"
+        else:
+            filename = original_filename if not prefix else f"{prefix}_{original_filename}"
         
         filepath = os.path.join(self.upload_folder, filename)
         file.save(filepath)
-        return filepath
+        return filepath, original_filename
     
     def detect_open_ended_variables(self, kobo_system_path: str) -> List[Dict]:
         """
@@ -57,10 +68,9 @@ class FileProcessor:
             List of dicts with variable info: {name, label, type}
         """
         try:
-            xl = pd.ExcelFile(kobo_system_path)
-            
-            if 'survey' not in xl.sheet_names:
-                return []
+            with pd.ExcelFile(kobo_system_path) as xl:
+                if 'survey' not in xl.sheet_names:
+                    return []
             
             df_survey = pd.read_excel(kobo_system_path, sheet_name='survey')
             

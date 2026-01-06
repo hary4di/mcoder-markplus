@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Classify - M-Coder Platform{% endblock %}
+{% block title %}Classify - M-Code Pro{% endblock %}
 
 {% block page_title %}Start Classification{% endblock %}
 
@@ -134,6 +134,11 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     e.preventDefault();
     
     const formData = new FormData(this);
+    
+    // Add CSRF token from meta tag
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formData.append('csrf_token', csrfToken);
+    
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadProgress = document.getElementById('uploadProgress');
     
