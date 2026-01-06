@@ -761,8 +761,13 @@ class ExcelClassifier:
         print(f"      Completed: {len(self.classifications)} responses classified")
     
     def _reclassify_outliers(self, df, variable_name, question_text, outlier_indices):
-        """Re-classify outlier responses dengan kategori yang sudah di-update"""
+        """Re-classify outlier responses dengan kategori yang sudah di-update (MULTI-LABEL SUPPORT)"""
         reclassified = 0
+        
+        # Batch processing for efficiency (10 responses per batch)
+        BATCH_SIZE = 10
+        batch_responses = []
+        batch_outlier_indices = []
         
         for outlier_idx in outlier_indices:
             # Get the response
@@ -772,28 +777,61 @@ class ExcelClassifier:
                 continue
             
             response_str = str(response).strip()
+            batch_responses.append(response_str)
+            batch_outlier_indices.append(outlier_idx)
             
-            # Re-classify with updated categories
-            category, confidence = self.classifier.classify_response(
-                response_str,
-                self.categories,
-                question_text=question_text
-            )
-            
-            code = self.category_codes.get(category, 0)
-            
-            # Update classification
-            for c in self.classifications:
-                if c['index'] == outlier_idx:
-                    c['category'] = category
-                    c['code'] = code
-                    c['confidence'] = confidence
-                    reclassified += 1
-                    break
-            
-            # Progress
-            if reclassified % 10 == 0:
-                print(f"         Re-classified: {reclassified}/{len(outlier_indices)}")
+            # Process batch when full or at end
+            if len(batch_responses) >= BATCH_SIZE or outlier_idx == outlier_indices[-1]:
+                # BATCH CLASSIFICATION with MULTI-LABEL support
+                results = self.classifier.classify_responses_batch(
+                    batch_responses,
+                    self.categories,
+                    question_text=question_text
+                )
+                
+                # Update classifications with multi-label results
+                for batch_idx, result in enumerate(results):
+                    current_outlier_idx = batch_outlier_indices[batch_idx]
+                    
+                    # Handle multi-label result (list of tuples)
+                    if isinstance(result, list) and len(result) > 0:
+                        categories_with_conf = result
+                        
+                        # Get all category names and codes
+                        category_names = [cat for cat, conf in categories_with_conf]
+                        codes = [self.category_codes.get(cat, 0) for cat in category_names]
+                        
+                        # Join codes with space for multi-label: "1 3"
+                        code_str = " ".join(map(str, codes)) if len(codes) > 1 else codes[0]
+                        
+                        # Primary category and confidence
+                        primary_category = category_names[0]
+                        primary_confidence = categories_with_conf[0][1]
+                        
+                        # Update classification
+                        for c in self.classifications:
+                            if c['index'] == current_outlier_idx:
+                                c['category'] = primary_category
+                                c['categories'] = category_names  # All categories
+                                c['code'] = code_str  # Space-separated codes
+                                c['codes'] = codes  # List of codes
+                                c['confidence'] = primary_confidence
+                                reclassified += 1
+                                
+                                # DEBUG: Log multi-label outlier reclassification
+                                if len(codes) > 1:
+                                    print(f"\n[MULTI-LABEL OUTLIER] Response: '{batch_responses[batch_idx][:60]}...'")
+                                    print(f"  Categories: {category_names}")
+                                    print(f"  Codes: {code_str}")
+                                break
+                
+                # Progress
+                if reclassified % 10 == 0:
+                    print(f"         Re-classified: {reclassified}/{len(outlier_indices)}")
+                
+                # Clear batch
+                batch_responses = []
+                batch_outlier_indices = []
         
         print(f"      Total re-classified: {reclassified} outliers")
     

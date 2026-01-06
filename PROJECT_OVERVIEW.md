@@ -151,46 +151,41 @@
    - **Impact**: Complete survey workflow (Classification → Tabulation → Report)
 
 ### 🔴 Priority Tinggi - BACKLOG
-1. **Multi-Label Classification**
+1. **Multi-Label Classification** ✅ **ALREADY IMPLEMENTED**
    - User butuh 1 response bisa punya multiple categories
    - Contoh: "Harga mahal dan pelayanan lambat" → code: "1 3"
-   - **Impact**: Major feature request dari user
-   - **Status**: Ada test_multilabel.py tapi belum production-ready
+   - **Status**: Active in code (ENABLE_MULTI_LABEL=true)
+   - **Note**: Fixed outlier reclassification bug (Jan 7, 2026)
 
-2. **Batch Upload Optimization**
-   - Saat ini user upload 2 file terpisah (kobo_system + raw_data)
-   - Target: Simplify ke 1 file upload dengan smart detection
-   - **Impact**: Better UX, less confusion
-
-3. **Email Service Upgrade**
-   - Saat ini pakai Gmail SMTP (kurang reliable)
-   - Target: Migrate ke Brevo API (professional email service)
-   - **Status**: Settings page sudah ada form Brevo API key
-   - **File**: `app/email_service.py` sudah support Brevo
+2. **Type 2 Classification (Semi Open-Ended)** 🔴 **NEXT PRIORITY**
+   - Handle precoded questions dengan option "Lainnya" + open text
+   - Code sudah ada: `semi_open_processor.py`
+   - **Status**: Need testing + refinement
+   - **Impact**: Complete classification untuk all question types
 
 ### Prioritas Sedang 🟡
-4. **Profile Photo Upload (Fix)**
+3. **Profile Photo Upload (Fix)**
    - Database ready, code ready, tapi deploy error
    - Perlu fix Flask SQLAlchemy model loading issue
    - **Impact**: Nice-to-have untuk personalization
 
-5. **Export Format Options**
+4. **Export Format Options**
    - Saat ini hanya Excel (.xlsx)
    - Target: Tambahkan CSV, JSON export options
    - **Impact**: Flexibility untuk different use cases
 
-6. **Category Management**
+5. **Category Management**
    - User mungkin mau edit/merge categories setelah generate
    - Target: UI untuk review dan adjust categories
    - **Impact**: Better control untuk user
 
 ### Prioritas Rendah 🟢
-7. **Documentation Portal**
+6. **Documentation Portal**
    - User guide, tutorial, FAQ
    - Embed video tutorial
    - **Current**: Help button link ke email/WA saja
 
-8. **Analytics Dashboard**
+7. **Analytics Dashboard**
    - Graph visualizations (category trends, usage statistics)
    - Export reports
    - **Current**: Basic card statistics only
