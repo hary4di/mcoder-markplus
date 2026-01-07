@@ -320,17 +320,33 @@ class ExcelClassifier:
         update_progress(f"   Files saved successfully", 95)
         update_progress(f"Classification complete!", 100)
         
+        # Calculate category distribution
+        category_counts = {}
+        for classification in self.classifications:
+            cat = classification.get('category', 'Unknown')
+            code = classification.get('code', 0)
+            if cat and code is not None:
+                if cat not in category_counts:
+                    category_counts[cat] = {'category': cat, 'code': code, 'count': 0}
+                category_counts[cat]['count'] += 1
+        
+        category_summary = sorted(category_counts.values(), key=lambda x: x['count'], reverse=True)
+        
         # Summary
         summary = {
             'variable': variable_name,
             'question': question_text,
             'total_submissions': len(df_raw),
+            'total_responses': valid_classified + invalid_count + empty_count,  # Total processed
             'responses_found': len(responses),
             'empty_responses': empty_count,
             'valid_responses': len(valid_responses),
             'invalid_text_responses': invalid_count,
+            'invalid_count': invalid_count,  # Alias for routes.py
+            'empty_count': empty_count,      # Alias for routes.py
             'valid_classified': valid_classified,
             'categories_generated': len(self.categories),
+            'category_summary': category_summary,  # For database storage
             'new_categories_added': new_categories_added,
             'outliers_found': len(outliers),
             'output_files': output_files
