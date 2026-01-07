@@ -139,56 +139,219 @@
 
 ---
 
-## 📋 DEVELOPMENT PLAN (Next Phase)
+## 📋 DEVELOPMENT PLAN (2026 Roadmap)
 
-### 🔴 Priority Tinggi - IN PLANNING
+> **📄 MASTER PLAN**: See [SCALABILITY_PLAN.md](SCALABILITY_PLAN.md) for complete specifications
 
-**1. Tabulation Module** (NEW - Planned Q1 2026)
-   - **Purpose**: Auto-generate cross-tabulation dari classified data
-   - **Scale**: Handle ratusan-ribuan tabel (production requirement)
-   - **Tech Stack**: Flask + Celery + Redis + Polars + xlsxwriter
-   - **Status**: 🟡 Technical spec completed (see TABULATION_SPEC.md)
-   - **Impact**: Complete survey workflow (Classification → Tabulation → Report)
+### 🔴 **PHASE 1: Scalability & Stability** (Week 1 - Jan 8-12, 2026) **IN PROGRESS**
+**Status**: 🚨 CRITICAL - Production cannot handle concurrent users  
+**Target**: Support 20+ concurrent users safely
 
-### 🔴 Priority Tinggi - BACKLOG
-1. **Multi-Label Classification** ✅ **ALREADY IMPLEMENTED**
-   - User butuh 1 response bisa punya multiple categories
-   - Contoh: "Harga mahal dan pelayanan lambat" → code: "1 3"
-   - **Status**: Active in code (ENABLE_MULTI_LABEL=true)
-   - **Note**: Fixed outlier reclassification bug (Jan 7, 2026)
+**Issues to Resolve**:
+1. ❌ **502 Bad Gateway**: Nginx timeout, view result crashes
+2. ❌ **Single Worker Bottleneck**: workers=1 cannot handle 12 users
+3. ❌ **No Background Processing**: Tasks die when browser closes
 
-2. **Type 2 Classification (Semi Open-Ended)** 🔴 **NEXT PRIORITY**
-   - Handle precoded questions dengan option "Lainnya" + open text
-   - Code sudah ada: `semi_open_processor.py`
-   - **Status**: Need testing + refinement
-   - **Impact**: Complete classification untuk all question types
+**Solution**: **Redis + Celery Architecture**
+- Install Redis on VPS for message broker + progress tracking
+- Implement Celery for background task processing
+- Increase Gunicorn workers to 4-8 (multi-worker safe)
+- Fix Nginx timeout configuration (600s)
+- Optimize database connection pool (20+ connections)
 
-### Prioritas Sedang 🟡
-3. **Profile Photo Upload (Fix)**
-   - Database ready, code ready, tapi deploy error
-   - Perlu fix Flask SQLAlchemy model loading issue
-   - **Impact**: Nice-to-have untuk personalization
+**Deliverables**:
+- ✅ Classification runs in background (survives logout/restart)
+- ✅ 20+ concurrent users without errors
+- ✅ No more 502 errors
+- ✅ Real-time progress with Redis pubsub
+- ✅ Production stability > 99% uptime
 
-4. **Export Format Options**
-   - Saat ini hanya Excel (.xlsx)
-   - Target: Tambahkan CSV, JSON export options
-   - **Impact**: Flexibility untuk different use cases
+**Timeline**: 3 days  
+**Risk**: HIGH (requires 2-3 hour maintenance window)  
+**Priority**: 🔴🔴🔴 **MUST FIX IMMEDIATELY**
 
-5. **Category Management**
-   - User mungkin mau edit/merge categories setelah generate
-   - Target: UI untuk review dan adjust categories
-   - **Impact**: Better control untuk user
+---
 
-### Prioritas Rendah 🟢
-6. **Documentation Portal**
-   - User guide, tutorial, FAQ
-   - Embed video tutorial
-   - **Current**: Help button link ke email/WA saja
+### 🟡 **PHASE 2: UI/UX Modernization** (Week 2 - Jan 13-19, 2026)
+**Status**: 📋 Planning  
+**Target**: Simple, intuitive, professional interface
 
-7. **Analytics Dashboard**
-   - Graph visualizations (category trends, usage statistics)
-   - Export reports
-   - **Current**: Basic card statistics only
+**Problems**:
+- Menu redundancy: "Start Classification" not needed
+- 3 clicks to start classification (too many steps)
+- Not intuitive for new users
+- No visual feedback for background tasks
+
+**Solution**: **Complete Navigation Redesign**
+1. **Remove "Start Classification" Menu** - Integrate into Dashboard
+2. **Dashboard with Quick Actions**:
+   - Large "Upload & Classify" card (primary CTA)
+   - Recent Classifications panel (5 latest)
+   - Quick Stats cards
+   - Coming Soon: Tabulation badge
+3. **Unified Upload Interface**:
+   - Single-page workflow with steps
+   - Drag & drop file upload
+   - Live variable preview
+   - One-click start
+4. **Real-Time Progress**:
+   - Live percentage with ETA
+   - Current step indicator
+   - Cancel button
+   - Toast notifications
+5. **Enhanced Results**:
+   - Data source badges (Kobo/Excel/CSV)
+   - Visual category charts (Chart.js)
+   - Quick actions (Re-run, Share, Archive)
+   - Confidence score overview
+
+**Deliverables**:
+- ✅ 50% less clicks to classify
+- ✅ Intuitive for new users (no training)
+- ✅ Modern, professional design
+- ✅ Mobile-responsive (field teams)
+
+**Timeline**: 7 days  
+**Consultant**: Consider UI/UX expert for wireframes  
+**Priority**: 🟡 **HIGH**
+
+---
+
+### 🟢 **PHASE 3: Multi-Source Data Support** (Week 3-4 - Jan 20-Feb 2, 2026)
+**Status**: 📋 Design Phase  
+**Target**: Support non-Kobo data sources
+
+**Scope**:
+- Excel (.xlsx) - Current, needs refactor
+- CSV (.csv) - New
+- Google Sheets - New (OAuth integration)
+- SQL Databases - New (PostgreSQL, MySQL)
+- API Endpoints - Future
+
+**Architecture**:
+```
+app/data_sources/
+├── base.py              # BaseDataSource interface
+├── kobo.py              # Existing
+├── excel.py             # Refactor from excel_classifier.py
+├── csv.py               # New
+├── google_sheets.py     # New
+└── sql.py               # New
+```
+
+**Features**:
+- Source selector in upload UI
+- Auto-detect variables regardless of source
+- Smart field mapping
+- Output format options (Excel/CSV/JSON/SQL)
+
+**Deliverables**:
+- ✅ Support all major data sources
+- ✅ Flexible for different workflows
+- ✅ Backward compatible (no breaking changes)
+
+**Timeline**: 10 days  
+**Priority**: 🟢 **MEDIUM**
+
+---
+
+### 🔵 **PHASE 4: Tabulation Module** (Q1 2026 - Feb-Mar)
+**Status**: 📄 Spec Complete (see TABULATION_SPEC.md)  
+**Target**: Auto-generate cross-tabulation tables
+
+**Features**:
+- Cross-tab with demographic variables
+- Statistical significance testing
+- Professional Excel export with formatting
+- Dashboard for tabulation history
+- Batch processing (hundreds of tables)
+
+**Architecture**:
+- Same Celery infrastructure (reuse Phase 1)
+- Polars for high-performance data processing
+- xlsxwriter for Excel formatting
+- New menu: "Tabulation" in sidebar
+
+**Workflow**:
+```
+Select Classified Data → Select Demographics → Generate Tables → Download
+```
+
+**Deliverables**:
+- ✅ Complete survey workflow (Upload → Classify → Tabulate → Report)
+- ✅ 80% time saving vs manual
+- ✅ Handle 100+ tables in one batch
+
+**Timeline**: 20 days  
+**Priority**: 🔵 **FUTURE**
+
+---
+
+### 📦 **BACKLOG** (Future Enhancements)
+
+**Feature Improvements**:
+- 🟢 **Multi-Label Classification**: Already implemented, needs testing
+- 🟢 **Semi Open-Ended**: Code exists (semi_open_processor.py), needs integration
+- 🟢 **Profile Photo Upload**: DB ready, needs Flask-Migrate fix
+- 🟢 **Category Management UI**: Edit/merge categories after generation
+- 🟢 **Export Format Options**: CSV, JSON, SQL INSERT
+- 🟢 **Advanced Analytics**: Category trends, user statistics
+- 🟢 **API Endpoints**: RESTful API for integrations
+
+**Infrastructure**:
+- 🟢 **Monitoring**: Sentry for error tracking
+- 🟢 **APM**: Performance monitoring (New Relic/DataDog)
+- 🟢 **Caching**: Redis cache for frequent queries
+- 🟢 **CDN**: Static assets optimization
+- 🟢 **Auto-scaling**: Kubernetes for enterprise scale
+
+**User Experience**:
+- 🟢 **Documentation Portal**: User guide, videos, FAQ
+- 🟢 **In-App Tutorials**: First-time user onboarding
+- 🟢 **Keyboard Shortcuts**: Power user features
+- 🟢 **Dark Mode**: Eye comfort for long sessions
+- 🟢 **Notifications**: Email/Slack when job completes
+
+---
+
+## 📊 **PROGRESS TRACKING**
+
+### Current Sprint (Week 1 - Jan 8-12, 2026)
+- [ ] **Day 1**: Plan approval, Redis installation
+- [ ] **Day 2**: Celery setup, basic tasks
+- [ ] **Day 3**: Classification to Celery migration
+- [ ] **Day 4**: Testing + fixes
+- [ ] **Day 5**: Production deployment
+
+### Success Metrics
+| Metric | Current | Target (Phase 1) |
+|--------|---------|------------------|
+| Concurrent Users | 5 (crashes at 12) | 20+ |
+| Uptime | ~95% | 99.5% |
+| Response Time | 3-5s | < 2s |
+| 502 Errors | Frequent | 0 |
+
+### Risk Assessment
+- **High Risk**: Phase 1 (requires maintenance window)
+- **Medium Risk**: Phase 2 (UX changes need user acceptance)
+- **Low Risk**: Phase 3-4 (additive features)
+
+---
+
+## 🎯 **DECISION REQUIRED**
+
+**Immediate Action Needed**: Approve Phase 1 implementation
+- **When**: This week (Jan 8-12, 2026)
+- **Downtime**: 2-3 hours (Sunday 2-5 AM WIB recommended)
+- **Cost**: $0 (Redis free, Celery free, no new infrastructure)
+- **Benefit**: Production stability for 20+ users
+
+**Approval Checklist**:
+- [ ] Review SCALABILITY_PLAN.md
+- [ ] Schedule maintenance window
+- [ ] Notify active users (if any)
+- [ ] Backup current production
+- [ ] Proceed with implementation
 
 ---
 

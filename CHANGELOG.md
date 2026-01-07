@@ -2,6 +2,156 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-01-08] - Scalability & UX Modernization Plan 📋
+
+### 🎯 Status: PLANNING PHASE - Comprehensive Roadmap Created
+**Production Issues**: Discovered critical scalability problems with 12 concurrent users
+**User Request**: Support 20+ users, simplify UI, remove redundant menus, expert UX design
+
+### Planning Documents Created
+1. **[SCALABILITY_PLAN.md](SCALABILITY_PLAN.md)** - Complete technical specification
+   - Phase 1: Redis + Celery architecture (Week 1)
+   - Phase 2: UI/UX redesign (Week 2)
+   - Phase 3: Multi-source data support (Week 3-4)
+   - Phase 4: Tabulation module (Q1 2026)
+   - Infrastructure specs, monitoring, risk mitigation
+   - Timeline, resources, success metrics
+
+2. **[UX_REDESIGN_MOCKUP.md](UX_REDESIGN_MOCKUP.md)** - Expert UI/UX design
+   - Design philosophy and principles
+   - Navigation redesign (remove "Start Classification")
+   - Dashboard with Quick Actions cards
+   - Single-page upload workflow
+   - Results page with card-based layout
+   - Mobile-responsive design
+   - Accessibility checklist (WCAG 2.1 AA)
+
+3. **[PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)** - Updated roadmap
+   - Replaced old development plan with 4-phase approach
+   - Added progress tracking dashboard
+   - Success metrics and risk assessment
+   - Decision required section
+
+### Problems Identified
+1. **502 Bad Gateway** 🔴 CRITICAL
+   - Nginx timeout mismatch with Gunicorn
+   - View result page crashes after classification
+   - Impact: Users cannot see results
+
+2. **Single Worker Bottleneck** 🔴 CRITICAL
+   - Gunicorn workers=1 (only 1 classification at a time)
+   - In-memory progress tracker prevents multi-worker
+   - 12 concurrent users = system crash, errors, stuck processes
+   - Impact: Cannot scale beyond 5-10 users
+
+3. **No Background Processing** 🔴 CRITICAL
+   - Classification runs in HTTP request thread
+   - Task dies when user closes browser/logs out
+   - Impact: Poor UX, cannot handle long-running jobs
+
+4. **UI/UX Issues** 🟡 HIGH
+   - Menu redundancy: "Start Classification" unnecessary
+   - 3 clicks to start classification (inefficient)
+   - Not intuitive for new users
+   - No visual feedback for background tasks
+
+### Solution Architecture
+
+**Phase 1: Immediate Fixes (Week 1)**
+- Install Redis for task queue + caching
+- Implement Celery for background processing
+- Increase Gunicorn workers to 4-8
+- Fix Nginx timeout (600s)
+- Optimize database connection pool (20+ connections)
+
+**Phase 2: UI/UX Modernization (Week 2)**
+- Remove "Start Classification" menu
+- Dashboard with Quick Actions (Upload & Classify card)
+- Single-page upload workflow (drag & drop)
+- Real-time progress with ETA + cancel button
+- Results page with card-based layout
+- Mobile-responsive design
+
+**Phase 3: Multi-Source Data (Week 3-4)**
+- Support Excel, CSV, Google Sheets, SQL databases
+- Data source abstraction layer
+- Smart variable detection regardless of source
+- Multiple output format options
+
+**Phase 4: Tabulation Module (Q1 2026)**
+- Auto-generate cross-tabulation tables
+- Statistical significance testing
+- Same Celery infrastructure
+- Complete survey workflow
+
+### Technical Specifications
+
+**Redis Configuration**:
+- 2GB memory allocation
+- LRU eviction policy
+- Persistent storage (RDB snapshots)
+
+**Celery Configuration**:
+- Broker: Redis (queue 0)
+- Backend: Redis (queue 1)
+- Workers: 4-8 concurrent processes
+- Task routing: classification queue + default queue
+
+**Gunicorn (Updated)**:
+- Workers: 4 (up from 1)
+- Worker class: sync
+- Timeout: 120s (down from 300s, requests are async now)
+- Max requests: 2000
+
+**Nginx (Updated)**:
+- Timeout: 600s for all proxy operations
+- WebSocket support for SSE
+- Static file caching (30 days)
+
+### Performance Targets
+
+| Metric | Current | Target (Phase 1) |
+|--------|---------|------------------|
+| Concurrent Users | 5 (crashes at 12) | 20+ |
+| Uptime | ~95% | 99.5% |
+| Response Time | 3-5s | < 2s |
+| 502 Errors | Frequent | 0 |
+
+### Implementation Timeline
+- **Week 1 (Jan 8-12)**: Redis + Celery implementation ← CRITICAL PATH
+- **Week 2 (Jan 13-19)**: UI/UX redesign
+- **Week 3-4 (Jan 20-Feb 2)**: Multi-source data support
+- **Q1 2026 (Feb-Mar)**: Tabulation module
+
+### Decision Required
+**Immediate Action**: Approve Phase 1 implementation
+- **When**: This week (Jan 8-12, 2026)
+- **Downtime**: 2-3 hours (Sunday 2-5 AM WIB recommended)
+- **Cost**: $0 (Redis free, Celery free)
+- **Benefit**: Production stability for 20+ users
+
+**Approval Checklist**:
+- [ ] Review SCALABILITY_PLAN.md
+- [ ] Review UX_REDESIGN_MOCKUP.md
+- [ ] Schedule maintenance window
+- [ ] Notify active users
+- [ ] Backup production database
+- [ ] Proceed with implementation
+
+### Files Created
+- `SCALABILITY_PLAN.md` (600+ lines) - Complete technical roadmap
+- `UX_REDESIGN_MOCKUP.md` (800+ lines) - Expert UI/UX design specification
+- Updated `PROJECT_OVERVIEW.md` - 4-phase development plan
+
+### Next Steps
+1. **Stakeholder Review**: Product Owner + Technical Lead approval
+2. **Schedule Downtime**: Sunday 2-5 AM WIB (low traffic period)
+3. **Begin Phase 1**: Redis installation + Celery setup
+4. **Load Testing**: 20+ concurrent users before go-live
+5. **Monitor & Optimize**: First week post-deployment
+
+---
+
 ## [2026-01-07] - OTP Email Verification - Production Deployment ✅
 
 ### 🎯 Status: FULLY DEPLOYED - All OTP Features Working
