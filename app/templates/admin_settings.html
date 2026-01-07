@@ -79,6 +79,7 @@
                 <div class="tab-pane fade show active" id="openai" role="tabpanel">
                     <h4 class="mb-4"><i class="bi bi-robot text-primary"></i> OpenAI API Configuration</h4>
                     <form method="POST" action="{{ url_for('main.save_settings') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="hidden" name="setting_type" value="openai">
                         
                         <div class="row">
@@ -147,6 +148,7 @@
                 <div class="tab-pane fade" id="brevo" role="tabpanel">
                     <h4 class="mb-4"><i class="bi bi-envelope-fill text-primary"></i> Brevo Email Configuration</h4>
                     <form method="POST" action="{{ url_for('main.save_settings') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="hidden" name="setting_type" value="brevo">
                         
                         <div class="alert alert-info mb-4">
@@ -251,6 +253,7 @@
                 <div class="tab-pane fade" id="classification" role="tabpanel">
                     <h4 class="mb-4"><i class="bi bi-sliders text-info"></i> Classification Settings</h4>
                     <form method="POST" action="{{ url_for('main.save_settings') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="hidden" name="setting_type" value="classification">
                         
                         <!-- Basic Settings -->
@@ -390,6 +393,7 @@
                 <div class="tab-pane fade" id="parallel" role="tabpanel">
                     <h4 class="mb-4"><i class="bi bi-lightning-charge-fill text-warning"></i> Parallel Processing Configuration</h4>
                     <form method="POST" action="{{ url_for('main.save_settings') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="hidden" name="setting_type" value="parallel">
                         
                         <!-- Performance Alert -->
@@ -597,6 +601,7 @@
                 <div class="tab-pane fade" id="prompts" role="tabpanel">
                     <h4 class="mb-4"><i class="bi bi-chat-quote-fill text-success"></i> AI Prompt Configuration</h4>
                     <form method="POST" action="{{ url_for('main.save_settings') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="hidden" name="setting_type" value="ai_prompts">
                         
                         <div class="alert alert-warning mb-4">
@@ -672,6 +677,7 @@
                 <div class="tab-pane fade" id="patterns" role="tabpanel">
                     <h4 class="mb-4"><i class="bi bi-exclamation-triangle-fill text-warning"></i> Invalid Response Patterns</h4>
                     <form method="POST" action="{{ url_for('main.save_settings') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="hidden" name="setting_type" value="invalid_patterns">
                         
                         <div class="row">
