@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.full_name }} - Classification History - M-Code Pro{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">📂 Classification History</h2>
+            <p class="text-muted mb-0">
+                <strong>{{ user.full_name }}</strong> ({{ user.email }})
+            </p>
+        </div>
+        <a href="{{ url_for('main.admin_analytics') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Analytics
+        </a>
+    </div>
+
+    <!-- Jobs Summary Card -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <p class="text-muted mb-1 small">Total Classifications</p>
+                    <h3 class="mb-0">{{ jobs|length }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-info">
+                <div class="card-body">
+                    <p class="text-muted mb-1 small">Total Variables</p>
+                    <h3 class="mb-0">{{ jobs|sum(attribute='total_variables') or 0 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-success">
+                <div class="card-body">
+                    <p class="text-muted mb-1 small">Total Responses</p>
+                    <h3 class="mb-0">{{ "{:,}".format(jobs|sum(attribute='total_responses') or 0) }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jobs Table -->
+    <div class="card">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Classification Jobs</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 20%;">Date</th>
+                            <th style="width: 30%;">File</th>
+                            <th style="width: 10%;" class="text-center">Variables</th>
+                            <th style="width: 10%;" class="text-center">Duration</th>
+                            <th style="width: 10%;" class="text-center">Type</th>
+                            <th style="width: 10%;" class="text-center">Expiry</th>
+                            <th style="width: 5%;" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if jobs %}
+                            {% for job in jobs %}
+                            <tr class="cursor-pointer" onclick="window.location.href='{{ url_for('main.view_result', job_id=job.id) }}'">
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    {{ job.completed_at_wib.strftime('%d %b %Y') }}<br>
+                                    <small class="text-muted">{{ job.completed_at_wib.strftime('%H:%M WIB') }}</small>
+                                </td>
+                                <td>
+                                    <div class="text-truncate" style="max-width: 250px;" title="{{ job.original_filename }}">
+                                        {{ job.original_filename }}
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-info">{{ job.total_variables }}</span>
+                                </td>
+                                <td class="text-center">
+                                    {% if job.duration_seconds >= 60 %}
+                                        {{ "%.0f"|format(job.duration_seconds // 60) }}m {{ "%.0f"|format(job.duration_seconds % 60) }}s
+                                    {% else %}
+                                        {{ "%.1f"|format(job.duration_seconds) }}s
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if job.classification_type == 'pure_open_ended' %}
+                                        <span class="badge bg-primary">Pure</span>
+                                    {% elif job.classification_type == 'semi_open_ended' %}
+                                        <span class="badge bg-warning">Semi</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Unknown</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% set hours_left = job.hours_until_expiry %}
+                                    {% if hours_left > 12 %}
+                                        <span class="badge bg-success" title="{{ hours_left|int }} hours remaining">
+                                            {{ hours_left|int }}h
+                                        </span>
+                                    {% elif hours_left > 6 %}
+                                        <span class="badge bg-warning" title="{{ hours_left|int }} hours remaining">
+                                            {{ hours_left|int }}h
+                                        </span>
+                                    {% elif hours_left > 0 %}
+                                        <span class="badge bg-danger" title="{{ hours_left|int }} hours remaining">
+                                            {{ hours_left|int }}h
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary" title="Expired">
+                                            Expired
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center" onclick="event.stopPropagation()">
+                                    <a href="{{ url_for('main.view_result', job_id=job.id) }}" 
+                                       class="btn btn-sm btn-outline-primary"
+                                       title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" class="text-center py-5 text-muted">
+                                    <i class="fas fa-inbox fs-1 mb-3 d-block"></i>
+                                    No classification jobs found for this user
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.cursor-pointer {
+    cursor: pointer;
+}
+.cursor-pointer:hover {
+    background-color: rgba(0, 123, 255, 0.05) !important;
+}
+</style>
+{% endblock %}

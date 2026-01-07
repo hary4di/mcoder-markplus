@@ -1,0 +1,459 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Analytics - M-Code Pro{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header with Gradient Background -->
+    <div class="analytics-header mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="mb-2 fw-bold"><i class="fas fa-chart-line me-2"></i>Admin Analytics Dashboard</h2>
+                <p class="mb-0 opacity-75">Platform-wide Classification Statistics & Insights</p>
+            </div>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-light">
+                <i class="fas fa-arrow-left me-2"></i>Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Global Statistics Cards with Enhanced Design -->
+    <div class="row g-4 mb-4">
+        <!-- Total Classifications -->
+        <div class="col-md-3">
+            <div class="card stat-card border-0 h-100 shadow-sm hover-lift">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-2 small text-uppercase fw-semibold">
+                                <i class="fas fa-tasks me-1"></i>Classifications
+                            </p>
+                            <h2 class="mb-0 fw-bold text-primary">{{ "{:,}".format(total_jobs) }}</h2>
+                            <small class="text-muted">Total completed</small>
+                        </div>
+                        <div class="stat-icon bg-primary bg-opacity-10 p-3 rounded-circle">
+                            <i class="fas fa-tasks text-primary fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Users -->
+        <div class="col-md-3">
+            <div class="card stat-card border-0 h-100 shadow-sm hover-lift">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-2 small text-uppercase fw-semibold">
+                                <i class="fas fa-users me-1"></i>Active Users
+                            </p>
+                            <h2 class="mb-0 fw-bold text-success">{{ total_active_users }}</h2>
+                            <small class="text-muted">Contributors</small>
+                        </div>
+                        <div class="stat-icon bg-success bg-opacity-10 p-3 rounded-circle">
+                            <i class="fas fa-users text-success fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Variables -->
+        <div class="col-md-3">
+            <div class="card stat-card border-0 h-100 shadow-sm hover-lift">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-2 small text-uppercase fw-semibold">
+                                <i class="fas fa-list me-1"></i>Variables
+                            </p>
+                            <h2 class="mb-0 fw-bold text-info">{{ "{:,}".format(total_variables) }}</h2>
+                            <small class="text-muted">Classified fields</small>
+                        </div>
+                        <div class="stat-icon bg-info bg-opacity-10 p-3 rounded-circle">
+                            <i class="fas fa-list text-info fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Responses -->
+        <div class="col-md-3">
+            <div class="card stat-card border-0 h-100 shadow-sm hover-lift">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-2 small text-uppercase fw-semibold">
+                                <i class="fas fa-comments me-1"></i>Responses
+                            </p>
+                            <h2 class="mb-0 fw-bold text-warning">{{ "{:,}".format(total_responses) }}</h2>
+                            <small class="text-muted">Data points processed</small>
+                        </div>
+                        <div class="stat-icon bg-warning bg-opacity-10 p-3 rounded-circle">
+                            <i class="fas fa-comments text-warning fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Averages Row with Better Design -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm hover-lift">
+                <div class="card-body text-center">
+                    <div class="mb-2">
+                        <i class="fas fa-chart-bar text-primary fs-2"></i>
+                    </div>
+                    <p class="text-muted mb-1 small text-uppercase fw-semibold">Avg Variables per Job</p>
+                    <h3 class="mb-0 fw-bold text-primary">{{ "%.1f"|format(avg_variables_per_job) }}</h3>
+                    <small class="text-muted">Variables/classification</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm hover-lift">
+                <div class="card-body text-center">
+                    <div class="mb-2">
+                        <i class="fas fa-clock text-success fs-2"></i>
+                    </div>
+                    <p class="text-muted mb-1 small text-uppercase fw-semibold">Avg Duration per Job</p>
+                    <h3 class="mb-0 fw-bold text-success">
+                        {% if avg_duration_per_job >= 60 %}
+                            {{ "%.1f"|format(avg_duration_per_job / 60) }}m
+                        {% else %}
+                            {{ "%.1f"|format(avg_duration_per_job) }}s
+                        {% endif %}
+                    </h3>
+                    <small class="text-muted">Processing time</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm hover-lift">
+                <div class="card-body text-center">
+                    <div class="mb-2">
+                        <i class="fas fa-hourglass-half text-info fs-2"></i>
+                    </div>
+                    <p class="text-muted mb-1 small text-uppercase fw-semibold">Total Processing Time</p>
+                    <h3 class="mb-0 fw-bold text-info">{{ "%.1f"|format(total_duration_hours) }}h</h3>
+                    <small class="text-muted">Cumulative hours</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rankings Row with Better Visual Design -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm ranking-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="ranking-badge bg-warning bg-opacity-10 p-2 rounded-circle me-3">
+                            <i class="fas fa-trophy text-warning fs-4"></i>
+                        </div>
+                        <p class="mb-0 fw-semibold text-uppercase small text-muted">Most Active User</p>
+                    </div>
+                    {% if most_active_user %}
+                    <h5 class="mb-1 fw-bold">{{ most_active_user.full_name }}</h5>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-primary me-2">{{ most_active_user.job_count }} jobs</span>
+                        <small class="text-muted">{{ "{:,}".format(most_active_user.total_vars) }} variables</small>
+                    </div>
+                    {% else %}
+                    <p class="mb-0 text-muted text-center py-3">
+                        <i class="fas fa-inbox d-block mb-2 fs-4 opacity-50"></i>
+                        No data available
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm ranking-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="ranking-badge bg-primary bg-opacity-10 p-2 rounded-circle me-3">
+                            <i class="fas fa-bolt text-primary fs-4"></i>
+                        </div>
+                        <p class="mb-0 fw-semibold text-uppercase small text-muted">Fastest Classifier</p>
+                    </div>
+                    {% if fastest_user %}
+                    <h5 class="mb-1 fw-bold">{{ fastest_user.full_name }}</h5>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-success me-2">
+                            {% if fastest_user.avg_duration >= 60 %}
+                                {{ "%.1f"|format(fastest_user.avg_duration / 60) }}m avg
+                            {% else %}
+                                {{ "%.1f"|format(fastest_user.avg_duration) }}s avg
+                            {% endif %}
+                        </span>
+                        <small class="text-muted">{{ fastest_user.job_count }} jobs</small>
+                    </div>
+                    {% else %}
+                    <p class="mb-0 text-muted text-center py-3">
+                        <i class="fas fa-inbox d-block mb-2 fs-4 opacity-50"></i>
+                        No data available
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm ranking-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="ranking-badge bg-success bg-opacity-10 p-2 rounded-circle me-3">
+                            <i class="fas fa-chart-line text-success fs-4"></i>
+                        </div>
+                        <p class="mb-0 fw-semibold text-uppercase small text-muted">Largest Project</p>
+                    </div>
+                    {% if largest_project %}
+                    <h6 class="mb-1 fw-bold text-truncate" title="{{ largest_project.original_filename }}">
+                        {{ largest_project.original_filename }}
+                    </h6>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-info me-2">{{ "{:,}".format(largest_project.total_responses) }} responses</span>
+                        <small class="text-muted">{{ largest_project.total_variables }} vars</small>
+                    </div>
+                    {% else %}
+                    <p class="mb-0 text-muted text-center py-3">
+                        <i class="fas fa-inbox d-block mb-2 fs-4 opacity-50"></i>
+                        No data available
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Statistics Table with Modern Design -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1 fw-bold"><i class="fas fa-users-cog me-2 text-primary"></i>User Statistics</h5>
+                    <small class="text-muted">Click on a user to view their complete classification history</small>
+                </div>
+                <span class="badge bg-primary-subtle text-primary">{{ user_stats|length }} Users</span>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 5%;" class="text-center">#</th>
+                            <th style="width: 25%;">
+                                <i class="fas fa-user me-1"></i>User
+                            </th>
+                            <th style="width: 12%;" class="text-center">
+                                <i class="fas fa-tasks me-1"></i>Jobs
+                            </th>
+                            <th style="width: 12%;" class="text-center">
+                                <i class="fas fa-list me-1"></i>Variables
+                            </th>
+                            <th style="width: 14%;" class="text-center">
+                                <i class="fas fa-comments me-1"></i>Responses
+                            </th>
+                            <th style="width: 14%;" class="text-center">
+                                <i class="fas fa-clock me-1"></i>Avg Duration
+                            </th>
+                            <th style="width: 18%;">
+                                <i class="fas fa-calendar me-1"></i>Last Activity
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if user_stats %}
+                            {% for user in user_stats %}
+                            <tr class="cursor-pointer user-row" onclick="window.location.href='{{ url_for('main.admin_user_jobs', user_id=user.id) }}'">
+                                <td class="text-center">
+                                    <span class="badge bg-light text-dark">{{ loop.index }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar-small me-2">
+                                            {{ user.full_name[0] if user.full_name else 'U' }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold">{{ user.full_name }}</div>
+                                            <small class="text-muted">{{ user.email }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-primary-subtle text-primary px-3 py-2">{{ user.job_count }}</span>
+                                </td>
+                                <td class="text-center fw-semibold">{{ "{:,}".format(user.total_vars) }}</td>
+                                <td class="text-center fw-semibold">{{ "{:,}".format(user.total_resp) }}</td>
+                                <td class="text-center">
+                                    <span class="badge bg-success-subtle text-success">
+                                        {% if user.avg_duration >= 60 %}
+                                            {{ "%.1f"|format(user.avg_duration / 60) }}m
+                                        {% else %}
+                                            {{ "%.1f"|format(user.avg_duration) }}s
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if user.last_activity %}
+                                        <small class="text-muted">
+                                            <i class="far fa-clock me-1"></i>
+                                            {{ user.last_activity.strftime('%d %b %Y, %H:%M WIB') }}
+                                        </small>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="fas fa-inbox text-muted fs-1 mb-3 d-block opacity-50"></i>
+                                        <p class="text-muted mb-0">No classification data available yet</p>
+                                        <small class="text-muted">Statistics will appear once users complete classifications</small>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modern Card Styles */
+.stat-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.12) !important;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ranking-card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.ranking-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1) !important;
+}
+
+.ranking-badge {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* User Table Styles */
+.user-row {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-row:hover {
+    background-color: rgba(102, 126, 234, 0.08) !important;
+    transform: scale(1.01);
+}
+
+.user-avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Analytics Header */
+.analytics-header {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Badge Styles */
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.bg-primary-subtle {
+    background-color: rgba(102, 126, 234, 0.1) !important;
+}
+
+.bg-success-subtle {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+}
+
+/* Table Enhancements */
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+}
+
+/* Empty State */
+.empty-state {
+    padding: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .stat-card .card-body {
+        padding: 1rem;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .analytics-header {
+        padding: 1.5rem !important;
+    }
+    
+    .user-avatar-small {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+</style>
+{% endblock %}

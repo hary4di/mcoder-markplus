@@ -278,6 +278,37 @@ class ClassificationJob(db.Model):
         return max(0, hours_remaining)  # Never negative
     
     @property
+    def total_variables(self):
+        """Get total number of variables classified"""
+        return self.variables.count()
+    
+    @property
+    def total_responses(self):
+        """Get total number of responses processed across all variables"""
+        total = 0
+        for var in self.variables:
+            total += (var.total_responses or 0)
+        return total
+    
+    @property
+    def total_categories(self):
+        """Get total number of categories generated"""
+        total = 0
+        for var in self.variables:
+            total += (var.categories_generated or 0)
+        return total
+    
+    @property
+    def original_filename(self):
+        """Get original filename for display"""
+        return self.original_raw_filename or self.original_kobo_filename or 'Unknown'
+    
+    @property
+    def classification_type(self):
+        """Get classification type from job_type"""
+        return self.job_type or 'pure_open_ended'
+    
+    @property
     def completed_at_wib(self):
         """Get completion time in WIB timezone"""
         if not self.completed_at:

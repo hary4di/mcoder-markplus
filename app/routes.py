@@ -792,6 +792,132 @@ def bulk_delete_jobs():
     return redirect(url_for('main.results'))
 
 
+@main_bp.route('/admin/analytics')
+@login_required
+def admin_analytics():
+    """Admin Analytics Dashboard - Super Admin Only"""
+    from app.models import ClassificationJob, ClassificationVariable, User
+    from sqlalchemy import func, desc
+    
+    # Check if user is super admin
+    if not current_user.is_super_admin:
+        flash('Access denied. Super Admin only.', 'error')
+        return redirect(url_for('main.dashboard'))
+    
+    try:
+        # Get all completed jobs (all users)
+        all_jobs = ClassificationJob.query.filter_by(status='completed').all()
+        
+        # Calculate global statistics
+        total_jobs = len(all_jobs)
+        total_responses = sum(job.total_responses or 0 for job in all_jobs)
+        total_variables = sum(job.total_variables or 0 for job in all_jobs)
+        total_duration_seconds = sum(job.duration_seconds or 0 for job in all_jobs)
+        
+        # Averages
+        avg_variables_per_job = total_variables / total_jobs if total_jobs > 0 else 0
+        avg_duration_per_job = total_duration_seconds / total_jobs if total_jobs > 0 else 0
+        avg_responses_per_var = total_responses / total_variables if total_variables > 0 else 0
+        
+        # Get unique active users
+        active_user_ids = set(job.user_id for job in all_jobs)
+        total_active_users = len(active_user_ids)
+        
+        # Calculate user statistics manually (can't use property in SQL)
+        user_stats = []
+        for user_id in active_user_ids:
+            user = User.query.get(user_id)
+            if not user:
+                continue
+            
+            # Get jobs for this user
+            user_jobs = [job for job in all_jobs if job.user_id == user_id]
+            
+            # Calculate stats
+            job_count = len(user_jobs)
+            total_vars = sum(job.total_variables or 0 for job in user_jobs)
+            total_resp = sum(job.total_responses or 0 for job in user_jobs)
+            total_duration = sum(job.duration_seconds or 0 for job in user_jobs)
+            avg_duration = total_duration / job_count if job_count > 0 else 0
+            last_activity = max((job.completed_at for job in user_jobs if job.completed_at), default=None)
+            
+            user_stats.append({
+                'id': user.id,
+                'full_name': user.full_name,
+                'email': user.email,
+                'job_count': job_count,
+                'total_vars': total_vars,
+                'total_resp': total_resp,
+                'avg_duration': avg_duration,
+                'last_activity': last_activity
+            })
+        
+        # Sort by job count descending
+        user_stats.sort(key=lambda x: x['job_count'], reverse=True)
+        
+        # Find rankings
+        most_active_user = user_stats[0] if user_stats else None
+        fastest_user = min(user_stats, key=lambda x: x['avg_duration']) if user_stats else None
+        largest_project = max(all_jobs, key=lambda x: x.total_responses or 0) if all_jobs else None
+        
+        return render_template('admin_analytics.html',
+            total_jobs=total_jobs,
+            total_responses=total_responses,
+            total_variables=total_variables,
+            total_duration_hours=total_duration_seconds / 3600,
+            avg_variables_per_job=avg_variables_per_job,
+            avg_duration_per_job=avg_duration_per_job,
+            avg_responses_per_var=avg_responses_per_var,
+            total_active_users=total_active_users,
+            most_active_user=most_active_user,
+            fastest_user=fastest_user,
+            largest_project=largest_project,
+            user_stats=user_stats
+        )
+        
+    except Exception as e:
+        print(f"[ERROR] Admin analytics error: {e}")
+        import traceback
+        traceback.print_exc()
+        flash(f'Error loading analytics: {str(e)}', 'error')
+        return redirect(url_for('main.dashboard'))
+
+
+@main_bp.route('/admin/user-jobs/<int:user_id>')
+@login_required
+def admin_user_jobs(user_id):
+    """View all jobs for a specific user - Super Admin Only"""
+    from app.models import ClassificationJob, User
+    from sqlalchemy import desc
+    
+    # Check if user is super admin
+    if not current_user.is_super_admin:
+        flash('Access denied. Super Admin only.', 'error')
+        return redirect(url_for('main.dashboard'))
+    
+    try:
+        # Get user info
+        user = User.query.get_or_404(user_id)
+        
+        # Get all completed jobs for this user
+        jobs = ClassificationJob.query.filter_by(
+            user_id=user_id,
+            status='completed'
+        ).order_by(desc(ClassificationJob.completed_at)).all()
+        
+        return render_template('admin_user_jobs.html',
+            user=user,
+            jobs=jobs
+        )
+        
+    except Exception as e:
+        print(f"[ERROR] Admin user jobs error: {e}")
+        import traceback
+        traceback.print_exc()
+        flash(f'Error loading user jobs: {str(e)}', 'error')
+        return redirect(url_for('main.admin_analytics'))
+
+
 @main_bp.route('/results/<int:job_id>')
 @login_required
 def view_result(job_id):
