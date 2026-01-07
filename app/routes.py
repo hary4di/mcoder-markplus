@@ -4,7 +4,6 @@ Main Application Routes
 import os
 import json
 import uuid
-import threading
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify, session, Response, stream_with_context, send_file, send_from_directory
 from flask_login import login_required, current_user
@@ -12,7 +11,10 @@ from app import db
 from app.models import User, SystemSettings
 from app.forms import ClassificationForm
 from app.utils import FileProcessor
-from app.progress_tracker import progress_tracker
+# Use Redis-based progress tracker instead of in-memory
+from tasks.progress import progress_tracker
+# Import Celery task for background processing
+from tasks.classification import classify_dataset
 from config import Config
 from excel_classifier import ExcelClassifier
 
@@ -212,10 +214,14 @@ def start_classification():
             print(f"[MAIN] Starting SEMI OPEN-ENDED job: {job_id}")
             print(f"[MAIN] Pairs to process: {len(pairs_to_process)}")
             print(f"[MAIN] Max categories: {semi_open_max_categories}")
+            print(f"[MAIN] NOTE: Semi open-ended still uses threading (Celery migration pending)")
             print(f"{'='*80}\n")
             
             # Initialize progress tracker
-            progress_tracker.create_job(job_id, len(pairs_to_process))
+            # TODO: Migrate semi open-ended to Celery task (Phase 1.5)
+            import threading
+            from app.progress_tracker import progress_tracker as memory_tracker
+            memory_tracker.create_job(job_id, len(pairs_to_process))
             
             # Start semi open-ended processing
             thread = threading.Thread(
@@ -255,25 +261,30 @@ def start_classification():
             print(f"[MAIN] Classification mode: {classification_mode}")
             print(f"{'='*80}\n")
             
-            # Initialize progress tracker
-            progress_tracker.create_job(job_id, len(variables_to_process))
+            # Initialize progress tracker in Redis
+            progress_tracker.set_progress(job_id, {
+                'status': 'pending',
+                'progress': 0,
+                'current_step': 'Initializing...',
+                'total_variables': len(variables_to_process),
+                'variables': {}
+            })
             
-            # Get data that needs request context (before thread starts)
+            # Get data that needs request context (before submitting task)
             user_id = current_user.id
             kobo_original = session.get('kobo_original_filename', os.path.basename(kobo_system_path))
             raw_original = session.get('raw_original_filename', os.path.basename(raw_data_path))
             
-            # Start classification in background thread
-            thread = threading.Thread(
-                target=run_classification_background,
-                args=(job_id, kobo_system_path, raw_data_path, variables_to_process, 
+            # Submit classification task to Celery (runs in background worker)
+            task = classify_dataset.apply_async(
+                args=(job_id, kobo_system_path, raw_data_path, variables_to_process,
                       max_categories, confidence_threshold, auto_upload, classification_mode,
-                      user_id, kobo_original, raw_original)
+                      user_id, kobo_original, raw_original),
+                queue='classification'  # Use dedicated classification queue
             )
-            thread.daemon = True
-            thread.start()
-        
-        print(f"[MAIN] Background thread started: {thread.is_alive()}")
+            
+            print(f"[MAIN] Celery task submitted: {task.id}")
+            print(f"[MAIN] Task state: {task.state}")
         
         # Redirect to progress page
         return redirect(url_for('main.classification_progress'))
@@ -283,251 +294,8 @@ def start_classification():
         flash(f'Error starting classification: {str(e)}', 'error')
         return redirect(url_for('main.select_variables'))
 
-def run_classification_background(job_id, kobo_system_path, raw_data_path, variables_to_process, 
-                                   max_categories, confidence_threshold, auto_upload, classification_mode,
-                                   user_id, kobo_original_filename, raw_original_filename):
-    """Background function to run classification with progress tracking"""
-    import time
-    import sys
-    import traceback
-    import json
-    from app import create_app, db
-    from app.models import ClassificationJob, ClassificationVariable
-    
-    print(f"\n{'='*80}")
-    print(f"[BACKGROUND] Thread started for job: {job_id}")
-    print(f"[BACKGROUND] Thread ID: {threading.current_thread().ident}")
-    print(f"[BACKGROUND] Variables to process: {len(variables_to_process)}")
-    print(f"{'='*80}\n", flush=True)
-    
-    try:
-        # Verify job exists in tracker
-        job_data = progress_tracker.get_progress(job_id)
-        if not job_data:
-            print(f"[BACKGROUND] ERROR: Job {job_id} not found in progress_tracker!", flush=True)
-            print(f"[BACKGROUND] Available jobs: {list(progress_tracker.data.keys())}", flush=True)
-            return
-        
-        print(f"[BACKGROUND] Job verified in tracker: {job_data.get('status')}", flush=True)
-        
-        # Add small delay to ensure redirect completes
-        time.sleep(0.5)
-        
-        # Create Flask app context for database operations
-        app = create_app()
-        with app.app_context():
-            # Create ClassificationJob record in database
-            # Use passed user_id instead of current_user (no request context in background thread)
-            
-            # Generate output filenames with timestamp in files/output/ directory
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            
-            # Get base directory (files/) and create output directory
-            files_dir = os.path.dirname(os.path.dirname(raw_data_path))  # Go up from uploads/ to files/
-            output_dir = os.path.join(files_dir, 'output')
-            os.makedirs(output_dir, exist_ok=True)  # Create if not exists
-            
-            output_kobo = os.path.join(output_dir, f'output_kobo_{timestamp}.xlsx')
-            output_raw = os.path.join(output_dir, f'output_raw_{timestamp}.xlsx')
-            
-            print(f"[BACKGROUND] Output directory: {output_dir}", flush=True)
-            
-            # Create job record
-            classification_job = ClassificationJob(
-                job_id=job_id,
-                user_id=user_id,  # Use passed parameter
-                job_type='open_ended',
-                status='processing',
-                original_kobo_filename=kobo_original_filename,  # Use passed parameter
-                original_raw_filename=raw_original_filename,    # Use passed parameter
-                input_kobo_path=kobo_system_path,
-                input_raw_path=raw_data_path,
-                output_kobo_filename=os.path.basename(output_kobo),
-                output_raw_filename=os.path.basename(output_raw),
-                output_kobo_path=output_kobo,
-                output_raw_path=output_raw,
-                settings=json.dumps({
-                    'max_categories': max_categories,
-                    'confidence_threshold': confidence_threshold,
-                    'auto_upload': auto_upload,
-                    'classification_mode': classification_mode
-                }),
-                started_at=datetime.utcnow()
-            )
-            db.session.add(classification_job)
-            db.session.commit()
-            print(f"[BACKGROUND] ClassificationJob created in database (ID: {classification_job.id})", flush=True)
-        
-        # Initialize classifier
-        print(f"[BACKGROUND] Initializing ExcelClassifier...", flush=True)
-        print(f"[BACKGROUND] Kobo system: {kobo_system_path}", flush=True)
-        print(f"[BACKGROUND] Raw data: {raw_data_path}", flush=True)
-        
-        classifier = ExcelClassifier(kobo_system_path, raw_data_path)
-        
-        # Set output paths (preserve originals)
-        classifier.set_output_paths(output_kobo, output_raw)
-        print(f"[BACKGROUND] Output paths configured:", flush=True)
-        print(f"[BACKGROUND]   Kobo: {output_kobo}", flush=True)
-        print(f"[BACKGROUND]   Raw: {output_raw}", flush=True)
-        
-        print(f"[BACKGROUND] Classifier initialized successfully", flush=True)
-        
-        # Process each variable
-        all_summaries = []
-        start_time = datetime.now()
-        total_vars = len(variables_to_process)
-        
-        for idx, var_info in enumerate(variables_to_process, 1):
-            var_name = var_info['name']
-            question_text = var_info['question']
-            
-            print(f"[BACKGROUND] Processing variable {idx}/{total_vars}: {var_name}", flush=True)
-            
-            # Update progress - starting variable
-            print(f"[BACKGROUND] About to call progress_tracker.update_variable...", flush=True)
-            progress_tracker.update_variable(job_id, var_name, idx, total_vars, question_text)
-            print(f"[BACKGROUND] progress_tracker.update_variable completed", flush=True)
-            
-            # Create progress callback for classifier
-            def update_classifier_progress(message, percentage):
-                """Callback function to update progress from classifier"""
-                print(f"[CALLBACK] update_classifier_progress called: {message} ({percentage}%)", flush=True)
-                progress_tracker.update_step(job_id, f'[{var_name}] {message}', percentage)
-            
-            # Process variable with progress callback
-            print(f"[BACKGROUND] Calling classifier.process_variable for {var_name}...", flush=True)
-            print(f"[BACKGROUND] Classification mode: {classification_mode}", flush=True)
-            try:
-                summary = classifier.process_variable(
-                    var_name, 
-                    question_text,
-                    progress_callback=update_classifier_progress,
-                    classification_mode=classification_mode  # Pass mode to classifier
-                )
-                print(f"[BACKGROUND] process_variable completed for {var_name}", flush=True)
-            except Exception as var_error:
-                print(f"[BACKGROUND] ERROR in process_variable: {str(var_error)}", flush=True)
-                import traceback
-                traceback.print_exc()
-                raise
-            
-            print(f"[BACKGROUND] Variable {var_name} processed successfully", flush=True)
-            
-            # Save variable results to database
-            with app.app_context():
-                # Query job again to avoid detached instance error
-                job_to_update = ClassificationJob.query.filter_by(job_id=job_id).first()
-                if not job_to_update:
-                    print(f"[BACKGROUND ERROR] Job {job_id} not found!", flush=True)
-                    continue
-                
-                classification_var = ClassificationVariable(
-                    job_id=job_to_update.id,
-                    variable_name=var_name,
-                    question_text=question_text,
-                    categories_generated=summary.get('categories_generated', 0),
-                    total_responses=summary.get('total_responses', 0),
-                    valid_classified=summary.get('valid_classified', 0),
-                    invalid_count=summary.get('invalid_count', 0),
-                    empty_count=summary.get('empty_count', 0),
-                    categories=json.dumps(summary.get('category_summary', [])),
-                    started_at=datetime.utcnow(),
-                    completed_at=datetime.utcnow(),
-                    status='completed'
-                )
-                db.session.add(classification_var)
-                
-                # Update job progress
-                job_to_update.progress = int((idx / total_vars) * 100)
-                job_to_update.current_step = f"Completed {idx}/{total_vars} variables"
-                db.session.commit()
-                print(f"[BACKGROUND] Saved variable {var_name} to database", flush=True)
-            
-            # Mark variable as complete in progress tracker
-            progress_tracker.complete_variable(job_id, var_name, summary)
-            all_summaries.append(summary)
-            
-            print(f"[BACKGROUND] Progress: {idx}/{total_vars} variables completed", flush=True)
-        
-        end_time = datetime.now()
-        duration = (end_time - start_time).total_seconds()
-        
-        # Prepare results
-        results = {
-            'summaries': all_summaries,
-            'start_time': start_time.strftime('%Y-%m-%d %H:%M:%S'),
-            'end_time': end_time.strftime('%Y-%m-%d %H:%M:%S'),
-            'duration': duration,
-            'total_variables': total_vars,
-            'settings': {
-                'max_categories': max_categories,
-                'confidence_threshold': confidence_threshold,
-                'auto_upload': auto_upload
-            },
-            'output_files': {
-                'kobo': os.path.basename(output_kobo),
-                'raw': os.path.basename(output_raw)
-            }
-        }
-        
-        # Update job as completed in database
-        with app.app_context():
-            # Query job again in this context (object from previous context is detached)
-            job_to_update = ClassificationJob.query.filter_by(job_id=job_id).first()
-            if job_to_update:
-                job_to_update.status = 'completed'
-                job_to_update.completed_at = datetime.utcnow()
-                job_to_update.progress = 100
-                job_to_update.results_summary = json.dumps(results)
-                db.session.commit()
-                print(f"[BACKGROUND] Updated ClassificationJob status to completed", flush=True)
-            else:
-                print(f"[BACKGROUND ERROR] Job {job_id} not found for completion update!", flush=True)
-        
-        # Delete input files to save disk space (keep only output files)
-        try:
-            if os.path.exists(kobo_system_path):
-                os.remove(kobo_system_path)
-                print(f"[BACKGROUND] Deleted input file: {os.path.basename(kobo_system_path)}", flush=True)
-            
-            if os.path.exists(raw_data_path):
-                os.remove(raw_data_path)
-                print(f"[BACKGROUND] Deleted input file: {os.path.basename(raw_data_path)}", flush=True)
-            
-            print(f"[BACKGROUND] Input files deleted successfully (only output files remain)", flush=True)
-        except Exception as delete_error:
-            # Log error but don't fail the job
-            print(f"[BACKGROUND WARNING] Failed to delete input files: {str(delete_error)}", flush=True)
-        
-        # Mark job as complete in progress tracker
-        progress_tracker.complete_job(job_id, results)
-        
-        print(f"[BACKGROUND] Classification job {job_id} completed successfully", flush=True)
-        
-    except Exception as e:
-        error_msg = str(e)
-        print(f"[BACKGROUND ERROR] Classification failed: {error_msg}", flush=True)
-        import traceback
-        traceback.print_exc()
-        
-        # Update job as failed in database
-        try:
-            with app.app_context():
-                # Query job again in this context
-                job_to_update = ClassificationJob.query.filter_by(job_id=job_id).first()
-                if job_to_update:
-                    job_to_update.status = 'error'
-                    job_to_update.error_message = error_msg
-                    job_to_update.completed_at = datetime.utcnow()
-                    db.session.commit()
-                    print(f"[BACKGROUND] Updated ClassificationJob status to error", flush=True)
-                else:
-                    print(f"[BACKGROUND ERROR] Job {job_id} not found for error update!", flush=True)
-        except Exception as db_error:
-            print(f"[BACKGROUND] Failed to update database: {db_error}", flush=True)
-        
-        progress_tracker.set_error(job_id, error_msg)
+# Legacy threading-based function removed - replaced by Celery task in tasks/classification.py
+# See tasks.classification.classify_dataset for current implementation
 
 def run_semi_open_background(job_id, kobo_system_path, raw_data_path, pairs_to_process, 
                               max_categories, create_merged_column):
