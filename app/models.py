@@ -191,6 +191,7 @@ class ClassificationJob(db.Model):
     # Primary Key
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.String(36), unique=True, nullable=False, index=True)  # UUID
+    task_id = db.Column(db.String(36), index=True)  # Celery task ID
     
     # User & Metadata
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)

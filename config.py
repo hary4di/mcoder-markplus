@@ -20,6 +20,16 @@ class Config:
         'sqlite:///' + os.path.join(basedir, 'instance', 'users.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
+    # Database Connection Pool (for concurrent Celery workers)
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'pool_size': 20,           # Number of connections to maintain
+        'max_overflow': 40,        # Maximum additional connections during burst
+        'pool_pre_ping': True,     # Verify connection before using
+        'pool_recycle': 3600,      # Recycle connections after 1 hour
+        'pool_timeout': 30,        # Timeout for getting connection (seconds)
+        'echo': False              # Don't log SQL queries (set True for debugging)
+    }
+    
     # Session
     PERMANENT_SESSION_LIFETIME = timedelta(hours=2)
     SESSION_COOKIE_SECURE = False  # Set True in production with HTTPS

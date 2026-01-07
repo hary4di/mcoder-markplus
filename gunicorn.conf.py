@@ -8,16 +8,16 @@ bind = "127.0.0.1:8000"  # Local only, nginx akan proxy
 backlog = 2048
 
 # Worker Processes
-# NOTE: Using 1 worker because progress_tracker uses in-memory storage
-# Multiple workers = separate memory spaces = progress tracking doesn't work
-# TODO: Migrate to Redis/Database for multi-worker support
-workers = 1  # Single worker for in-memory progress tracking
+# UPDATED: Now using 4 workers with Celery for background tasks
+# Redis-based progress tracking allows multiple workers safely
+# Celery handles classification tasks, workers only serve HTTP requests
+workers = 4  # Increased from 1 - safe with Celery + Redis
 worker_class = "sync"
 worker_connections = 1000
-max_requests = 1000  # Restart worker after 1000 requests
-max_requests_jitter = 50
-timeout = 300  # 5 minutes (untuk classification yang lama)
-keepalive = 2
+max_requests = 2000  # Restart worker after 2000 requests (increased)
+max_requests_jitter = 100  # Random jitter for staggered restarts
+timeout = 120  # 2 minutes - reduced (async tasks via Celery)
+keepalive = 5  # Keep connections alive longer
 
 # Process Naming
 proc_name = "mcoder"
