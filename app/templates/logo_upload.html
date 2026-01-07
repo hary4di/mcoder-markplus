@@ -31,6 +31,7 @@
                             
                             {% if logo_url %}
                             <form method="POST" action="{{ url_for('main.logo_delete') }}" class="d-inline">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                 <button type="submit" class="btn btn-danger btn-sm w-100" onclick="return confirm('Are you sure you want to delete the logo?')">
                                     <i class="bi bi-trash"></i> Delete Current Logo
                                 </button>
@@ -41,6 +42,7 @@
                         <div class="col-md-6">
                             <h6 class="mb-3">Upload New Logo</h6>
                             <form method="POST" action="{{ url_for('main.logo_upload') }}" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                 <div class="mb-3">
                                     <label for="logo_file" class="form-label">Select Logo File</label>
                                     <input type="file" class="form-control" id="logo_file" name="logo_file" 
