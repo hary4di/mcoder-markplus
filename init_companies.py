@@ -26,11 +26,32 @@ def init_companies():
         print("=" * 70)
         print()
         
-        # Step 1: Create tables if not exist
+        # Step 1: Create tables and add missing columns
         print("[1/5] Creating database tables...")
         try:
             db.create_all()
             print("✓ Database tables created/verified")
+            
+            # Check and add company_id column to users if not exists
+            from sqlalchemy import text
+            result = db.session.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name='users' AND column_name='company_id'
+            """))
+            
+            if not result.fetchone():
+                print("   Adding company_id column to users table...")
+                db.session.execute(text("ALTER TABLE users ADD COLUMN company_id INTEGER DEFAULT 1"))
+                db.session.execute(text("""
+                    ALTER TABLE users ADD CONSTRAINT fk_users_company 
+                    FOREIGN KEY (company_id) REFERENCES companies(id)
+                """))
+                db.session.commit()
+                print("   ✓ Column company_id added successfully")
+            else:
+                print("   ✓ Column company_id already exists")
+                
         except Exception as e:
             print(f"✗ Error creating tables: {e}")
             return
