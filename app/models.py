@@ -7,6 +7,38 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
 
+class Company(db.Model):
+    """Company model for multi-tenant support"""
+    
+    __tablename__ = 'companies'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    code = db.Column(db.String(20), unique=True, nullable=False, index=True)
+    
+    # Company-specific logo
+    logo_filename = db.Column(db.String(255))
+    
+    # Company-specific email settings (Brevo)
+    brevo_api_key = db.Column(db.String(255))
+    brevo_sender_email = db.Column(db.String(120))
+    brevo_sender_name = db.Column(db.String(100))
+    
+    # Company-specific AI settings
+    openai_api_key = db.Column(db.String(255))
+    openai_model = db.Column(db.String(50), default='gpt-4o-mini')
+    
+    # Status
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    users = db.relationship('User', backref='company', lazy='dynamic')
+    
+    def __repr__(self):
+        return f'<Company {self.name}>'
+
 class User(UserMixin, db.Model):
     """User model for authentication"""
     
@@ -22,6 +54,9 @@ class User(UserMixin, db.Model):
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_login = db.Column(db.DateTime)
+    
+    # Company relationship (Multi-tenant)
+    company_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False, default=1)
     
     def set_password(self, password):
         """Hash and set password"""

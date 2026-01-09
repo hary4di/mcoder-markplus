@@ -8,7 +8,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify, session, Response, stream_with_context, send_file, send_from_directory
 from flask_login import login_required, current_user
 from app import db
-from app.models import User, SystemSettings
+from app.models import User, SystemSettings, Company
 from app.forms import ClassificationForm
 from app.utils import FileProcessor
 # Use Redis-based progress tracker instead of in-memory
@@ -26,9 +26,22 @@ file_processor = FileProcessor(Config.UPLOAD_FOLDER)
 @main_bp.context_processor
 def inject_globals():
     """Inject global variables into all templates"""
-    logo_filename = SystemSettings.get_setting('logo_filename', None) if SystemSettings else None
-    logo_url = url_for('main.serve_logo', filename=logo_filename) if logo_filename else None
-    return dict(now=datetime.now(), logo_url=logo_url)
+    # Use company-specific logo if user is authenticated
+    logo_filename = None
+    logo_url = None
+    company_name = None
+    
+    if current_user.is_authenticated and current_user.company:
+        logo_filename = current_user.company.logo_filename
+        company_name = current_user.company.name
+    else:
+        # Fallback to system settings for login page
+        logo_filename = SystemSettings.get_setting('logo_filename', None) if SystemSettings else None
+    
+    if logo_filename:
+        logo_url = url_for('main.serve_logo', filename=logo_filename)
+    
+    return dict(now=datetime.now(), logo_url=logo_url, company_name=company_name)
 
 @main_bp.before_request
 def log_request():
@@ -817,21 +830,29 @@ def download_job(job_id):
 @main_bp.route('/admin/settings')
 @login_required
 def admin_settings():
-    """Admin settings page"""
+    """Admin settings page - Company-specific settings"""
     if not current_user.is_admin:
         flash('Access denied. Admin privileges required.', 'error')
         return redirect(url_for('main.dashboard'))
     
+    # Get user's company
+    company = current_user.company
+    
+    if not company:
+        flash('No company assigned to your account. Please contact administrator.', 'error')
+        return redirect(url_for('main.dashboard'))
+    
+    # Company-specific settings (isolated per company)
+    openai_api_key = company.openai_api_key or os.getenv('OPENAI_API_KEY', '')
+    openai_model = company.openai_model or 'gpt-4o-mini'
+    
+    # Brevo email settings (per company)
+    brevo_api_key = company.brevo_api_key or os.getenv('BREVO_API_KEY', '')
+    brevo_sender_email = company.brevo_sender_email or 'msurvey@markplusinc.com'
+    brevo_sender_name = company.brevo_sender_name or company.name
+    
+    # Global settings (shared across companies) - kept in SystemSettings for backward compatibility
     from app.models import SystemSettings
-    
-    # Get current settings with defaults
-    openai_api_key = SystemSettings.get_setting('openai_api_key', os.getenv('OPENAI_API_KEY', ''))
-    openai_model = SystemSettings.get_setting('openai_model', 'gpt-4o-mini')
-    
-    # Brevo email settings
-    brevo_api_key = SystemSettings.get_setting('brevo_api_key', os.getenv('BREVO_API_KEY', ''))
-    brevo_sender_email = SystemSettings.get_setting('brevo_sender_email', 'msurvey@markplusinc.com')
-    brevo_sender_name = SystemSettings.get_setting('brevo_sender_name', 'InsightCoder Platform')
     
     # Get invalid patterns
     default_patterns = """ta
@@ -918,6 +939,7 @@ CONTOH:
     rate_limit_delay = SystemSettings.get_setting('rate_limit_delay', os.getenv('RATE_LIMIT_DELAY', '0.1'))
     
     return render_template('admin_settings.html',
+                         company=company,
                          openai_api_key=openai_api_key,
                          openai_model=openai_model,
                          brevo_api_key=brevo_api_key,
@@ -940,9 +962,14 @@ CONTOH:
 @main_bp.route('/admin/settings/save', methods=['POST'])
 @login_required
 def save_settings():
-    """Save admin settings"""
+    """Save admin settings - Company-specific settings"""
     if not current_user.is_admin:
         return jsonify({'error': 'Access denied'}), 403
+    
+    # Get user's company
+    company = current_user.company
+    if not company:
+        return jsonify({'error': 'No company assigned'}), 400
     
     from app.models import SystemSettings
     
@@ -950,42 +977,37 @@ def save_settings():
     
     try:
         if setting_type == 'openai':
-            # Save OpenAI settings
+            # Save OpenAI settings to COMPANY (isolated per company)
             api_key = request.form.get('openai_api_key')
             model = request.form.get('openai_model')
             
-            SystemSettings.set_setting('openai_api_key', api_key, 'OpenAI API Key')
-            SystemSettings.set_setting('openai_model', model, 'OpenAI Model')
+            company.openai_api_key = api_key
+            company.openai_model = model
+            db.session.commit()
             
-            # Also update .env file
-            update_env_file('OPENAI_API_KEY', api_key)
-            
-            flash('OpenAI settings saved successfully!', 'success')
+            flash(f'OpenAI settings saved for {company.name}!', 'success')
         
         elif setting_type == 'brevo':
-            # Save Brevo email settings
+            # Save Brevo email settings to COMPANY (isolated per company)
             brevo_api_key = request.form.get('brevo_api_key', '')
-            brevo_sender_email = request.form.get('brevo_sender_email', 'msurvey@markplusinc.com')
-            brevo_sender_name = request.form.get('brevo_sender_name', 'InsightCoder Platform')
+            brevo_sender_email = request.form.get('brevo_sender_email', '')
+            brevo_sender_name = request.form.get('brevo_sender_name', company.name)
             
-            SystemSettings.set_setting('brevo_api_key', brevo_api_key, 'Brevo API Key')
-            SystemSettings.set_setting('brevo_sender_email', brevo_sender_email, 'Brevo Sender Email')
-            SystemSettings.set_setting('brevo_sender_name', brevo_sender_name, 'Brevo Sender Name')
+            company.brevo_api_key = brevo_api_key
+            company.brevo_sender_email = brevo_sender_email
+            company.brevo_sender_name = brevo_sender_name
+            db.session.commit()
             
-            # Also update .env file
-            if brevo_api_key:
-                update_env_file('BREVO_API_KEY', brevo_api_key)
-            
-            flash('Brevo email settings saved successfully!', 'success')
+            flash(f'Brevo email settings saved for {company.name}!', 'success')
             
         elif setting_type == 'invalid_patterns':
-            # Save invalid patterns
+            # Save invalid patterns (GLOBAL - shared across companies)
             patterns = request.form.get('invalid_patterns')
             SystemSettings.set_setting('invalid_patterns', patterns, 'Invalid Response Patterns')
             flash('Invalid response patterns saved successfully!', 'success')
             
         elif setting_type == 'classification':
-            # Save classification settings
+            # Save classification settings (GLOBAL - shared across companies)
             invalid_category = request.form.get('invalid_category')
             invalid_code = request.form.get('invalid_code')
             max_categories = request.form.get('max_categories')
@@ -1011,7 +1033,7 @@ def save_settings():
             flash('Classification settings saved successfully!', 'success')
             
         elif setting_type == 'ai_prompts':
-            # Save AI prompts
+            # Save AI prompts (GLOBAL - shared across companies)
             prompt_multi_label = request.form.get('prompt_multi_label')
             prompt_single_label = request.form.get('prompt_single_label')
             
@@ -1021,7 +1043,7 @@ def save_settings():
             flash('AI prompts saved successfully!', 'success')
         
         elif setting_type == 'parallel':
-            # Save Parallel Processing settings
+            # Save Parallel Processing settings (GLOBAL - shared across companies)
             enable_parallel = 'true' if request.form.get('enable_parallel_processing') else 'false'
             max_workers = request.form.get('parallel_max_workers', '5')
             delay = request.form.get('rate_limit_delay', '0.1')
@@ -1080,16 +1102,21 @@ def serve_profile_photo(filename):
 @main_bp.route('/logo/upload', methods=['GET', 'POST'])
 @login_required
 def logo_upload():
-    """Logo upload page (Admin only)"""
+    """Logo upload page - Company-specific logo (Admin only)"""
     if not current_user.is_admin:
         flash('Access denied. Admin privileges required.', 'error')
         return redirect(url_for('main.dashboard'))
     
-    from app.models import SystemSettings
+    # Get user's company
+    company = current_user.company
+    if not company:
+        flash('No company assigned to your account.', 'error')
+        return redirect(url_for('main.dashboard'))
+    
     from werkzeug.utils import secure_filename
     
-    # Get current logo filename
-    logo_filename = SystemSettings.get_setting('logo_filename', None)
+    # Get current logo filename from COMPANY (not SystemSettings)
+    logo_filename = company.logo_filename
     logo_url = url_for('main.serve_logo', filename=logo_filename) if logo_filename else None
     
     if request.method == 'POST':
@@ -1124,8 +1151,8 @@ def logo_upload():
             upload_dir = os.path.join(Config.UPLOAD_FOLDER, 'logos')
             os.makedirs(upload_dir, exist_ok=True)
             
-            # Generate unique filename
-            unique_filename = f'logo_{datetime.now().strftime("%Y%m%d%H%M%S")}.{file_ext}'
+            # Generate unique filename with company code
+            unique_filename = f'logo_{company.code}_{datetime.now().strftime("%Y%m%d%H%M%S")}.{file_ext}'
             filepath = os.path.join(upload_dir, unique_filename)
             
             # Save file
@@ -1140,49 +1167,45 @@ def logo_upload():
                     except:
                         pass
             
-            # Save only filename (not full path)
-            SystemSettings.set_setting('logo_filename', unique_filename, 'Company Logo Filename')
+            # Save only filename to COMPANY (not SystemSettings)
+            company.logo_filename = unique_filename
+            db.session.commit()
             
-            # Auto-generate favicon and OG image
-            try:
-                from generate_favicon import generate_favicon_from_logo
-                result = generate_favicon_from_logo(filepath, output_dir='app/static')
-                if result:
-                    print(f"✅ Generated {len(result)} favicon files", flush=True)
-                    flash('Logo uploaded successfully! Favicon and preview images generated.', 'success')
-                else:
-                    flash('Logo uploaded successfully! (Favicon generation failed)', 'warning')
-            except Exception as e:
-                print(f"⚠️ Favicon generation error: {str(e)}", flush=True)
-                flash('Logo uploaded successfully! (Favicon generation failed)', 'warning')
-            
+            flash(f'Logo uploaded successfully for {company.name}!', 'success')
             return redirect(url_for('main.logo_upload'))
             
         except Exception as e:
             flash(f'Error uploading logo: {str(e)}', 'error')
             return redirect(url_for('main.logo_upload'))
     
-    return render_template('logo_upload.html', logo_url=logo_url)
+    return render_template('logo_upload.html', logo_url=logo_url, company=company)
 
 @main_bp.route('/logo/delete', methods=['POST'])
 @login_required
 def logo_delete():
-    """Delete logo (Admin only)"""
+    """Delete logo - Company-specific (Admin only)"""
     if not current_user.is_admin:
         flash('Access denied. Admin privileges required.', 'error')
         return redirect(url_for('main.dashboard'))
     
-    from app.models import SystemSettings
+    # Get user's company
+    company = current_user.company
+    if not company:
+        flash('No company assigned to your account.', 'error')
+        return redirect(url_for('main.dashboard'))
     
     try:
-        logo_filename = SystemSettings.get_setting('logo_filename', None)
+        logo_filename = company.logo_filename
         if logo_filename:
             logo_path = os.path.join(Config.UPLOAD_FOLDER, 'logos', logo_filename)
             if os.path.exists(logo_path):
                 os.remove(logo_path)
         
-        SystemSettings.set_setting('logo_filename', None, 'Company Logo Filename')
-        flash('Logo deleted successfully!', 'success')
+        # Remove logo from COMPANY (not SystemSettings)
+        company.logo_filename = None
+        db.session.commit()
+        
+        flash(f'Logo deleted successfully for {company.name}!', 'success')
     except Exception as e:
         flash(f'Error deleting logo: {str(e)}', 'error')
     
