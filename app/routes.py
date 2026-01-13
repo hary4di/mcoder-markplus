@@ -15,6 +15,7 @@ from app.utils import FileProcessor
 from tasks.progress import progress_tracker
 # Import Celery task for background processing
 from tasks.classification import classify_dataset
+from celery_app import celery_app  # Import Celery app for task control
 from config import Config
 from excel_classifier import ExcelClassifier
 
@@ -62,8 +63,143 @@ def index():
 @main_bp.route('/dashboard')
 @login_required
 def dashboard():
-    """Main dashboard"""
-    return render_template('dashboard.html')
+    """Main dashboard with real-time data"""
+    from app.models import ClassificationJob, ClassificationVariable
+    from sqlalchemy import func
+    from datetime import datetime, timedelta
+    
+    # Get current user
+    user_id = current_user.id
+    
+    # === KPI METRICS ===
+    
+    # Total completed classifications (all time)
+    total_classifications = ClassificationJob.query.filter_by(
+        user_id=user_id,
+        status='completed'
+    ).count()
+    
+    # Active jobs (processing)
+    active_jobs_count = ClassificationJob.query.filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.status.in_(['processing', 'pending'])
+    ).count()
+    
+    # Total responses classified (sum from ClassificationVariable table)
+    # Join with ClassificationJob to filter by user_id
+    total_responses_result = db.session.query(
+        func.sum(ClassificationVariable.total_responses)
+    ).join(ClassificationJob).filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.status == 'completed'
+    ).scalar()
+    total_responses = total_responses_result or 0
+    
+    # Total variables classified (count from ClassificationVariable table)
+    total_variables = db.session.query(
+        func.count(ClassificationVariable.id)
+    ).join(ClassificationJob).filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.status == 'completed'
+    ).scalar() or 0
+    
+    # === TRENDS (Last 7 days vs Previous 7 days) ===
+    seven_days_ago = datetime.now() - timedelta(days=7)
+    fourteen_days_ago = datetime.now() - timedelta(days=14)
+    
+    # Classifications trend
+    classifications_last_7 = ClassificationJob.query.filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.status == 'completed',
+        ClassificationJob.completed_at >= seven_days_ago
+    ).count()
+    
+    classifications_prev_7 = ClassificationJob.query.filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.status == 'completed',
+        ClassificationJob.completed_at >= fourteen_days_ago,
+        ClassificationJob.completed_at < seven_days_ago
+    ).count()
+    
+    if classifications_prev_7 > 0:
+        classifications_trend = ((classifications_last_7 - classifications_prev_7) / classifications_prev_7) * 100
+    else:
+        classifications_trend = 100 if classifications_last_7 > 0 else 0
+    
+    # Responses trend (from ClassificationVariable table)
+    responses_last_7_result = db.session.query(
+        func.sum(ClassificationVariable.total_responses)
+    ).join(ClassificationJob).filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.status == 'completed',
+        ClassificationJob.completed_at >= seven_days_ago
+    ).scalar()
+    responses_last_7 = responses_last_7_result or 0
+    
+    responses_prev_7_result = db.session.query(
+        func.sum(ClassificationVariable.total_responses)
+    ).join(ClassificationJob).filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.status == 'completed',
+        ClassificationJob.completed_at >= fourteen_days_ago,
+        ClassificationJob.completed_at < seven_days_ago
+    ).scalar()
+    responses_prev_7 = responses_prev_7_result or 0
+    
+    if responses_prev_7 > 0:
+        responses_trend = ((responses_last_7 - responses_prev_7) / responses_prev_7) * 100
+    else:
+        responses_trend = 100 if responses_last_7 > 0 else 0
+    
+    # === RECENT JOBS (Last 7) ===
+    recent_jobs = ClassificationJob.query.filter_by(
+        user_id=user_id
+    ).order_by(ClassificationJob.created_at.desc()).limit(7).all()
+    
+    # === CHART DATA: Jobs Over Time (Last 30 days) ===
+    thirty_days_ago = datetime.now() - timedelta(days=30)
+    
+    jobs_by_date = db.session.query(
+        func.date(ClassificationJob.completed_at).label('date'),
+        func.count(ClassificationJob.id).label('count')
+    ).filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.status == 'completed',
+        ClassificationJob.completed_at >= thirty_days_ago
+    ).group_by(func.date(ClassificationJob.completed_at)).all()
+    
+    # Format chart data
+    chart_labels = []
+    chart_data = []
+    for job_date, count in jobs_by_date:
+        chart_labels.append(job_date.strftime('%b %d'))
+        chart_data.append(count)
+    
+    # === CLASSIFICATION TYPES (Pure vs Semi) ===
+    pure_count = ClassificationJob.query.filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.classification_type == 'pure_open_ended',
+        ClassificationJob.status == 'completed'
+    ).count()
+    
+    semi_count = ClassificationJob.query.filter(
+        ClassificationJob.user_id == user_id,
+        ClassificationJob.classification_type == 'semi_open_ended',
+        ClassificationJob.status == 'completed'
+    ).count()
+    
+    return render_template('dashboard.html',
+                         total_classifications=total_classifications,
+                         active_jobs_count=active_jobs_count,
+                         total_responses=total_responses,
+                         total_variables=total_variables,
+                         classifications_trend=round(classifications_trend, 1),
+                         responses_trend=round(responses_trend, 1),
+                         recent_jobs=recent_jobs,
+                         chart_labels=chart_labels,
+                         chart_data=chart_data,
+                         pure_count=pure_count,
+                         semi_count=semi_count)
 
 @main_bp.route('/responsive-test')
 def responsive_test():
@@ -249,6 +385,19 @@ def start_classification():
             # Pure open-ended processing (existing logic)
             processing_type = 'open_ended'
             
+            # Check concurrent jobs limit (3 for regular users, unlimited for Super Admin)
+            if not current_user.is_super_admin:
+                from app.models import ClassificationJob
+                active_jobs_count = ClassificationJob.query.filter_by(
+                    user_id=current_user.id
+                ).filter(
+                    ClassificationJob.status.in_(['pending', 'running', 'processing'])
+                ).count()
+                
+                if active_jobs_count >= 3:
+                    flash('You have reached the maximum of 3 concurrent jobs. Please wait for one to complete before starting a new one.', 'warning')
+                    return redirect(url_for('main.jobs'))
+            
             # Get settings
             max_categories = int(request.form.get('max_categories', 10))
             confidence_threshold = float(request.form.get('confidence_threshold', 0.50))
@@ -299,8 +448,8 @@ def start_classification():
             print(f"[MAIN] Celery task submitted: {task.id}")
             print(f"[MAIN] Task state: {task.state}")
         
-        # Redirect to progress page
-        return redirect(url_for('main.classification_progress'))
+        # Redirect to progress page with job_id
+        return redirect(url_for('main.classification_progress', job_id=job_id))
         
     except Exception as e:
         print(f"Error starting classification: {str(e)}")
@@ -424,18 +573,17 @@ def run_semi_open_background(job_id, kobo_system_path, raw_data_path, pairs_to_p
         traceback.print_exc()
         progress_tracker.set_error(job_id, error_msg)
 
-@main_bp.route('/classification-progress')
+@main_bp.route('/classification-progress/<job_id>')
 @login_required
-def classification_progress():
+def classification_progress(job_id):
     """Progress monitoring page"""
-    job_id = session.get('classification_job_id')
     if not job_id:
         flash('No classification process running', 'warning')
         return redirect(url_for('main.classify'))
     
-    # Note: Don't check job existence here immediately after creation
-    # The background thread needs a moment to initialize
-    # The frontend will handle 404 errors gracefully and redirect if needed
+    # Note: Security check removed - UUID job_id is secure enough
+    # Job ownership verified in API endpoints
+    # Celery task may not have created DB record yet (async processing)
     
     return render_template('classification_progress.html', job_id=job_id)
 
@@ -490,7 +638,7 @@ def classification_complete(job_id):
 @main_bp.route('/results')
 @login_required
 def results():
-    """Results page - show classification job history"""
+    """Results page - show classification job history (legacy)"""
     from app.models import ClassificationJob
     from sqlalchemy import desc
     
@@ -509,6 +657,38 @@ def results():
         import traceback
         traceback.print_exc()
         flash(f'Error loading results: {str(e)}', 'error')
+        return redirect(url_for('main.dashboard'))
+
+@main_bp.route('/jobs')
+@login_required
+def jobs():
+    """Jobs & Activity page - Modern UI with real-time updates"""
+    from app.models import ClassificationJob
+    from sqlalchemy import desc
+    
+    try:
+        # Get all jobs for current user (all statuses: running, completed, failed)
+        all_jobs = ClassificationJob.query.filter_by(
+            user_id=current_user.id
+        ).order_by(desc(ClassificationJob.created_at)).limit(50).all()
+        
+        # Separate by status for tabs
+        running_jobs = [job for job in all_jobs if job.status in ['pending', 'running']]
+        completed_jobs = [job for job in all_jobs if job.status == 'completed']
+        failed_jobs = [job for job in all_jobs if job.status == 'failed']
+        
+        return render_template('jobs.html',
+            all_jobs=all_jobs,
+            running_jobs=running_jobs,
+            completed_jobs=completed_jobs,
+            failed_jobs=failed_jobs
+        )
+        
+    except Exception as e:
+        print(f"[ERROR] Jobs page error: {e}")
+        import traceback
+        traceback.print_exc()
+        flash(f'Error loading jobs: {str(e)}', 'error')
         return redirect(url_for('main.dashboard'))
 
 @main_bp.route('/delete_jobs', methods=['POST'])
@@ -571,6 +751,162 @@ def bulk_delete_jobs():
         flash(f'Error deleting jobs: {str(e)}', 'error')
     
     return redirect(url_for('main.results'))
+
+# ========================================
+# API ENDPOINTS FOR JOBS PAGE (AJAX)
+# ========================================
+
+@main_bp.route('/api/active-jobs')
+@login_required
+def api_active_jobs():
+    """API: Get all active/running jobs for current user - REAL-TIME from Redis"""
+    from app.models import ClassificationJob
+    from sqlalchemy import desc
+    from tasks.progress import progress_tracker
+    
+    try:
+        # Fetch ALL progress data from Redis (real-time source)
+        all_redis_jobs = progress_tracker.get_all_jobs()
+        
+        # Get active jobs from database to filter by user
+        db_jobs = ClassificationJob.query.filter_by(
+            user_id=current_user.id
+        ).filter(
+            ClassificationJob.status.in_(['pending', 'running', 'processing'])
+        ).order_by(desc(ClassificationJob.created_at)).all()
+        
+        # Map database jobs to Redis data
+        jobs_data = []
+        for db_job in db_jobs:
+            # CRITICAL: Use job_id (UUID) for Redis lookup, not id (integer)!
+            job_uuid = db_job.job_id  # UUID string stored in database
+            
+            # Get real-time progress from Redis (use UUID as key)
+            redis_progress = all_redis_jobs.get(job_uuid, {})
+            
+            # Debug log
+            if redis_progress:
+                print(f"[API_ACTIVE_JOBS] Redis HIT for {job_uuid}: {redis_progress.get('progress')}%")
+            else:
+                print(f"[API_ACTIVE_JOBS] Redis MISS for {job_uuid}, fallback to DB")
+            
+            # Use Redis data if available (real-time), fallback to database
+            jobs_data.append({
+                'id': db_job.id,  # Database integer ID (for display)
+                'job_id': db_job.job_id,  # UUID for API/Redis lookup
+                'original_filename': db_job.original_filename,
+                'status': redis_progress.get('status', db_job.status),
+                'progress': redis_progress.get('progress', db_job.progress or 0),
+                'current_step': redis_progress.get('current_step', db_job.current_step or 'Initializing...'),
+                'created_at': db_job.created_at.isoformat() if db_job.created_at else None,
+                'started_at': db_job.started_at.isoformat() if db_job.started_at else None,
+                'task_id': db_job.task_id,
+                'total_variables': redis_progress.get('total_variables', db_job.total_variables or 0),
+                'current_variable': redis_progress.get('current_variable'),
+                'variables_completed': redis_progress.get('variables_completed', 0)
+            })
+        
+        return jsonify({'jobs': jobs_data})
+        
+    except Exception as e:
+        print(f"[ERROR] API active jobs error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+@main_bp.route('/api/cancel-job/<job_id>', methods=['POST'])
+@login_required
+def api_cancel_job(job_id):
+    """API: Cancel a running classification job"""
+    from app.models import ClassificationJob
+    
+    try:
+        job = ClassificationJob.query.filter_by(
+            id=job_id,
+            user_id=current_user.id  # Security: only cancel own jobs
+        ).first()
+        
+        if not job:
+            return jsonify({'error': 'Job not found'}), 404
+        
+        if job.status not in ['pending', 'running', 'processing']:
+            return jsonify({'error': 'Job is not running'}), 400
+        
+        # Revoke Celery task
+        if job.task_id:
+            celery_app.control.revoke(job.task_id, terminate=True, signal='SIGKILL')
+            print(f"[CANCEL] Revoked Celery task {job.task_id} for job {job_id}")
+        
+        # Update job status in database
+        job.status = 'cancelled'
+        job.error_message = 'Cancelled by user'
+        db.session.commit()
+        
+        # Delete progress from Redis
+        progress_tracker.delete_progress(str(job.id))
+        print(f"[CANCEL] Deleted Redis progress for job {job_id}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Job cancelled successfully'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"[ERROR] API cancel job error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@main_bp.route('/api/delete-job/<job_id>', methods=['DELETE', 'POST'])
+@login_required
+def api_delete_job(job_id):
+    """API: Delete a classification job (AJAX endpoint)"""
+    import os
+    from app.models import ClassificationJob
+    from app import db
+    
+    try:
+        job = ClassificationJob.query.filter_by(
+            id=job_id,
+            user_id=current_user.id  # Security: only delete own jobs
+        ).first()
+        
+        if not job:
+            return jsonify({'error': 'Job not found'}), 404
+        
+        # Delete associated files
+        files_to_delete = []
+        if job.input_kobo_path and os.path.exists(job.input_kobo_path):
+            files_to_delete.append(job.input_kobo_path)
+        if job.input_raw_path and os.path.exists(job.input_raw_path):
+            files_to_delete.append(job.input_raw_path)
+        if job.output_kobo_path and os.path.exists(job.output_kobo_path):
+            files_to_delete.append(job.output_kobo_path)
+        if job.output_raw_path and os.path.exists(job.output_raw_path):
+            files_to_delete.append(job.output_raw_path)
+        
+        # Delete database record (cascade will delete variables)
+        db.session.delete(job)
+        db.session.commit()
+        
+        # Delete files after successful db deletion
+        for file_path in files_to_delete:
+            try:
+                os.remove(file_path)
+                print(f"[INFO] Deleted file: {file_path}")
+            except Exception as e:
+                print(f"[WARNING] Failed to delete file {file_path}: {e}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Job deleted successfully'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"[ERROR] API delete job error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
 
 
 @main_bp.route('/admin/analytics')
@@ -699,7 +1035,7 @@ def admin_user_jobs(user_id):
         return redirect(url_for('main.admin_analytics'))
 
 
-@main_bp.route('/results/<int:job_id>')
+@main_bp.route('/results/<job_id>')
 @login_required
 def view_result(job_id):
     """View detailed results for a specific job"""
@@ -766,7 +1102,7 @@ def download_file(filename):
         as_attachment=True
     )
 
-@main_bp.route('/download-job/<int:job_id>')
+@main_bp.route('/download-job/<job_id>')
 @login_required
 def download_job(job_id):
     """Download classification job results as ZIP (2 files: kobo + raw)"""
